@@ -10,69 +10,90 @@ type Group = { title: string; items: { q: string; a: string }[] };
 
 const GROUPS: Group[] = [
   {
-    title: "About PottoFlip",
+    title: "About Potto CBT",
     items: [
       {
-        q: "What is PottoFlip?",
-        a: "PottoFlip is an e-learning platform that helps schools deliver, organise, manage and monitor digital learning. Teachers create and share courses, students work through lessons and activities, and the school can see participation and progress. It is the teaching and learning layer of the Potto Learning Suite.",
+        q: "What is Potto CBT?",
+        a: "Potto CBT is a computer-based testing platform that helps schools create, schedule, deliver, mark and manage digital exams and assessments. It is the examination service of the Potto Learning Suite.",
       },
       {
-        q: "Does PottoFlip replace classroom teaching?",
-        a: "No. PottoFlip complements classroom teaching. It makes learning materials available digitally, so students can revisit lessons at their own pace, catch up on a class they missed and keep learning outside school hours.",
+        q: "What kinds of exams can we run on it?",
+        a: "Practice tests, class tests, continuous assessment, mock exams, midterm and end-of-term exams, entrance exams and other assessments your school defines. The category helps with organisation and reporting without forcing every school into the same structure.",
       },
       {
-        q: "Who uses PottoFlip?",
-        a: "Students, teachers and school administrators, each with their own dashboard and permissions. Parents and guardians can also follow a linked child's progress if the school turns that on.",
+        q: "Who uses Potto CBT?",
+        a: "Students, teachers and school administrators, each with their own dashboard and permissions.",
       },
       {
-        q: "Does PottoFlip work on phones?",
-        a: "Yes. PottoFlip is built for desktops, laptops, tablets and mobile phones, and the essential learning functions are designed to be comfortable on a small screen.",
+        q: "Which devices does it work on?",
+        a: "Supported desktop and laptop browsers, with tablet and mobile phone support where appropriate. A school may choose a desktop-only setup for formal exams — if so, that is an explicit setting, not an accident.",
       },
     ],
   },
   {
-    title: "Teaching and learning",
+    title: "Exam day",
     items: [
       {
-        q: "What can a lesson contain?",
-        a: "Rich text, images, video, audio, PDF documents, presentations, downloadable files and links to external learning resources. Teachers can save lessons as drafts, reorder them, and publish or schedule them.",
+        q: "What happens if the internet drops during an exam?",
+        a: "Answers are saved frequently as students work, and the student is told when answers can't be synchronised. Failed saves are retried, the latest saved answers are restored after reconnection, and the original deadline still applies. The interruption is recorded for authorised staff to review.",
       },
       {
-        q: "Can students pick up where they left off?",
-        a: "Yes. PottoFlip keeps each student's progress so they can resume a lesson from where they stopped, and the dashboard always offers the next thing to continue with.",
+        q: "Can students sit exams offline?",
+        a: "Not yet. Offline exams are on the roadmap, but they will only be offered once secure local storage, synchronisation and conflict handling have been built and tested.",
       },
       {
-        q: "What kinds of quiz questions are there?",
-        a: "Multiple choice, multiple select, true or false, short answer and fill in the blanks. Objective questions are graded automatically, and anything that needs a teacher's judgement is sent to the teacher to grade.",
+        q: "Is the timer based on the student's computer clock?",
+        a: "No. The countdown follows the exam deadline held on the server, so changing a device's clock does not buy extra time. When time runs out, the student's latest saved answers are submitted according to the exam's policy.",
       },
       {
-        q: "Are PottoFlip quizzes the same as exams?",
-        a: "No. PottoFlip's quizzes are low-stakes practice for learning and revision. Formal computer-based examinations stay in Potto CBT, and practice scores do not become official results unless the school has approved a workflow for that.",
+        q: "Can a student submit twice, or change answers afterwards?",
+        a: "No. Repeated requests and network retries never create a second attempt or a duplicate submission, and once a paper is submitted its answers are locked unless an explicitly authorised process reopens it.",
       },
       {
-        q: "How does PottoFlip measure progress?",
-        a: "It records meaningful learning events — lessons completed, assignments submitted, quiz attempts and feedback — and tells opening a lesson apart from completing it. Teachers can then see who is doing well, who has not started and which topics students find hard.",
+        q: "Does Potto CBT stop cheating?",
+        a: "No software can guarantee that. Potto CBT offers proportionate safeguards — server-side timing, restricted access, controlled session resumption, configurable navigation and audit logs, with randomised questions and question pools planned — and supports your school's own exam rules and supervision.",
       },
     ],
   },
   {
-    title: "Privacy and the Potto Learning Suite",
+    title: "Marking and results",
     items: [
+      {
+        q: "Which questions are marked automatically?",
+        a: "Objective questions: multiple choice and true or false at first, with multiple select and fill in the blanks planned. Short answers and essays will go to a manual marking queue, where teachers award marks within the allowed range and add feedback.",
+      },
+      {
+        q: "When do students see their scores?",
+        a: "When your school allows. A practice test can show its score straight after submission, while a formal exam can hold scores back until teachers have reviewed them. Students only ever see scores that have been released.",
+      },
+      {
+        q: "Can a score be changed after marking?",
+        a: "Only by an authorised user, and never silently. Every change records the original score, the new score, who changed it, why and when.",
+      },
+      {
+        q: "Do CBT scores become official results?",
+        a: "Not automatically. Practice results are kept apart from official exam marks. Finalised scores are designed to pass to Potto Assess for the school's formal results, under rules the school agrees.",
+      },
+    ],
+  },
+  {
+    title: "Security and privacy",
+    items: [
+      {
+        q: "Can students see the answer key?",
+        a: "No. Answer keys are never sent to the student's browser, unpublished exams stay locked, and every question request is authorised on the server.",
+      },
       {
         q: "Can one school see another school's data?",
-        a: "No. Each school's courses, student records and reports are kept separate. Users from one school cannot access another school's private information without explicit authorisation.",
+        a: "No. Each school's questions, candidates and results are kept separate, and exports respect each user's permissions.",
       },
       {
-        q: "Who can see a student's grades and work?",
-        a: "Only authorised users. Teachers see the classes and students their role allows, parents see only their own linked children, and grades, submissions and feedback are never exposed publicly.",
+        q: "Do you use webcams or face recognition?",
+        a: "No. Any future webcam, screen monitoring or biometric checks would need a separate privacy, security and legal assessment first. Candidate verification is kept proportionate — an exam access code, for example.",
       },
       {
         q: "Do we have to re-enter our classes and students?",
-        a: "PottoFlip is designed to use the school, class, subject, student and teacher records already held in Potto Admin, so your school does not have to recreate them.",
-      },
-      {
-        q: "Will PottoFlip have an AI assistant?",
-        a: "An AI learning assistant is on the roadmap for a later phase. Any AI-generated material would be reviewed before it is published as official school content, with safeguards to protect students.",
+        a: "Potto CBT is designed to use the school, class, subject, student and teacher records already held in Potto Admin, so your school does not have to recreate them.",
       },
     ],
   },
@@ -125,13 +146,13 @@ export default function FaqSection() {
     >
       <div className="mx-auto grid w-full max-w-7xl gap-12 px-5 md:px-6 lg:grid-cols-[5fr_7fr] lg:gap-16 lg:px-8">
         <div className="lg:sticky lg:top-32 lg:self-start">
-          <SectionCaption lesson={7}>Questions</SectionCaption>
-          <h2 className="mt-6 font-display text-4xl leading-[1.02] font-extrabold tracking-[-0.03em] sm:text-5xl lg:text-6xl">
+          <SectionCaption question={8}>Questions</SectionCaption>
+          <h2 className="mt-6 font-display text-4xl leading-[1.08] font-bold tracking-[-0.03em] sm:text-5xl lg:text-[3.5rem]">
             Questions, <span className="text-brand">answered</span>
           </h2>
           <p className="mt-6 max-w-md text-lg leading-8 text-soft">
-            How teaching and learning work on PottoFlip, how student data is kept
-            safe, and how your school can get started.
+            How exams run on Potto CBT, how marking and results work, how
+            student data is kept safe, and how to get started.
           </p>
 
           <div
@@ -145,7 +166,7 @@ export default function FaqSection() {
                 type="button"
                 aria-pressed={topic === t}
                 onClick={() => setTopic(t)}
-                className={`cursor-pointer rounded-full px-4 py-2 text-sm font-semibold transition-colors duration-300 ${
+                className={`cursor-pointer rounded-lg px-4 py-2 text-sm font-semibold transition-colors duration-300 ${
                   topic === t
                     ? "bg-ink text-white"
                     : "bg-surface-2 text-ink/70 hover:bg-brand/10 hover:text-ink"
@@ -157,14 +178,14 @@ export default function FaqSection() {
           </div>
 
           <div className="mt-10 hidden rounded-[1.75rem] bg-accent p-7 lg:block">
-            <p className="font-note text-2xl text-accent-foreground">
-              still curious?
+            <p className="font-display text-xl font-bold text-accent-foreground">
+              Still curious?
             </p>
             <p className="mt-2 text-[0.95rem] leading-7 text-ink/80">
               Our support team is happy to help.
             </p>
             <a
-              href="mailto:support@potto.ng?subject=Potto%20Flip"
+              href="mailto:support@potto.ng?subject=Potto%20CBT"
               className="mt-4 inline-flex items-center gap-2 font-semibold text-brand underline-offset-4 hover:underline"
             >
               <HugeiconsIcon icon={Mail01Icon} size={18} strokeWidth={2} />

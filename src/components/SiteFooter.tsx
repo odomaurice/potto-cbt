@@ -16,10 +16,11 @@ import {
 import Wordmark from "@/components/Wordmark";
 
 const EXPLORE = [
-  { label: "Why PottoFlip", href: "/#about" },
+  { label: "Why Potto CBT", href: "/#about" },
   { label: "Core features", href: "/#features" },
+  { label: "Exam day", href: "/#exam-day" },
   { label: "Who it's for", href: "/#roles" },
-  { label: "How it works", href: "/#how-it-works" },
+  { label: "The exam lifecycle", href: "/#lifecycle" },
   { label: "The Potto Learning Suite", href: "/#ecosystem" },
   { label: "Roadmap", href: "/#roadmap" },
   { label: "Questions", href: "/#faq" },
@@ -81,14 +82,14 @@ export default function SiteFooter() {
           <div className="max-w-sm">
             <Link
               href="/"
-              aria-label="PottoFlip home"
+              aria-label="Potto CBT home"
               className="inline-flex items-center"
             >
               <Wordmark tone="dark" />
             </Link>
             <p className="mt-5 text-[0.95rem] leading-7 text-white/90">
-              The e-learning platform of the Potto Learning Suite, for schools,
-              teachers and students.
+              The computer-based testing platform of the Potto Learning Suite.
+              Smarter examinations, reliable assessment, better insights.
             </p>
             <ul className="mt-6 flex gap-2.5">
               {SOCIALS.map((social) => (
@@ -108,13 +109,13 @@ export default function SiteFooter() {
           </div>
 
           <div>
-            <h2 className={heading}>The course</h2>
+            <h2 className={heading}>The paper</h2>
             <ol className="mt-5 space-y-3">
               {EXPLORE.map((item, i) => (
                 <li key={item.label}>
                   <Link href={item.href} className={`${link} flex gap-3`}>
-                    <span className="w-5 text-white/60 tabular-nums">
-                      {String(i + 1).padStart(2, "0")}
+                    <span className="w-8 font-mono text-sm text-white/60">
+                      Q{String(i + 1).padStart(2, "0")}
                     </span>
                     {item.label}
                   </Link>
@@ -138,7 +139,7 @@ export default function SiteFooter() {
               {EMAILS.map((email) => (
                 <li key={email}>
                   <a
-                    href={`mailto:${email}?subject=Potto%20Flip`}
+                    href={`mailto:${email}?subject=Potto%20CBT`}
                     className={`${link} flex items-start gap-3`}
                   >
                     <HugeiconsIcon
@@ -191,8 +192,8 @@ export default function SiteFooter() {
               ))}
             </ul>
             <a
-              href="mailto:support@potto.ng?subject=Potto%20Flip"
-              className="mt-7 inline-flex items-center justify-center rounded-full bg-brand-yellow px-6 py-3 text-sm font-semibold text-ink transition duration-300 hover:-translate-y-0.5 hover:bg-brand-yellow-light"
+              href="mailto:support@potto.ng?subject=Potto%20CBT"
+              className="mt-7 inline-flex items-center justify-center rounded-xl bg-brand-yellow px-6 py-3 text-sm font-semibold text-ink transition duration-300 hover:-translate-y-0.5 hover:bg-brand-yellow-light"
             >
               Email support
             </a>
@@ -201,7 +202,7 @@ export default function SiteFooter() {
 
         <div className="mt-16 flex flex-col items-center gap-5 border-t border-white/15 pt-8 sm:flex-row sm:justify-between">
           <p className="text-sm text-white/90" suppressHydrationWarning>
-            © {year} Potto Technologies Ltd. PottoFlip is part of the Potto Learning Suite.
+            © {year} Potto Technologies Ltd. Potto CBT is part of the Potto Learning Suite.
           </p>
           <a
             href="#"
@@ -216,9 +217,9 @@ export default function SiteFooter() {
       {/* The name, set huge and cut off by the page edge. */}
       <p
         aria-hidden
-        className="pointer-events-none mt-6 text-center font-display text-[18.5vw] leading-[0.75] font-extrabold tracking-[-0.05em] whitespace-nowrap text-white/8 select-none"
+        className="pointer-events-none mt-6 text-center font-display text-[17vw] leading-[0.8] font-bold tracking-[-0.05em] whitespace-nowrap text-white/8 select-none"
       >
-        PottoFlip
+        Potto CBT
       </p>
     </footer>
   );

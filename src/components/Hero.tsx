@@ -1,67 +1,65 @@
 "use client";
 
 import Link from "next/link";
-import { useEffect, useRef, useState, useSyncExternalStore } from "react";
-import { motion } from "framer-motion";
+import { useEffect, useState, useSyncExternalStore } from "react";
+import { AnimatePresence, motion } from "framer-motion";
 import { HugeiconsIcon } from "@hugeicons/react";
 import {
-  Analytics01Icon,
+  ArrowLeft01Icon,
   ArrowRight01Icon,
-  Comment01Icon,
-  PlayIcon,
-  QuizIcon,
+  CloudSavingDone01Icon,
+  Flag01Icon,
   SchoolIcon,
   StudentIcon,
-  Task01Icon,
   TeacherIcon,
-  UserMultipleIcon,
+  Tick02Icon,
 } from "@hugeicons/core-free-icons";
-
-// The learning loop of PRD 6.2 – 6.4. A concept, drawn as type and icons —
-// there is no Flip screenshot yet, and this is not pretending to be one.
-const LOOP = [
-  {
-    icon: PlayIcon,
-    word: "Learn",
-    line: "Watch, read and listen to lessons at your own pace.",
-  },
-  {
-    icon: QuizIcon,
-    word: "Practise",
-    line: "Low-stakes quizzes that explain the answers.",
-  },
-  {
-    icon: Task01Icon,
-    word: "Submit",
-    line: "Hand in assignments before the deadline.",
-  },
-  {
-    icon: Comment01Icon,
-    word: "Feedback",
-    line: "Grades and comments, released by your teacher.",
-  },
-  {
-    icon: Analytics01Icon,
-    word: "Progress",
-    line: "See what is done, and what comes next.",
-  },
-];
 
 const ROLES = [
   { icon: StudentIcon, label: "Students" },
   { icon: TeacherIcon, label: "Teachers" },
   { icon: SchoolIcon, label: "School admins" },
-  { icon: UserMultipleIcon, label: "Parents" },
 ];
 
-const STICKERS = [
-  { label: "Video", className: "-top-4 left-6 -rotate-6 bg-brand-yellow text-ink" },
-  { label: "PDF", className: "top-1/3 -right-6 rotate-6 bg-ink text-white" },
-  { label: "Audio", className: "bottom-24 -left-8 rotate-3 bg-white text-ink shadow-lg" },
-  { label: "Quiz", className: "-bottom-4 right-10 -rotate-3 bg-brand text-brand-fg" },
+// An imaginary candidate working through part of a paper, drawn from the
+// exam-interface components of PRD 4.9 and the Phase 1 question types
+// (multiple choice, true or false). It is labelled as an illustration on the
+// page — there is no CBT screenshot yet.
+const PAPER = [
+  {
+    text: "Which of these numbers is prime?",
+    options: ["21", "27", "29", "33"],
+    pick: 2,
+  },
+  {
+    text: "What is the capital of Nigeria?",
+    options: ["Lagos", "Abuja", "Kano", "Enugu"],
+    pick: 1,
+  },
+  {
+    text: "At sea level, pure water boils at 100 °C.",
+    options: ["True", "False"],
+    pick: 0,
+  },
+  {
+    text: "Solve for x:  3x + 4 = 19",
+    options: ["x = 3", "x = 5", "x = 6", "x = 7"],
+    pick: 1,
+    flag: true,
+  },
+  {
+    text: "Which gas do green plants take in for photosynthesis?",
+    options: ["Oxygen", "Nitrogen", "Carbon dioxide", "Hydrogen"],
+    pick: 2,
+  },
 ];
 
-const FLIP_EVERY = 3200;
+const FIRST = 12; // the paper's question number for PAPER[0]
+const TOTAL = 40;
+const BEATS = 4; // ticks per question: read, read, answer + save, saved
+const START = 42 * 60 + 18;
+const LETTERS = ["A", "B", "C", "D"];
+
 const ease = [0.22, 1, 0.36, 1] as const;
 
 const subscribeToMotionPref = (notify: () => void) => {
@@ -70,31 +68,34 @@ const subscribeToMotionPref = (notify: () => void) => {
   return () => mq.removeEventListener("change", notify);
 };
 
+const clock = (seconds: number) =>
+  [Math.floor(seconds / 60), seconds % 60].map((n) =>
+    String(n).padStart(2, "0"),
+  );
+
 export default function Hero() {
-  const [turn, setTurn] = useState(0);
-  const [paused, setPaused] = useState(false);
+  const [tick, setTick] = useState(0);
   const reduced = useSyncExternalStore(
     subscribeToMotionPref,
     () => window.matchMedia("(prefers-reduced-motion: reduce)").matches,
     () => true,
   );
-  const timer = useRef<number | undefined>(undefined);
 
   useEffect(() => {
-    if (reduced || paused) return;
-    timer.current = window.setInterval(
-      () => setTurn((t) => t + 1),
-      FLIP_EVERY,
-    );
-    return () => window.clearInterval(timer.current);
-  }, [reduced, paused]);
+    if (reduced) return;
+    const id = window.setInterval(() => setTick((t) => t + 1), 1000);
+    return () => window.clearInterval(id);
+  }, [reduced]);
 
-  // One two-faced card, turned 180 degrees per step. The face turned away is
-  // refilled with the next step, so five steps cycle through two faces.
-  const n = LOOP.length;
-  const frontStep = (turn % 2 === 0 ? turn : turn + 1) % n;
-  const backStep = (turn % 2 === 1 ? turn : turn + 1) % n;
-  const current = turn % n;
+  // Reduced motion shows one still frame: the first question, answered.
+  const t = reduced ? BEATS - 1 : tick;
+  const index = Math.floor(t / BEATS) % PAPER.length;
+  const beat = t % BEATS;
+  const q = PAPER[index];
+  const answered = beat >= 2;
+  const saving = beat === 2;
+  const number = FIRST + index;
+  const [mm, ss] = clock(START - (t % START));
 
   const reveal = (delay: number) => ({
     initial: { opacity: 0, y: 24 },
@@ -108,48 +109,36 @@ export default function Hero() {
       data-nav-bg="var(--canvas)"
       className="relative isolate overflow-hidden pt-32 pb-24 md:pt-40 md:pb-32"
     >
-      <div className="mx-auto grid w-full max-w-7xl items-center gap-16 px-5 md:px-6 lg:grid-cols-[1.15fr_0.85fr] lg:gap-10 lg:px-8">
+      <div className="mx-auto grid w-full max-w-7xl items-center gap-16 px-5 md:px-6 lg:grid-cols-[1.05fr_0.95fr] lg:gap-12 lg:px-8">
         <div>
           <motion.p
             {...reveal(0.05)}
-            className="font-note text-2xl text-brand sm:text-[1.7rem]"
+            className="inline-flex items-center gap-2 rounded-lg bg-brand/10 px-3 py-1.5 font-mono text-xs font-semibold tracking-wider text-brand uppercase"
           >
-            a fresh page for your school&apos;s learning
+            <span className="h-2 w-2 rounded-full bg-brand" />
+            Computer-based testing for schools
           </motion.p>
 
           <motion.h1
             {...reveal(0.15)}
-            className="mt-4 font-display text-[3rem] leading-[0.98] font-extrabold tracking-[-0.03em] sm:text-7xl lg:text-[5.4rem]"
+            className="mt-6 font-display text-[2.4rem] leading-[1.08] font-bold tracking-[-0.03em] sm:text-6xl lg:text-[4.1rem]"
           >
-            Flip the way your school{" "}
-            <span className="marker">teaches</span> and{" "}
-            <span className="relative inline-block text-brand">
-              learns
-              <svg
-                aria-hidden
-                viewBox="0 0 220 24"
-                className="absolute -bottom-3 left-0 w-full text-brand-yellow"
-                preserveAspectRatio="none"
-              >
-                <path
-                  d="M4 16 C 60 4, 140 4, 216 14"
-                  fill="none"
-                  stroke="currentColor"
-                  strokeWidth="6"
-                  strokeLinecap="round"
-                />
-              </svg>
-            </span>
-            .
+            Smarter exams.
+            <br />
+            <span className="marker">Reliable</span>{" "}
+            <span className="text-brand">assessment.</span>
+            <br />
+            Better insights.
           </motion.h1>
 
           <motion.p
             {...reveal(0.3)}
             className="mt-8 max-w-xl text-lg leading-8 text-soft sm:text-xl sm:leading-9"
           >
-            PottoFlip is one place for courses, lessons, assignments, practice
-            quizzes and feedback — so learning carries on beyond the classroom,
-            and everyone can see how it is going.
+            Potto CBT helps schools set, schedule, deliver and mark
+            computer-based exams — with answers saved as students work, a
+            timer kept by the server, and results released only when the
+            school says so.
           </motion.p>
 
           <motion.div
@@ -157,15 +146,15 @@ export default function Hero() {
             className="mt-10 flex flex-col gap-4 sm:flex-row sm:items-center"
           >
             <Link
-              href="/#how-it-works"
-              className="inline-flex animate-glow items-center justify-center gap-2 rounded-full bg-brand-yellow px-8 py-4 text-base font-semibold text-ink [--glow:var(--color-brand-yellow)] transition duration-300 hover:-translate-y-0.5 hover:bg-brand-yellow-light"
+              href="/#exam-day"
+              className="inline-flex items-center justify-center gap-2 rounded-xl bg-brand-yellow px-8 py-4 text-base font-bold text-ink transition duration-300 hover:-translate-y-0.5 hover:bg-brand-yellow-light"
             >
-              See how it works
+              Walk through exam day
               <HugeiconsIcon icon={ArrowRight01Icon} size={18} strokeWidth={2} />
             </Link>
             <Link
               href="/#contact"
-              className="group inline-flex items-center justify-center gap-2 rounded-full px-4 py-4 text-base font-semibold text-ink transition hover:text-brand"
+              className="group inline-flex items-center justify-center gap-2 rounded-xl px-4 py-4 text-base font-bold text-ink transition hover:text-brand"
             >
               Talk to us
               <HugeiconsIcon
@@ -179,157 +168,169 @@ export default function Hero() {
 
           <motion.ul
             {...reveal(0.55)}
-            aria-label="Who PottoFlip is for"
+            aria-label="Who Potto CBT is for"
             className="mt-12 flex flex-wrap gap-2"
           >
             {ROLES.map((role) => (
               <li
                 key={role.label}
-                className="inline-flex items-center gap-2 rounded-full bg-brand/8 px-4 py-2 text-sm font-semibold text-brand"
+                className="inline-flex items-center gap-2 rounded-lg bg-surface-2 px-3.5 py-2 text-sm font-semibold text-ink/80"
               >
-                <HugeiconsIcon icon={role.icon} size={16} strokeWidth={2} />
+                <HugeiconsIcon
+                  icon={role.icon}
+                  size={16}
+                  strokeWidth={2}
+                  className="text-brand"
+                />
                 {role.label}
               </li>
             ))}
           </motion.ul>
         </div>
 
-        <motion.div
-          initial={{ opacity: 0, rotate: 4, y: 40 }}
-          animate={{ opacity: 1, rotate: 0, y: 0 }}
+        <motion.figure
+          initial={{ opacity: 0, y: 40 }}
+          animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 1, delay: 0.35, ease }}
-          className="relative mx-auto w-full max-w-sm sm:max-w-md"
+          className="relative mx-auto w-full max-w-md lg:max-w-none"
         >
-          {/* Two pages under the card: the stack it is flipped from. */}
-          <div
-            aria-hidden
-            className="absolute inset-0 translate-x-5 translate-y-5 rotate-6 rounded-[2.25rem] bg-brand-yellow/40"
-          />
-          <div
-            aria-hidden
-            className="absolute inset-0 translate-x-2 translate-y-2 rotate-3 rounded-[2.25rem] bg-brand/20"
-          />
-
-          <button
-            type="button"
-            onClick={() => setTurn((t) => t + 1)}
-            onMouseEnter={() => setPaused(true)}
-            onMouseLeave={() => setPaused(false)}
-            onFocus={() => setPaused(true)}
-            onBlur={() => setPaused(false)}
-            aria-label={`The learning loop, step ${current + 1} of ${n}: ${LOOP[current].word}. ${LOOP[current].line} Press to flip to the next step.`}
-            className="relative block aspect-[4/5] w-full cursor-pointer perspective-[1400px]"
-          >
-            <span
-              style={{ transform: `rotateY(${turn * 180}deg)` }}
-              className={`absolute inset-0 transform-3d ${
-                reduced ? "" : "transition-transform duration-[900ms] ease-[cubic-bezier(0.22,1,0.36,1)]"
-              }`}
-            >
-              <Face step={frontStep} tone="teal" />
-              <Face step={backStep} tone="yellow" back />
-            </span>
-          </button>
-
-          {STICKERS.map((sticker) => (
-            <span
-              key={sticker.label}
+          <div className="relative">
+            {/* A flat yellow slab behind the screen — offset, not a shadow. */}
+            <div
               aria-hidden
-              className={`absolute hidden rounded-full px-4 py-2 text-sm font-bold sm:block ${sticker.className}`}
-            >
-              {sticker.label}
-            </span>
-          ))}
+              className="absolute inset-0 translate-x-4 translate-y-4 rounded-[2rem] bg-brand-yellow"
+            />
 
-          <div
-            aria-hidden
-            className="absolute -bottom-16 left-0 hidden items-center gap-2 font-note text-xl text-brand lg:flex"
-          >
-            <svg viewBox="0 0 60 40" className="h-8 w-12 -scale-y-100">
-              <path
-                d="M4 6 C 20 30, 40 34, 54 20 M54 20 l-10 -1 M54 20 l-2 10"
-                fill="none"
-                stroke="currentColor"
-                strokeWidth="2.5"
-                strokeLinecap="round"
-              />
-            </svg>
-            tap the card to flip it
+            <div
+              aria-hidden
+              className="relative overflow-hidden rounded-[2rem] bg-ink text-white"
+            >
+              {/* Title bar: paper, subject, timer. */}
+              <div className="flex items-center justify-between gap-4 bg-white/6 px-6 py-4 sm:px-7">
+                <div className="min-w-0">
+                  <p className="truncate text-sm font-semibold">
+                    General Paper · Mock exam
+                  </p>
+                  <p className="font-mono text-[0.7rem] text-white/60">
+                    JSS 3 · 60 minutes · 40 marks
+                  </p>
+                </div>
+                <span className="shrink-0 rounded-lg bg-white/10 px-3 py-1.5 font-mono text-xl font-bold tabular-nums">
+                  {mm}
+                  <span className="animate-blink">:</span>
+                  {ss}
+                </span>
+              </div>
+
+              <div className="px-6 pt-6 pb-6 sm:px-7">
+                <div className="flex items-center justify-between">
+                  <span className="font-mono text-xs font-semibold tracking-wider text-brand-yellow-light">
+                    QUESTION {number} OF {TOTAL}
+                  </span>
+                  <span
+                    className={`inline-flex items-center gap-1.5 rounded-md px-2 py-1 font-mono text-[0.65rem] font-bold transition-colors duration-300 ${
+                      q.flag && answered
+                        ? "bg-brand-yellow text-ink"
+                        : "bg-white/8 text-white/60"
+                    }`}
+                  >
+                    <HugeiconsIcon icon={Flag01Icon} size={12} strokeWidth={2.2} />
+                    {q.flag && answered ? "For review" : "Flag"}
+                  </span>
+                </div>
+
+                <AnimatePresence mode="wait" initial={false}>
+                  <motion.div
+                    key={index}
+                    initial={reduced ? false : { opacity: 0, x: 18 }}
+                    animate={{ opacity: 1, x: 0 }}
+                    exit={{ opacity: 0, x: -14 }}
+                    transition={{ duration: 0.35, ease }}
+                  >
+                    <p className="mt-4 min-h-14 text-lg leading-snug font-semibold sm:text-xl">
+                      {q.text}
+                    </p>
+
+                    <ul className="mt-5 grid gap-2">
+                      {q.options.map((option, i) => {
+                        const chosen = answered && i === q.pick;
+                        return (
+                          <li
+                            key={option}
+                            className={`flex items-center gap-3 rounded-xl px-3.5 py-2.5 text-sm font-medium transition-colors duration-300 sm:text-[0.95rem] ${
+                              chosen ? "bg-brand-teal text-white" : "bg-white/6 text-white/85"
+                            }`}
+                          >
+                            <span
+                              className={`grid h-7 w-7 shrink-0 place-items-center rounded-full font-mono text-xs font-bold transition-colors duration-300 ${
+                                chosen ? "bg-white text-brand-teal-dark" : "bg-white/10"
+                              }`}
+                            >
+                              {chosen ? (
+                                <HugeiconsIcon icon={Tick02Icon} size={14} strokeWidth={3} />
+                              ) : (
+                                LETTERS[i]
+                              )}
+                            </span>
+                            {option}
+                          </li>
+                        );
+                      })}
+                    </ul>
+                  </motion.div>
+                </AnimatePresence>
+
+                {/* Previous / save status / next. */}
+                <div className="mt-6 flex items-center justify-between gap-3">
+                  <span className="inline-flex items-center gap-1 rounded-lg bg-white/8 px-3 py-2 text-xs font-semibold text-white/70">
+                    <HugeiconsIcon icon={ArrowLeft01Icon} size={14} strokeWidth={2} />
+                    Previous
+                  </span>
+                  <span
+                    className={`inline-flex items-center gap-1.5 font-mono text-[0.7rem] font-semibold transition-colors duration-300 ${
+                      saving ? "text-white/60" : "text-brand-yellow-light"
+                    }`}
+                  >
+                    <HugeiconsIcon icon={CloudSavingDone01Icon} size={14} strokeWidth={2} />
+                    {saving ? "Saving…" : "All answers saved"}
+                  </span>
+                  <span className="inline-flex items-center gap-1 rounded-lg bg-brand-yellow px-3 py-2 text-xs font-bold text-ink">
+                    Next
+                    <HugeiconsIcon icon={ArrowRight01Icon} size={14} strokeWidth={2} />
+                  </span>
+                </div>
+              </div>
+
+              {/* Question palette for the whole paper. */}
+              <ol className="grid grid-cols-20 gap-1 bg-white/6 px-6 py-4 sm:px-7">
+                {Array.from({ length: TOTAL }, (_, i) => {
+                  const n = i + 1;
+                  const done = n < number || (n === number && answered);
+                  const flagged = done && PAPER[n - FIRST]?.flag === true;
+                  return (
+                    <li
+                      key={n}
+                      className={`aspect-square rounded-[3px] transition-colors duration-300 ${
+                        n === number && !answered
+                          ? "bg-white"
+                          : flagged
+                            ? "bg-brand-yellow"
+                            : done
+                              ? "bg-brand-teal"
+                              : "bg-white/15"
+                      }`}
+                    />
+                  );
+                })}
+              </ol>
+            </div>
           </div>
-        </motion.div>
+
+          <figcaption className="relative mt-8 text-sm leading-6 text-soft">
+            An illustration of the exam screen — not a product screenshot.
+          </figcaption>
+        </motion.figure>
       </div>
     </section>
-  );
-}
-
-function Face({
-  step,
-  tone,
-  back = false,
-}: {
-  step: number;
-  tone: "teal" | "yellow";
-  back?: boolean;
-}) {
-  const item = LOOP[step];
-  const teal = tone === "teal";
-
-  return (
-    <span
-      aria-hidden
-      className={`dog-ear absolute inset-0 flex flex-col justify-between overflow-hidden rounded-[2.25rem] p-8 text-left backface-hidden [--ear:3.5rem] sm:p-10 ${
-        back ? "rotate-y-180" : ""
-      } ${teal ? "bg-brand-teal-dark text-white" : "bg-brand-yellow text-ink"}`}
-    >
-      <span className="relative flex items-center justify-between">
-        <span
-          className={`text-xs font-semibold tracking-[0.2em] uppercase ${
-            teal ? "text-white/90" : "text-ink/70"
-          }`}
-        >
-          The learning loop
-        </span>
-      </span>
-
-      <span className="relative">
-        <span
-          className={`grid h-20 w-20 place-items-center rounded-3xl ${
-            teal ? "bg-white/15 text-white" : "bg-ink text-brand-yellow"
-          }`}
-        >
-          <HugeiconsIcon icon={item.icon} size={40} strokeWidth={1.8} />
-        </span>
-        <span className="mt-8 block font-display text-6xl font-extrabold tracking-[-0.03em] sm:text-7xl">
-          {item.word}
-        </span>
-        <span
-          className={`mt-4 block max-w-xs text-lg leading-7 ${
-            teal ? "text-white/90" : "text-ink/80"
-          }`}
-        >
-          {item.line}
-        </span>
-      </span>
-
-      <span className="relative flex items-center gap-2">
-        {LOOP.map((s, i) => (
-          <span
-            key={s.word}
-            className={`h-2 rounded-full transition-all ${
-              i === step
-                ? `w-8 ${teal ? "bg-brand-yellow" : "bg-ink"}`
-                : `w-2 ${teal ? "bg-white/30" : "bg-ink/25"}`
-            }`}
-          />
-        ))}
-        <span
-          className={`ml-auto font-display text-sm font-bold ${
-            teal ? "text-white/90" : "text-ink/70"
-          }`}
-        >
-          {String(step + 1).padStart(2, "0")} / {String(LOOP.length).padStart(2, "0")}
-        </span>
-      </span>
-    </span>
   );
 }

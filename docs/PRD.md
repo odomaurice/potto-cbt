@@ -1,864 +1,1110 @@
-# POTTO FLIP
-
+# POTTO CBT
 ## Product Requirements Document (PRD)
 
-**Product:** PottoFlip
-**Product Category:** E-Learning / Learning Management System (LMS)
-**Product Suite:** Potto Learning Suite
-**Document Type:** Product Requirements Document
+**Product Name:** Potto CBT  
+**Product Category:** Computer-Based Testing and Examination Management System  
+**Parent Ecosystem:** Potto  
+**Document Type:** Product Requirements Document  
+**Version:** 1.0  
 **Status:** Proposed Product Specification
-**Version:** (not set)
-
-> This is the source of every claim on the marketing site. If the site says
-> something this document does not, that is a bug.
 
 ---
 
 # 1. Product Overview
 
-## 1.1 What Is PottoFlip?
+## 1.1 What Is Potto CBT?
 
-PottoFlip is an e-learning platform designed to help schools deliver, organise, manage, and monitor digital learning.
+Potto CBT is a computer-based testing platform designed to help schools create, schedule, administer, mark, and manage digital examinations and assessments.
 
-It should provide a central environment where teachers can create and distribute learning materials, students can access courses and complete learning activities, and schools can monitor participation and learning progress.
+The platform should replace or complement traditional paper-based examinations by providing a structured digital environment where teachers and examination administrators can prepare questions, configure examination rules, assign tests to students, monitor examination sessions, and review results.
 
-The platform should complement traditional classroom teaching by making educational content accessible digitally and supporting learning beyond the physical classroom.
+Potto CBT should support different types of computer-based assessments, including classroom tests, continuous assessments, mock examinations, practice tests, entrance examinations, and formal school examinations.
 
-PottoFlip should serve as the digital teaching and learning layer of the Potto Learning Suite.
-
-While other Potto products may manage school administration, examinations, and formal academic results, PottoFlip should concentrate on the actual teaching and learning process.
+The platform should provide a reliable examination experience across desktop computers, laptops, tablets, and supported mobile devices, with the actual examination experience adapted to the school's requirements.
 
 ## 1.2 Product Vision
 
-To make learning more accessible, engaging, organised, and measurable by giving schools, teachers, and students the digital tools they need to improve educational experiences.
+To make digital examinations more accessible, reliable, efficient, and transparent for schools, teachers, examination administrators, and students.
 
 ## 1.3 Product Mission
 
-PottoFlip aims to:
+Potto CBT aims to:
 
-- Make digital learning accessible to students and teachers.
-- Enable teachers to organise and deliver learning materials efficiently.
-- Help students learn at their own pace and monitor their progress.
-- Support assignments, practice activities, feedback, and continuous learning.
-- Give schools useful insight into learning participation and course completion.
-- Connect digital learning with the wider Potto Learning Suite.
+- Simplify the creation and management of computer-based examinations.
+- Reduce the time required to mark objective examinations.
+- Improve examination administration and monitoring.
+- Provide students with a consistent and intuitive testing experience.
+- Help teachers analyse examination performance.
+- Improve the accuracy and traceability of examination records.
+- Connect examination activities to the wider Potto school ecosystem.
 
-## 1.4 The Problem PottoFlip Should Solve
+## 1.4 Problems Potto CBT Should Solve
 
-Traditional learning environments can face several challenges:
+Schools may experience several challenges when conducting examinations:
 
-1. Learning materials are distributed across physical books, messaging applications, printed handouts, and different digital platforms.
-2. Students may struggle to access learning materials outside school hours.
-3. Teachers may lack a central platform for organising lessons, assignments, and digital resources.
-4. Tracking lesson completion and assignment participation can be difficult.
-5. Students may not receive timely feedback on their learning activities.
-6. Schools may have limited visibility into digital learning engagement.
-7. Students who miss classes may find it difficult to catch up.
-8. Teachers may struggle to identify topics that students consistently find difficult.
+1. Preparing and printing large volumes of examination papers.
+2. Spending significant time marking objective questions manually.
+3. Managing examination timetables and student eligibility.
+4. Preventing unauthorised access to examination questions.
+5. Monitoring students during computer-based examinations.
+6. Handling interruptions, network failures, and interrupted examination sessions.
+7. Calculating scores accurately and consistently.
+8. Compiling examination results from different subjects and classes.
+9. Identifying examination performance trends.
+10. Maintaining reliable examination records and audit trails.
 
-PottoFlip should address these problems through a structured, user-friendly digital learning environment.
+Potto CBT should address these challenges through a secure, well-organised, and scalable examination platform.
 
 ---
 
 # 2. Product Objectives
 
-### Objective 1: Digitise Learning Delivery
+## 2.1 Digital Examination Management
 
-Provide a platform where teachers can organise courses, publish lessons, upload learning materials, and guide students through a structured learning journey.
+Enable authorised school staff to create examinations, assign them to students, schedule examination sessions, and manage the complete examination lifecycle.
 
-### Objective 2: Improve Student Engagement
+## 2.2 Automated Marking
 
-Give students a clear, interactive environment for accessing courses, studying lessons, completing activities, and reviewing feedback.
+Automatically mark supported objective question types using configured answer keys and scoring rules.
 
-### Objective 3: Support Continuous Assessment
+## 2.3 Examination Integrity
 
-Allow teachers to create assignments, quizzes, and practice exercises that help students reinforce what they learn.
+Protect examination content, enforce examination rules, record relevant activity, and provide tools for supervising examination sessions.
 
-### Objective 4: Monitor Learning Progress
+## 2.4 Reliable Examination Delivery
 
-Provide visibility into student participation, lesson completion, assignment submissions, and assessment performance.
+Ensure students can start, complete, and submit examinations reliably, with appropriate handling of network interruptions and unexpected session termination.
 
-### Objective 5: Support Different Learning Needs
+## 2.5 Results and Reporting
 
-Enable students to revisit materials, study at their own pace, and access additional learning resources when needed.
+Calculate examination scores consistently and provide useful reports to authorised teachers and administrators.
 
-### Objective 6: Integrate With Potto
+## 2.6 Potto Ecosystem Integration
 
-Reduce duplicate data entry by connecting to relevant school, class, student, and teacher records already available in the Potto Learning Suite.
+Connect examination records to relevant school, class, subject, student, and academic-session information, while keeping formal academic result processing within its designated Potto service.
 
 ---
 
-# 3. Target Users and Roles
+# 3. User Roles and Permissions
 
 ## 3.1 Platform Super Administrator
 
-The platform super administrator manages the overall PottoFlip service.
+The platform super administrator manages the overall Potto CBT service.
 
-Responsibilities should include:
+Responsibilities:
 
-- Managing registered schools and their access to Flip.
-- Configuring platform-wide settings.
-- Managing subscription or entitlement settings if Flip is commercialised separately.
-- Monitoring platform health and service usage.
-- Managing support requests and platform-level issues.
-- Reviewing system audit logs.
-- Managing global learning-content policies where applicable.
+- Manage participating schools and platform access.
+- Configure platform-wide examination settings.
+- Manage service-level permissions.
+- Monitor platform health and examination activity.
+- Investigate technical incidents.
+- Review audit logs.
+- Manage platform support requests.
+- Configure shared examination capabilities.
 
-A platform super administrator should not automatically have unrestricted access to every student's personal data. Access should follow defined permissions and privacy policies.
+Platform-wide access must follow defined permissions and audit requirements.
 
 ## 3.2 School Administrator
 
-The school administrator manages the school's learning environment.
+The school administrator manages the school's examination environment.
 
-Responsibilities should include:
+Responsibilities:
 
-- Managing school access to PottoFlip.
-- Configuring learning settings.
-- Assigning or approving teachers and course creators.
-- Reviewing courses published within the school.
-- Managing class and subject associations.
-- Viewing school-level learning reports.
-- Monitoring course participation and completion.
-- Configuring appropriate teacher and student permissions.
+- Configure school examination settings.
+- Manage examination administrators and authorised teachers.
+- Manage examination schedules and school-wide policies.
+- View examination activity and reports.
+- Approve examinations where required.
+- Monitor examination sessions.
+- Review examination incidents.
+- Manage examination eligibility rules.
+- Control result visibility according to school policy.
 
-Where school information already exists in Potto Admin, Flip should consume the relevant records instead of requiring administrators to recreate them.
+The school administrator should not automatically be able to alter completed examination scores without an authorised, traceable process.
 
-## 3.3 Teacher
+## 3.3 Examination Officer
 
-Teachers are responsible for creating and delivering learning experiences.
+The examination officer manages the operational aspects of examinations.
 
-They should be able to:
+Responsibilities:
 
-- Create and manage courses.
-- Organise courses into modules, topics, and lessons.
-- Upload learning materials.
-- Add video, audio, text, images, and downloadable documents.
-- Assign courses to relevant classes or student groups.
-- Create assignments and quizzes.
-- Set deadlines and submission rules.
-- Review student submissions.
-- Grade assignments and provide feedback.
-- Monitor student participation and progress.
-- Identify students who need additional support.
-- Reuse and update previously created learning content.
-- Schedule lessons and publish content at appropriate times.
+- Create and schedule examination sessions.
+- Assign examinations to classes or eligible students.
+- Configure examination dates and durations.
+- Manage examination access codes where enabled.
+- Monitor active examination sessions.
+- Handle authorised student interruptions and technical incidents.
+- Review examination attendance.
+- Manage examination rescheduling.
+- Prepare examination reports.
 
-Teachers should only access the classes, students, and learning records permitted by their assigned roles.
+Schools should be able to separate examination administration from ordinary teaching responsibilities.
 
-## 3.4 Student
+## 3.4 Teacher
 
-Students are the primary learners on the platform.
+Teachers should be able to:
 
-They should be able to:
+- Create and maintain question banks.
+- Create examinations and practice tests.
+- Add questions to examinations.
+- Configure scoring rules.
+- Set examination duration and availability.
+- Assign examinations to permitted classes.
+- Preview examinations before publication.
+- Monitor student participation where authorised.
+- Review automatically marked results.
+- Mark questions requiring manual evaluation.
+- Release scores where permitted.
+- Analyse student and class performance.
 
-- Sign in to their learning account.
-- View their enrolled courses.
-- Explore course modules and lessons.
-- Access available learning materials.
-- Watch lessons and read educational content.
-- Download permitted resources.
-- Resume lessons from where they stopped.
-- Complete assignments and quizzes.
-- Submit work before deadlines.
-- View feedback and released scores.
-- Track their learning progress.
-- Review completed and outstanding activities.
-- Receive notifications about new lessons and upcoming deadlines.
-- Ask questions or participate in discussions if those features are enabled.
+Teachers should only access examinations, students, and results within their assigned permissions.
 
-Students should only access courses and information for which they are authorised.
+## 3.5 Student
 
-## 3.5 Parent or Guardian
+Students should be able to:
 
-Parent access should be designed as an optional capability, depending on the school's configuration and the wider Potto Learning Suite.
+- View available and upcoming examinations.
+- Read examination instructions.
+- Access permitted practice tests.
+- Verify their examination eligibility.
+- Start an examination during its authorised window.
+- Navigate between questions.
+- Select or enter answers.
+- Mark questions for review.
+- View answered and unanswered questions.
+- Track the remaining examination time.
+- Submit their examination.
+- Receive confirmation of successful submission.
+- View released results and feedback where permitted.
+- Review permitted answer explanations after an examination.
 
-Parents or guardians may be able to:
+Students must not be able to access restricted questions, answer keys, other students' submissions, or unreleased results.
 
-- View linked children's learning progress.
-- See completed and outstanding assignments.
-- Review released grades and teacher feedback.
-- Receive important learning notifications.
-- Identify subjects or activities where a child may need additional support.
+## 3.6 Invigilator
 
-Parents should not be able to change student submissions, edit teacher grades, or access another family's records.
+For schools that require supervised examinations, invigilators should be able to:
+
+- View assigned examination sessions.
+- View the list of expected candidates.
+- Monitor attendance and session status.
+- Confirm student identity using the school's approved process.
+- Record examination incidents.
+- Request authorised assistance for interrupted sessions.
+- Report suspected rule violations.
+
+Invigilators should not have unrestricted permission to edit examination questions or alter student scores.
 
 ---
 
 # 4. Core Product Modules
 
-## 4.1 Authentication and User Access
+## 4.1 Authentication and Access Control
 
-PottoFlip should provide secure, role-aware access to the learning environment.
+Potto CBT should provide secure, role-based access to examination functionality.
 
 Required capabilities:
 
 - Secure sign-in and sign-out.
-- Account recovery and password reset.
-- Role-based access control.
-- School-aware user access.
+- Password recovery.
 - Session management.
+- Role-based permissions.
+- School-level data isolation.
 - User activation and deactivation.
-- Appropriate handling of unauthorised access.
-- Account linking where supported by Potto authentication services.
+- Examination-specific access controls.
+- Secure handling of student examination sessions.
 
-Where the Potto Learning Suite already provides authentication, Flip should use an approved shared authentication mechanism where technically appropriate.
+Where the Potto ecosystem already provides authentication, CBT should use an approved shared authentication mechanism where appropriate.
 
-The system should avoid requiring users to maintain unnecessary duplicate accounts across Potto products.
+The platform should verify permissions on the server, not rely solely on client-side restrictions.
 
-## 4.2 School and Class Context
+## 4.2 School and Academic Context
 
-Flip should recognise the school and academic context of each user.
+Potto CBT should understand the school context in which an examination takes place.
 
-Relevant information may include:
+Relevant records may include:
 
 - School.
 - Academic session.
 - Class or grade.
 - Subject.
-- Teacher assignments.
-- Student enrolments.
-- Learning groups.
+- Student.
+- Teacher.
+- Examination officer.
+- Examination venue or centre, where applicable.
 
-The platform should use the authoritative records supplied by the relevant Potto services.
+These records should be sourced from the appropriate Potto services when reliable integrations are available.
 
-If a student's class changes, the student's course access should be updated according to the school's enrolment rules.
+Examinations should be associated with the appropriate academic context to prevent questions, candidates, and results from being assigned incorrectly.
 
-School data must remain isolated. Users from one school must not be able to access another school's private courses, student records, or reports without explicit authorisation.
+## 4.3 Question Bank Management
 
-## 4.3 Course Management
+The question bank is a central component of Potto CBT.
 
-Course management is one of the most important modules in PottoFlip.
+Teachers should be able to create, organise, reuse, and maintain examination questions.
 
-Teachers should be able to create a course with:
+Each question should support relevant metadata, including:
 
-- Course title.
+- Question text.
+- Question type.
+- Subject.
+- Topic or curriculum area.
+- Class or grade level.
+- Difficulty level.
+- Marks or score value.
+- Answer options, where applicable.
+- Correct answer or marking criteria.
+- Explanation or feedback.
+- Associated image, diagram, or other media.
+- Question status.
+- Question creator and update history.
+
+### Supported question types
+
+The initial release should support:
+
+**Multiple Choice**
+
+Students select one correct answer from a list of options.
+
+**Multiple Select**
+
+Students select more than one correct answer.
+
+**True or False**
+
+Students determine whether a statement is correct.
+
+**Fill in the Blanks**
+
+Students provide missing words or values, using configured answer-matching rules.
+
+**Short Answer**
+
+Students enter a brief response. Depending on the marking rules, answers may require manual review.
+
+**Essay or Long Answer**
+
+Students submit longer written responses that require teacher marking or an approved rubric.
+
+Additional question types, such as matching, ordering, and numeric responses, may be introduced in later releases.
+
+### Question bank operations
+
+Teachers should be able to:
+
+- Create questions.
+- Edit questions.
+- Duplicate questions.
+- Archive outdated questions.
+- Search and filter questions.
+- Organise questions by subject and topic.
+- Filter by question type and difficulty.
+- Preview questions.
+- Select questions for examinations.
+- Reuse questions across different examinations.
+- Import questions through a supported template.
+- Export permitted question-bank data.
+
+Questions already used in completed examinations should not be silently changed in a way that alters historical examination records. The system should preserve the question version used for each examination attempt.
+
+## 4.4 Examination Creation
+
+Authorised users should be able to create an examination with the following information:
+
+- Examination title.
 - Description.
-- Cover image.
-- Subject or learning category.
-- Target class or learner group.
-- Course objectives.
-- Teacher or course owner.
-- Course duration, where applicable.
-- Modules and lessons.
-- Learning resources.
+- Subject.
+- Class or candidate group.
+- Academic session.
+- Examination type.
+- Instructions.
+- Examination duration.
+- Total marks.
+- Pass mark, where applicable.
+- Start and end dates.
+- Examination availability window.
+- Question selection method.
+- Result visibility settings.
 - Publication status.
 
-Course statuses should include:
+### Examination types
+
+Potto CBT should support different examination categories, such as:
+
+- Practice tests.
+- Class tests.
+- Continuous assessment.
+- Mock examinations.
+- Midterm examinations.
+- End-of-term examinations.
+- Entrance examinations.
+- Other school-defined assessments.
+
+The examination category should help with organisation and reporting without forcing every school to follow the same assessment structure.
+
+### Examination statuses
+
+An examination may have the following statuses:
 
 - Draft.
+- Pending approval.
+- Scheduled.
 - Published.
+- In progress.
+- Completed.
+- Results pending.
+- Results released.
+- Cancelled.
 - Archived.
 
-Teachers should be able to edit drafts, publish approved courses, and archive obsolete content according to school permissions.
+The system should enforce valid status transitions and prevent students from accessing unpublished or unauthorised examinations.
 
-A published course should present its modules and lessons in a clear, structured order.
+## 4.5 Examination Configuration
 
-The platform should support course discovery within the scope of the user's school and permissions.
+Teachers and examination officers should be able to configure the examination rules before publication.
 
-## 4.4 Lesson Management
+Supported settings should include:
 
-Each course should contain one or more lessons.
+- Examination duration.
+- Start time and end time.
+- Candidate eligibility.
+- Number of attempts.
+- Question navigation rules.
+- Question randomisation.
+- Answer-option randomisation.
+- Whether students can revisit previous questions.
+- Whether unanswered questions are permitted at submission.
+- Whether negative marking applies.
+- Whether calculators or other resources are permitted.
+- Whether scores are shown immediately or released later.
+- Whether explanations are visible after submission.
+- Whether the examination requires invigilator supervision.
 
-Lessons should support appropriate combinations of:
+Each examination should have a clear summary of its settings before publication.
 
-- Rich text.
-- Images and illustrations.
-- Video content.
-- Audio recordings.
-- PDF documents.
-- Presentations.
-- Downloadable files.
-- External learning-resource links.
-- Embedded activities where supported.
+Changing important settings after students have started should require appropriate permissions and safeguards.
 
-Teachers should be able to:
+## 4.6 Examination Scheduling
 
-- Create lessons.
-- Edit lesson content.
-- Reorder lessons.
-- Save lessons as drafts.
-- Publish or schedule lessons.
-- Restrict access to lessons based on course enrolment.
-- Specify completion requirements where appropriate.
+Potto CBT should provide an examination scheduling interface.
 
-Students should have a distraction-free lesson interface with clear navigation between the previous lesson, current lesson, and next lesson.
+Authorised users should be able to:
 
-The system should preserve learning progress where technically possible so students can resume their work.
+- Schedule examinations for a specific date and time.
+- Assign examinations to eligible classes or groups.
+- View upcoming examinations.
+- Identify scheduling conflicts.
+- Reschedule examinations where permitted.
+- Cancel examinations with an appropriate reason.
+- View examinations that are currently active or completed.
 
-## 4.5 Learning Resource Library
+The system should use a consistent school-local time zone and display examination times clearly.
 
-Flip should provide a way to manage and reuse learning resources.
+It should prevent accidental publication of an examination with missing questions, invalid scoring rules, or an unavailable examination window.
 
-Teachers should be able to organise resources by subject, course, topic, or other relevant categories.
+## 4.7 Student Examination Dashboard
 
-The library should support:
+Students should have a dashboard that displays examinations relevant to them.
 
-- Uploading learning materials.
-- Searching and filtering resources.
-- Previewing supported file types.
-- Downloading permitted materials.
-- Reusing resources in multiple lessons.
-- Managing resource titles and descriptions.
-- Enforcing file-size and file-type restrictions.
-- Respecting copyright and content-access permissions.
+The dashboard should include:
 
-The platform should use secure file storage and avoid exposing private file URLs unnecessarily.
+- Upcoming examinations.
+- Available examinations.
+- Active examination sessions.
+- Completed examinations.
+- Submission status.
+- Examination duration.
+- Start and end times.
+- Examination instructions.
+- Released scores where permitted.
 
-## 4.6 Assignments
+Each examination should clearly indicate its current state.
 
-Teachers should be able to create assignments associated with courses, modules, or lessons.
+For example:
 
-Each assignment should support:
+- Upcoming.
+- Available to start.
+- In progress.
+- Submitted.
+- Completed.
+- Results released.
 
-- Title.
-- Instructions.
-- Attached resources.
-- Assigned class or students.
-- Start date, if applicable.
-- Due date.
-- Maximum score or grading rubric.
-- Submission format.
-- Late-submission rules.
-- Publication status.
+Students should not see examinations assigned exclusively to other classes or candidate groups.
 
-Students should be able to:
+## 4.8 Examination Instructions and Candidate Verification
 
-- View assignment instructions.
-- Access supporting materials.
-- Submit permitted file types or text responses.
-- Review submission status.
-- Resubmit work when permitted.
-- View feedback after it is released.
+Before starting an examination, the student should see:
 
-Teachers should be able to:
+- Examination title.
+- Subject.
+- Duration.
+- Number of questions, where applicable.
+- Total marks.
+- Examination rules.
+- Permitted resources.
+- Submission instructions.
+- Relevant access requirements.
 
-- Review submissions.
-- Assign grades.
-- Provide written feedback.
-- Request corrections where appropriate.
-- Track missing and late submissions.
-- Release grades and feedback.
+The student should explicitly confirm readiness before the examination begins.
 
-The system should maintain submission timestamps and an appropriate history of changes.
+Where required, the school may enable an access code, invigilator confirmation, or another approved candidate-verification mechanism.
 
-## 4.7 Quizzes and Practice Activities
+Identity verification requirements should be proportionate to the examination and should not collect unnecessary personal information.
 
-PottoFlip should support low-stakes quizzes and practice activities that reinforce learning.
+## 4.9 Examination Interface
 
-Supported question types should include:
+The examination interface should be one of the most carefully designed parts of Potto CBT.
+
+It should provide a distraction-free environment focused on answering questions accurately and submitting work reliably.
+
+### Required interface components
+
+- Examination title and subject.
+- Countdown timer.
+- Current question number.
+- Total question count.
+- Question content and supporting media.
+- Answer options or response field.
+- Previous and next navigation.
+- Question navigation panel.
+- Answered and unanswered indicators.
+- Mark-for-review functionality.
+- Save status indicator.
+- Submit examination button.
+
+### Question navigation
+
+Students should be able to identify:
+
+- Questions already answered.
+- Questions not yet answered.
+- Questions marked for review.
+- Their current question.
+
+If the examination is configured for sequential navigation, the interface should enforce that rule.
+
+### Timer
+
+The countdown should reflect the authoritative server-side examination deadline.
+
+The system should not rely solely on the student's browser clock to determine whether an examination is still valid.
+
+When time expires, the system should follow the configured examination policy, normally finalising the student's latest successfully saved answers and recording the submission.
+
+### Answer saving
+
+The system should save responses reliably, preferably through automatic saving as students answer questions.
+
+Students should receive clear feedback when responses are saved or when a network problem prevents synchronisation.
+
+The platform should minimise the risk of losing answers after refreshing a page, reconnecting to the network, or experiencing a temporary interruption.
+
+### Submission confirmation
+
+Before submission, the system should summarise unanswered questions and ask the student to confirm submission where appropriate.
+
+After successful submission, the student should receive confirmation and should not be able to change answers unless an explicitly authorised process allows it.
+
+## 4.10 Examination Session Management
+
+Each student attempt should be represented by a distinct examination session.
+
+A session should record relevant information such as:
+
+- Candidate and examination identifiers.
+- Session start time.
+- Last activity time.
+- Submission time.
+- Session status.
+- Answers and their save status.
+- Remaining authorised time.
+- Relevant technical interruptions.
+- Submission confirmation.
+
+Possible session statuses include:
+
+- Not started.
+- In progress.
+- Submitted.
+- Timed out.
+- Interrupted.
+- Under review.
+- Invalidated through an authorised process.
+
+The platform should handle repeated requests and network retries safely so that they do not create duplicate attempts or duplicate submissions.
+
+## 4.11 Network Interruption and Recovery
+
+Network reliability is particularly important in environments where students may have unstable internet access.
+
+Potto CBT should:
+
+- Save responses frequently.
+- Detect connection interruptions.
+- Inform students when answers cannot be synchronised.
+- Retry failed saves safely.
+- Restore the latest successfully saved answers after reconnection.
+- Preserve the original examination deadline.
+- Record relevant interruptions for authorised review.
+- Prevent duplicate submissions during recovery.
+
+Offline examination delivery may be considered as a separate advanced capability. It should not be advertised as supported unless secure local storage, synchronisation, and conflict handling have been implemented and tested.
+
+## 4.12 Examination Monitoring and Invigilation
+
+For supervised examinations, authorised staff should have access to a monitoring dashboard.
+
+The dashboard should display:
+
+- Examination sessions.
+- Expected candidates.
+- Candidates who have started.
+- Candidates who have submitted.
+- Candidates with interrupted sessions.
+- Remaining time where relevant.
+- Reported incidents.
+- Candidates requiring assistance.
+
+Invigilators should be able to record incidents such as:
+
+- Candidate absence.
+- Technical failure.
+- Authorised session restart.
+- Examination-room disruption.
+- Suspected violation of examination rules.
+
+Each incident should include a timestamp, relevant candidate or session, description, and staff member responsible.
+
+### Examination integrity
+
+The system may implement proportionate safeguards, including:
+
+- Randomised question order.
+- Randomised answer-option order.
+- Question pools.
+- Server-side timing.
+- Restricted examination access.
+- Controlled session resumption.
+- Audit logs.
+- Configurable navigation restrictions.
+
+Browser-based restrictions should not be described as guaranteeing that cheating is impossible. Potto CBT should communicate the limits of technical controls and support school-led examination policies.
+
+Any future webcam monitoring, screen monitoring, or biometric verification should require a separate privacy, security, legal, and operational assessment.
+
+## 4.13 Automatic Marking Engine
+
+Potto CBT should calculate scores consistently according to the examination's configured marking rules.
+
+### Automatic marking
+
+The system should automatically mark supported objective questions, including:
 
 - Multiple choice.
 - Multiple select.
 - True or false.
-- Short answer.
-- Fill in the blanks.
+- Configured fill-in-the-blank questions.
+- Other supported objective question types.
 
-Additional question types can be introduced as the product matures.
+### Manual marking
 
-Teachers should be able to configure:
+Questions requiring judgement, extended writing, or subjective evaluation should be placed in a manual marking queue.
 
-- Quiz instructions.
-- Questions and answer options.
-- Correct answers.
-- Explanations for answers.
+Teachers should be able to:
+
+- Review a student's answer.
+- View the question and marking criteria.
+- Award marks within the permitted range.
+- Add feedback.
+- Save a draft score.
+- Submit the mark for finalisation.
+
+### Scoring rules
+
+The marking engine should support:
+
 - Marks per question.
-- Time limits where appropriate.
-- Attempt limits.
-- Availability windows.
-- Randomised question order where appropriate.
-- Automatic grading for supported question types.
-- Manual grading for questions requiring teacher review.
+- Partial credit where configured.
+- Negative marking where explicitly enabled.
+- Unanswered-question rules.
+- Question-specific scoring.
+- Examination-level score calculation.
+- Configured pass marks.
+- Score conversion where applicable.
 
-Students should be able to take quizzes, submit their answers, and view results according to the teacher's release settings.
+The system should retain sufficient detail to explain how a final score was calculated.
 
-Quiz feedback should help students understand concepts rather than simply display a score.
+Marking rules should be fixed for an examination attempt once the examination begins, except through a controlled and audited administrative process.
 
-**Scope distinction:** Flip's quizzes should primarily support learning, revision, and continuous practice. Formal computer-based examinations and their specialised administration should remain under Potto CBT where that separation exists.
+## 4.14 Results Management
 
-## 4.8 Student Learning Dashboard
+After an examination is submitted, Potto CBT should calculate the available score and track its review and release status.
 
-Each student should have a personalised dashboard.
+Results should distinguish between:
 
-The dashboard should display:
+- Automatically marked.
+- Awaiting manual marking.
+- Awaiting review.
+- Finalised.
+- Released.
 
-- Enrolled courses.
-- Recently accessed courses.
-- Continue-learning actions.
-- Course completion progress.
-- Upcoming assignments.
-- Overdue activities.
-- Recent feedback and released scores.
-- Recently published lessons.
-- Relevant announcements.
+The platform should support configurable result release policies.
 
-The dashboard should prioritise the student's next actions instead of overwhelming them with statistics.
+For example, a practice test may show its score immediately, while a formal examination may withhold scores until teachers have reviewed the results.
 
-A student should be able to select a course and immediately continue learning.
+Students should only see scores that have been authorised for release.
 
-## 4.9 Teacher Dashboard
+## 4.15 Examination Reports and Analytics
 
-The teacher dashboard should provide a practical overview of teaching activities.
+Potto CBT should provide useful reporting tools for teachers and authorised administrators.
 
-It should display:
+### Student-level reports
 
-- Courses managed by the teacher.
-- Published and draft courses.
-- Classes associated with those courses.
-- Recent student activity.
-- Pending submissions.
-- Assignments approaching their deadlines.
-- Submissions requiring grading.
-- Students who have not participated in expected activities.
-- Course completion summaries.
+Reports may include:
 
-Teachers should be able to navigate from a summary to the relevant course, class, assignment, or student record.
+- Candidate name or identifier.
+- Examination taken.
+- Score achieved.
+- Total available marks.
+- Percentage score.
+- Pass or fail status where configured.
+- Submission time.
+- Time taken.
+- Question-level performance where authorised.
 
-## 4.10 School Administration Dashboard
+### Class-level reports
 
-The school administrator dashboard should provide school-level visibility without duplicating the entire school management system.
+Reports should include:
 
-It should include:
+- Number of eligible candidates.
+- Number of candidates who started.
+- Number of completed submissions.
+- Number of absentees where recorded.
+- Average score.
+- Highest and lowest scores.
+- Pass rate where applicable.
+- Score distribution.
+- Questions with unusually high error rates.
 
-- Number of active Flip users.
-- Courses available within the school.
-- Course publication status.
-- Learning activity summaries.
-- Course participation and completion.
-- Assignment completion summaries.
-- Teacher activity.
-- Reports for relevant classes and subjects.
+### Subject-level analysis
 
-Reports should be filterable by academic session, class, subject, course, and date range where applicable.
+Teachers should be able to identify topics or questions where students performed poorly.
 
-Access to identifiable student information should be restricted according to school policies and user permissions.
+Where questions are mapped to curriculum topics, reports should help educators identify potential learning gaps.
 
-## 4.11 Learning Progress and Analytics
+### Exporting reports
 
-PottoFlip should record meaningful learning events, including:
+Authorised users should be able to export appropriate reports in supported formats, such as CSV, Excel, or PDF.
 
-- Course enrolment.
-- Lesson access.
-- Lesson completion.
-- Assignment submission.
-- Quiz attempts.
-- Quiz scores.
-- Teacher feedback.
-- Course completion.
-
-The platform should distinguish between opening a lesson and actually completing it.
-
-Completion rules should be configurable where appropriate. For example, a lesson may require the student to complete a specific activity before it is marked complete.
-
-Teachers should be able to identify:
-
-- Students who are progressing well.
-- Students who have not started assigned work.
-- Lessons with low completion rates.
-- Topics where students repeatedly struggle.
-- Students who may benefit from additional support.
-
-Analytics should be descriptive and actionable rather than presenting meaningless activity counts.
+Exports should respect user permissions and must not expose unrelated schools' or students' records.
 
 ---
 
-# 5. Additional Features for Future Development
+# 5. Examination Security and Auditability
 
-The following capabilities could differentiate PottoFlip, but they should not delay the delivery of the core learning experience.
+Security must be a core requirement rather than an optional feature.
 
-## 5.1 Notifications
+## 5.1 Question Security
 
-Provide in-app notifications for:
+- Restrict access to unpublished examination content.
+- Protect correct answers from student-facing responses.
+- Avoid exposing answer keys in client-side application code.
+- Use server-side authorisation for question retrieval.
+- Control access to exported question banks.
+- Preserve historical question versions for completed examinations.
 
-- Newly published lessons.
-- New assignments.
-- Upcoming deadlines.
-- Overdue assignments.
-- Released grades.
-- Teacher feedback.
-- Course announcements.
+## 5.2 Candidate and Session Security
 
-Email, push, or SMS notifications may be introduced according to user preferences, infrastructure, and cost.
+- Verify candidate eligibility before starting an examination.
+- Enforce examination availability and deadlines server-side.
+- Restrict access to active examination sessions.
+- Prevent unauthorised modification of submitted answers.
+- Apply appropriate session expiration and recovery rules.
+- Protect student responses during transmission and storage.
 
-Notifications should be relevant and avoid unnecessary duplication.
+## 5.3 Audit Logs
 
-## 5.2 Discussion and Teacher Interaction
+The platform should record important actions, including:
 
-Where appropriate, courses may support:
+- Examination creation and publication.
+- Changes to examination rules.
+- Question-bank modifications.
+- Examination cancellations and rescheduling.
+- Student examination starts and submissions.
+- Manual score changes.
+- Result releases.
+- Session restarts.
+- Examination incident reports.
 
-- Lesson-specific questions.
-- Teacher announcements.
-- Course discussions.
-- Student questions and responses.
-- Moderation tools.
-- Reporting inappropriate content.
+Audit records should identify the actor, action, affected record, timestamp, and relevant reason or context.
 
-Schools should be able to control whether student discussions are enabled.
+Audit logs should be protected from unauthorised modification.
 
-## 5.3 Gamification
+## 5.4 Score Changes
 
-Potential capabilities include:
+Any authorised score modification after marking should:
 
-- Learning points.
-- Completion badges.
-- Study streaks.
-- Course milestones.
-- Subject challenges.
-- Optional class leaderboards.
+- Record the original score.
+- Record the new score.
+- Identify the authorised user.
+- Capture the reason for the change.
+- Record the timestamp.
+- Preserve the audit history.
 
-Gamification should encourage consistency and mastery without publicly exposing sensitive student performance or discouraging learners who need additional support.
-
-## 5.4 AI Learning Assistant
-
-A future AI assistant could help students:
-
-- Understand difficult concepts.
-- Receive simpler explanations.
-- Generate revision questions.
-- Summarise approved learning materials.
-- Practise questions related to a lesson.
-- Identify topics for additional revision.
-
-Teachers could use AI to draft lesson outlines, generate practice questions, or prepare summaries.
-
-AI-generated material should be reviewed before being published as official school content. The system should protect student information and apply appropriate safeguards for children.
-
-## 5.5 Offline-Friendly Learning
-
-Where technically feasible, students should be able to download selected learning resources for offline use.
-
-The system could later support offline progress tracking and synchronisation when connectivity returns.
-
-Offline support should be introduced with clear conflict-handling and content-security rules.
-
-## 5.6 Certificates and Course Completion
-
-For courses that support completion recognition, Flip may generate course completion certificates.
-
-Certificates should only be issued when the configured completion requirements have been satisfied.
-
-Official academic qualifications and formal school results should not be implied by ordinary course completion certificates.
+Completed examination records should not be silently overwritten.
 
 ---
 
-# 6. Learning Workflows
+# 6. Integrations With the Potto Ecosystem
 
-## 6.1 Teacher Creates a Course
+Potto CBT should operate as the dedicated examination service within the wider Potto ecosystem.
 
-1. Teacher signs in.
-2. Teacher opens the course management area.
-3. Teacher creates a new course.
-4. Teacher enters the course details.
-5. Teacher adds modules and lessons.
-6. Teacher uploads or attaches learning resources.
-7. Teacher previews the course.
-8. Teacher saves it as a draft or publishes it.
-9. The course becomes available to its authorised audience.
+## 6.1 Potto Admin
 
-Where required, publication should follow the school's approval process.
+Potto Admin should remain the authoritative source for relevant school administration records where that responsibility already exists.
 
-## 6.2 Student Completes a Lesson
+Potential integration includes:
 
-1. Student signs in.
-2. Student opens the learning dashboard.
-3. Student selects an enrolled course.
-4. Student opens a lesson.
-5. Student studies the available content.
-6. Student completes required learning activities.
-7. The platform records relevant progress.
-8. The student proceeds to the next lesson.
-9. Course progress is updated according to the configured completion rules.
-
-## 6.3 Teacher Creates an Assignment
-
-1. Teacher opens a course or class.
-2. Teacher creates an assignment.
-3. Teacher provides instructions and supporting resources.
-4. Teacher sets submission rules and a deadline.
-5. Teacher publishes the assignment.
-6. Students receive the assignment according to their notification settings.
-7. Students submit their work.
-8. The teacher reviews submissions.
-9. The teacher provides grades and feedback.
-10. Students can review the released feedback.
-
-## 6.4 Teacher Creates a Practice Quiz
-
-1. Teacher creates a quiz.
-2. Teacher adds questions and answer options.
-3. Teacher configures scoring and availability.
-4. Teacher publishes the quiz.
-5. Students complete the quiz.
-6. The platform automatically grades supported questions.
-7. Questions requiring manual grading are sent to the teacher.
-8. Results are released according to the configured rules.
-9. Teachers use the results to identify learning gaps.
-
----
-
-# 7. Integration With the Potto Learning Suite
-
-PottoFlip should be designed as a connected product rather than an isolated application.
-
-## 7.1 Potto Admin
-
-**Purpose:** School administration and authoritative school records.
-
-Potential integration:
-
-- School identity and configuration.
-- Student and teacher records.
-- Class and subject information.
+- School records.
+- Student records.
+- Teacher records.
+- Classes and subjects.
 - Academic sessions.
-- Relevant user permissions.
+- User permissions.
 
-Flip should not become a duplicate school-record management system.
+CBT should use these records to assign eligible students to examinations.
 
-## 7.2 Potto Assess
+## 6.2 Potto Flip
 
-**Purpose:** Formal academic assessment and result management, according to the responsibilities assigned to Assess.
+Potto Flip is the proposed teaching and learning layer of the ecosystem.
 
-Potential integration:
+Potential integration includes:
 
-- Transfer of selected, authorised assessment results.
-- Mapping of relevant courses and subjects.
-- Controlled sharing of approved marks.
-- Synchronisation of appropriate academic context.
+- Linking course topics to practice examinations.
+- Providing revision activities related to lessons.
+- Linking students to authorised practice tests.
+- Sharing selected assessment information.
+- Supporting a transition from lesson completion to practice and examination preparation.
 
-Learning activity scores should not automatically become official academic results without a defined school-approved workflow.
+The integration should avoid duplicating course and student records.
 
-## 7.3 Potto CBT
+## 6.3 Potto Assess
 
-**Purpose:** Computer-based testing and formal examination workflows where supported by the product.
+Potto Assess should remain responsible for formal academic result management where that is its established role.
 
-Potential integration:
+Potential integration includes:
 
-- Linking learning materials to relevant CBT practice or examinations.
-- Launching authorised CBT activities.
-- Sharing selected results where supported.
-- Helping students move from lesson preparation to assessment.
+- Transferring approved examination scores.
+- Mapping CBT examinations to the appropriate subject and academic session.
+- Sharing candidate identifiers and assessment metadata.
+- Providing finalised scores for inclusion in the school's academic result workflow.
 
-The two products should not unnecessarily duplicate specialised examination functionality.
+Scores should only be transferred according to agreed business rules.
 
-## 7.4 Other Potto Products
+The platform should distinguish practice results from official examination marks and should not automatically publish all CBT scores as formal academic results.
 
-Additional integrations should be considered only when they provide a clear user benefit.
+## 6.4 Integration Requirements
 
-The platform should use documented APIs, consistent identifiers, controlled permissions, and appropriate error handling.
+Integrations should use documented APIs and defined data contracts.
 
-Integration details must be validated against the actual capabilities of the existing Potto services before implementation.
+They should include:
 
----
+- Reliable identifier mapping.
+- Permission checks.
+- Validation.
+- Duplicate prevention.
+- Error handling.
+- Retry mechanisms.
+- Auditability.
+- Clear ownership of records.
 
-# 8. Data and Security Requirements
-
-PottoFlip will process educational records and may serve children. Security and privacy must therefore be fundamental design requirements.
-
-The platform should implement:
-
-- Role-based access control.
-- School-level data isolation.
-- Secure authentication and session handling.
-- Server-side authorisation checks.
-- Secure file storage and controlled downloads.
-- Input validation and sanitisation.
-- Protection against common web application vulnerabilities.
-- Appropriate rate limiting.
-- Audit logs for important administrative and grading actions.
-- Backups and a tested recovery process.
-- Data retention and deletion policies.
-- Appropriate consent and parental access controls where required.
-- Compliance with applicable data protection requirements, including Nigeria's data protection framework where relevant.
-
-Grades, student submissions, and teacher feedback should only be accessible to authorised users.
-
-The system should not expose sensitive student information in public URLs, unrestricted API responses, or client-side code.
+The actual availability of these integrations must be confirmed against the existing Potto services before implementation.
 
 ---
 
-# 9. Non-Functional Requirements
+# 7. Notifications and Communication
 
-## Performance
+Potto CBT should notify relevant users about important examination events.
 
-- Pages should load quickly on typical mobile devices.
-- Images and learning resources should be optimised.
-- Large files should not block unrelated application functionality.
-- Long lists should support pagination or appropriate incremental loading.
+Potential notifications include:
 
-## Accessibility
+### Students
 
-- Interfaces should support keyboard navigation.
-- Text should have sufficient contrast.
-- Forms should have clear labels and validation messages.
-- Video content should support captions where available.
-- The interface should work with common assistive technologies.
+- Upcoming examinations.
+- Examination schedule changes.
+- Examination availability.
+- Successful submission.
+- Released results.
+- Authorised examination rescheduling.
 
-## Responsiveness
+### Teachers
 
-The application should work on:
+- Examination publication.
+- New submissions.
+- Manual marking requirements.
+- Examination completion.
+- Unresolved technical incidents.
+- Results awaiting release.
 
-- Desktop computers.
-- Laptops.
-- Tablets.
-- Mobile phones.
+### Examination Administrators
 
-Students should be able to access essential learning functions comfortably on smaller screens.
+- Upcoming examination sessions.
+- Examination incidents.
+- Unexpected session interruptions.
+- Examination completion summaries.
+- Results requiring administrative review.
 
-## Reliability
+Notifications may be delivered in-app, by email, or through other approved channels.
 
-- Progress should be saved reliably.
-- Submission failures should be communicated clearly.
-- Duplicate submissions should be handled appropriately.
-- Integration failures should be logged and recoverable.
-- Important learning data should be backed up.
-
-## Maintainability
-
-- Use modular, maintainable architecture.
-- Keep business logic separate from presentation.
-- Define clear API contracts.
-- Apply consistent validation and error handling.
-- Include automated tests for critical learning workflows.
+The system should avoid sending unnecessary duplicate notifications.
 
 ---
 
-# 10. MVP Scope and Delivery Priorities
+# 8. Non-Functional Requirements
 
-The initial release should focus on making the complete teaching and learning workflow functional.
+## 8.1 Performance
 
-## Phase 1: Core MVP
+The platform should:
 
-Required:
+- Load examination interfaces quickly.
+- Display questions without unnecessary delays.
+- Save responses efficiently.
+- Handle concurrent examination sessions.
+- Support appropriate pagination for large question banks and reports.
+- Avoid expensive operations that delay examination submission.
+
+Performance targets should be established through load testing based on the number of concurrent candidates expected for each school or examination.
+
+## 8.2 Reliability
+
+The system should:
+
+- Preserve saved answers.
+- Maintain accurate examination deadlines.
+- Prevent duplicate submissions.
+- Handle network interruptions gracefully.
+- Protect examination and result integrity.
+- Recover from service interruptions using tested procedures.
+- Maintain backups and recovery capabilities.
+
+## 8.3 Scalability
+
+The platform should support growth in:
+
+- Schools.
+- Students.
+- Teachers.
+- Question banks.
+- Examinations.
+- Concurrent examination sessions.
+- Historical results.
+
+Architecture and infrastructure should be tested against realistic peak examination loads.
+
+## 8.4 Accessibility
+
+The examination interface should provide:
+
+- Keyboard navigation.
+- Clear question labels.
+- Readable typography.
+- Sufficient colour contrast.
+- Accessible form controls.
+- Appropriate support for assistive technologies.
+- Clear error messages.
+
+Where examination rules permit, accessibility accommodations such as additional time should be configurable for authorised candidates.
+
+## 8.5 Device Compatibility
+
+The platform should work on supported desktop and laptop browsers, with tablet and mobile compatibility where appropriate.
+
+Formal examinations may use a controlled desktop-oriented interface if required by school policy, but this restriction should be explicit rather than accidental.
+
+## 8.6 Data Privacy
+
+The system should implement appropriate safeguards for student information, examination responses, and results.
+
+It should comply with applicable data protection requirements, including relevant Nigerian data protection obligations.
+
+Data access, retention, exports, and administrative actions should be governed by documented policies.
+
+---
+
+# 9. MVP Scope
+
+The first release should prioritise a complete and dependable examination workflow.
+
+## Phase 1: Core CBT
+
+Required capabilities:
 
 1. Authentication and role-based access.
-2. School-aware access and class mapping.
-3. Course creation and management.
-4. Modules and lesson creation.
-5. Text, video, PDF, and other supported learning resources.
-6. Student course access.
-7. Lesson navigation and progress tracking.
-8. Assignment creation and submissions.
-9. Basic quizzes and automatic grading.
-10. Manual grading and teacher feedback.
-11. Student and teacher dashboards.
-12. Basic course and student progress reports.
-13. Secure resource access and school-level data isolation.
+2. School, class, subject, and student mapping.
+3. Question bank management.
+4. Multiple-choice and true-or-false questions.
+5. Examination creation and configuration.
+6. Examination scheduling and publication.
+7. Candidate eligibility checks.
+8. Student examination dashboard.
+9. Countdown timer.
+10. Question navigation.
+11. Automatic answer saving.
+12. Submission confirmation.
+13. Automatic marking for supported objective questions.
+14. Student results and submission status.
+15. Teacher and administrator dashboards.
+16. Basic examination reports.
+17. Secure question and answer handling.
+18. School-level data isolation.
+19. Examination audit logs.
+20. Reliable handling of interrupted sessions.
 
-## Phase 2: Enhanced Learning
+## Phase 2: Advanced Examination Management
 
 Introduce:
 
-- Advanced question types.
-- Improved analytics.
-- Notifications and reminders.
-- Course discussions.
-- Reusable question banks.
-- More detailed teacher reports.
-- Parent progress visibility.
-- Improved course discovery.
-- Expanded integration with Potto services.
+- Question pools and randomisation.
+- Multiple-select and fill-in-the-blank questions.
+- Essay and short-answer questions.
+- Manual marking workflows.
+- Advanced scheduling.
+- Invigilator dashboards.
+- More detailed analytics.
+- CSV, Excel, and PDF exports.
+- Improved incident management.
+- Expanded Potto ecosystem integrations.
 
-## Phase 3: Differentiating Capabilities
+## Phase 3: Advanced Assessment Capabilities
 
 Introduce where justified:
 
-- AI learning assistance.
-- Personalised revision recommendations.
-- Advanced gamification.
-- Offline learning and synchronisation.
-- Adaptive practice activities.
-- Completion certificates.
-- Advanced learning analytics.
+- Advanced question types.
+- Configurable examination accommodations.
+- More sophisticated question analysis.
+- Large-scale concurrent examination optimisation.
+- Offline examination capabilities after appropriate security validation.
+- Advanced proctoring capabilities following privacy and legal review.
+- AI-assisted question drafting.
+- AI-assisted marking suggestions with human review.
+- Advanced performance analytics.
 
-These phases are proposed priorities, not a statement of existing development status.
-
----
-
-# 11. Features Outside the Core Scope
-
-To keep PottoFlip focused, the following should not be its primary responsibility:
-
-- Full school fee management.
-- Payroll and staff salary administration.
-- General school accounting.
-- Student admission management.
-- Full school record administration.
-- Timetable management as a standalone school administration system.
-- Dedicated formal examination administration where Potto CBT is responsible.
-- Official academic result processing where Potto Assess is responsible.
-
-Flip may consume or share relevant data with these services through approved integrations.
+These phases describe a proposed roadmap, not the existing implementation status of Potto CBT.
 
 ---
 
-# 12. Success Metrics
+# 10. Features Outside Potto CBT's Core Responsibility
 
-PottoFlip should be evaluated using measurable product outcomes.
+To keep product responsibilities clear, Potto CBT should not primarily function as:
 
-### Adoption
+- A complete learning management system.
+- A general-purpose course and lesson publishing platform.
+- A school fee collection system.
+- A payroll application.
+- A complete student admission system.
+- A replacement for school administration records.
+- The primary formal academic result management system where Potto Assess owns that responsibility.
 
-- Number of schools actively using Flip.
+Potto CBT may integrate with these services to provide a connected experience without duplicating their core functionality.
+
+---
+
+# 11. Success Metrics
+
+Potto CBT should be evaluated using operational and product metrics.
+
+## Adoption
+
+- Number of active schools.
+- Number of active examination administrators.
 - Number of active teachers.
-- Number of students accessing courses.
-- Percentage of invited users who become active.
+- Number of candidates using the platform.
 
-### Engagement
+## Examination Reliability
 
-- Percentage of enrolled students who start a course.
-- Lesson completion rate.
-- Assignment submission rate.
-- Course participation over time.
+- Successful examination start rate.
+- Successful answer-save rate.
+- Successful submission rate.
+- Frequency of interrupted sessions.
+- Number of lost-response incidents.
+- Examination service availability during scheduled sessions.
 
-### Learning Workflow Efficiency
+## Operational Efficiency
 
-- Time required for teachers to publish a course.
-- Time required to review and grade submissions.
-- Percentage of assignments graded within the school's expected timeframe.
+- Time required to create an examination.
+- Time required to mark objective examinations.
+- Time required to finalise results.
+- Number of examination incidents resolved successfully.
 
-### Learning Support
+## Learning and Assessment
 
-- Percentage of students receiving feedback.
-- Reduction in missing assignments.
-- Identification and follow-up of students struggling with specific topics.
+- Candidate participation rate.
+- Examination completion rate.
+- Distribution of examination scores.
+- Question-level performance.
+- Frequency of questions requiring correction or review.
 
-### Reliability
+## Security and Integrity
 
-- Successful lesson and file access rates.
-- Successful assignment submission rates.
-- Availability of core learning services.
-- Number of critical data-integrity incidents.
+- Number of unauthorised access attempts.
+- Number of examination incidents.
+- Number of unauthorised score changes.
+- Completion of required audit records.
+- Number of critical examination data-integrity incidents.
 
-Learning metrics should be interpreted carefully. Platform engagement alone does not prove that students have improved academically.
+Metrics should be interpreted in context and should not treat every interruption or unusual activity as proof of misconduct.
 
 ---
 
-# 13. Product Acceptance Criteria
+# 12. Acceptance Criteria
 
-The initial release should be considered functionally ready when:
+The initial release should be considered ready when:
 
-1. Authorised teachers can create and publish courses.
-2. Students can access only the courses assigned or made available to them.
-3. Teachers can create lessons containing supported learning materials.
-4. Students can navigate lessons and have their progress recorded reliably.
-5. Teachers can create assignments and receive student submissions.
-6. Teachers can grade submissions and release feedback.
-7. Teachers can create quizzes with supported question types.
-8. Objective questions can be graded automatically.
-9. Students can view released grades and feedback.
-10. Teachers can view meaningful course participation and completion reports.
-11. School-level data isolation is enforced and tested.
-12. Unauthorised users cannot access restricted courses, submissions, or grades.
-13. The core experience works on mobile and desktop.
-14. Important failure scenarios are handled clearly.
-15. Any promised integration with another Potto product has been tested against its documented API and business rules.
+1. Authorised teachers can create questions and examinations.
+2. Examination administrators can schedule examinations for eligible students.
+3. Students can see only examinations available to them.
+4. Examination instructions and rules are displayed before starting.
+5. The timer follows the authoritative examination deadline.
+6. Student answers are saved reliably.
+7. Network interruptions are handled without silently discarding saved answers.
+8. Students can navigate questions according to the examination settings.
+9. Students can submit examinations successfully.
+10. Repeated submission requests do not create duplicate attempts.
+11. Supported objective questions are marked correctly.
+12. Questions requiring manual marking can be reviewed and scored by authorised teachers.
+13. Students can see results only when permitted.
+14. Teachers can access useful examination reports.
+15. Question content and answer keys are protected from unauthorised access.
+16. Important administrative and score-changing actions are auditable.
+17. Student data is isolated appropriately between schools.
+18. The system has been tested against expected concurrent examination traffic.
+19. The core examination workflow works on the supported devices and browsers.
+20. Any claimed Potto integration has been tested against its documented API and business rules.
+
+---
+
+# 13. Recommended Examination Lifecycle
+
+Potto CBT should manage the examination lifecycle through clearly defined stages:
+
+**Draft → Review → Scheduled → Published → In Progress → Submitted → Marked → Finalised → Results Released → Archived**
+
+Not every examination must use every stage. For example, a practice quiz may be automatically marked and released immediately after submission.
+
+The platform should enforce valid transitions and restrict sensitive actions to authorised roles.
+
+An examination should not be considered fully finalised while required manual marking or review remains incomplete.
 
 ---
 
 # 14. Final Product Definition
 
-PottoFlip should be the learning environment where teaching content is delivered, students engage with lessons, learning activities are completed, teachers provide feedback, and learning progress becomes visible.
+Potto CBT should be the dedicated computer-based testing platform within the Potto ecosystem.
 
-Its core value is bringing learning delivery and participation into one structured digital experience.
+It should enable schools to prepare examination questions, create and schedule tests, administer digital examinations, save student responses reliably, mark supported question types, supervise examination sessions, and produce accurate assessment reports.
 
-The product should prioritise a dependable learning experience first, connect with existing Potto services where appropriate, and introduce advanced capabilities such as AI assistance, personalised learning, and gamification as the platform matures.
+Its central value is providing a reliable, secure, and efficient digital examination experience for schools and their students.
 
-**PottoFlip: A connected digital learning experience for schools, teachers, and students.**
+Potto CBT should focus on examination delivery and assessment operations, complement Potto Flip's teaching and learning experience, and connect to Potto Assess for approved formal result processing.
+
+**Potto CBT: Smarter examinations. Reliable assessment. Better insights.**

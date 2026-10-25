@@ -12,10 +12,10 @@ import {
 import Wordmark from "@/components/Wordmark";
 
 const navItems = [
-  { label: "Why PottoFlip", href: "/#about" },
+  { label: "Why CBT", href: "/#about" },
   { label: "Features", href: "/#features" },
-  { label: "Who it's for", href: "/#roles" },
-  { label: "How it works", href: "/#how-it-works" },
+  { label: "Exam day", href: "/#exam-day" },
+  { label: "Roles", href: "/#roles" },
   { label: "Learning Suite", href: "/#ecosystem" },
   { label: "FAQ", href: "/#faq" },
 ];
@@ -80,7 +80,7 @@ export default function HomeHeader() {
         >
           <Link
             href="/"
-            aria-label="PottoFlip home"
+            aria-label="Potto CBT home"
             className="flex items-center"
           >
             <Wordmark tone={onDark ? "dark" : "light"} priority />
@@ -153,8 +153,8 @@ export default function HomeHeader() {
                   onClick={() => setOpen(false)}
                   className="flex items-center gap-4 rounded-2xl px-4 py-3 font-display text-lg font-bold text-white transition-colors hover:bg-white/10"
                 >
-                  <span className="w-6 text-sm text-brand-yellow-light">
-                    {String(i + 1).padStart(2, "0")}
+                  <span className="w-8 font-mono text-sm text-brand-yellow-light">
+                    Q{String(i + 1).padStart(2, "0")}
                   </span>
                   {item.label}
                 </Link>

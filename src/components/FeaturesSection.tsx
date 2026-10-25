@@ -1,45 +1,71 @@
 "use client";
 
-import { useRef } from "react";
-import { motion, useInView } from "framer-motion";
+import { useEffect, useRef, useState } from "react";
+import { motion, useInView, useReducedMotion } from "framer-motion";
 import { HugeiconsIcon } from "@hugeicons/react";
 import {
   Analytics01Icon,
-  Comment01Icon,
-  CourseIcon,
-  LibraryIcon,
-  PlayIcon,
-  QuizIcon,
+  CheckListIcon,
+  CloudSavingDone01Icon,
+  ComputerIcon,
+  DatabaseIcon,
   SquareLock01Icon,
-  Task01Icon,
+  Timer01Icon,
+  WifiDisconnected01Icon,
 } from "@hugeicons/core-free-icons";
 import SectionCaption from "@/components/SectionCaption";
 
-// The core modules of PRD section 4 — the Phase 1 scope in section 10.
-const MEDIA = [
-  "Rich text",
-  "Images",
-  "Video",
-  "Audio",
-  "PDF",
-  "Presentations",
-  "Downloads",
-  "Links",
+// The core modules of PRD section 4, held to the Phase 1 scope of section 9.
+// Anything Phase 2 or later is labelled "planned" on the tile.
+const EXAM_ROOM = [
+  "Countdown timer",
+  "Question navigator",
+  "Mark for review",
+  "Answered / unanswered",
+  "Save status",
+  "Submission summary",
 ];
 
+const QUESTION_FIELDS = ["Subject", "Topic", "Class", "Difficulty", "Marks", "Explanation"];
+
 const QUESTION_TYPES = [
-  "Multiple choice",
-  "Multiple select",
-  "True or false",
-  "Short answer",
-  "Fill in the blanks",
+  { label: "Multiple choice", ready: true },
+  { label: "True or false", ready: true },
+  { label: "Multiple select", ready: false },
+  { label: "Fill in the blanks", ready: false },
+  { label: "Short answer", ready: false },
+  { label: "Essay", ready: false },
 ];
+
+const RESULT_STATES = ["Auto-marked", "Under review", "Finalised", "Released"];
+
+// The save states of PRD 4.9 and 4.11, cycled on the autosave tile.
+const SAVE_STATES = [
+  { label: "Saving…", icon: CloudSavingDone01Icon, tone: "bg-ink/10 text-ink" },
+  { label: "Saved", icon: CloudSavingDone01Icon, tone: "bg-ink text-white" },
+  { label: "Offline — retrying", icon: WifiDisconnected01Icon, tone: "bg-white text-ink" },
+  { label: "Restored", icon: CloudSavingDone01Icon, tone: "bg-ink text-white" },
+];
+
+// A made-up score distribution, drawn flat, for the reports tile.
+const BARS = [12, 28, 46, 72, 90, 64, 38, 18];
 
 const ease = [0.22, 1, 0.36, 1] as const;
 
 export default function FeaturesSection() {
   const ref = useRef<HTMLDivElement>(null);
   const inView = useInView(ref, { once: true, amount: 0.08 });
+  const reduced = useReducedMotion();
+  const [save, setSave] = useState(1);
+
+  useEffect(() => {
+    if (reduced || !inView) return;
+    const id = window.setInterval(
+      () => setSave((s) => (s + 1) % SAVE_STATES.length),
+      1600,
+    );
+    return () => window.clearInterval(id);
+  }, [reduced, inView]);
 
   const reveal = (delay: number) => ({
     initial: { opacity: 0, y: 26 },
@@ -48,6 +74,7 @@ export default function FeaturesSection() {
   });
 
   const tile = "relative overflow-hidden rounded-[1.75rem] p-7 sm:p-8";
+  const status = SAVE_STATES[save];
 
   return (
     <section
@@ -59,189 +86,238 @@ export default function FeaturesSection() {
       <div ref={ref} className="mx-auto w-full max-w-7xl px-5 md:px-6 lg:px-8">
         <div className="flex flex-col gap-6 lg:flex-row lg:items-end lg:justify-between">
           <div>
-            <SectionCaption lesson={2} {...reveal(0)}>
+            <SectionCaption question={2} {...reveal(0)}>
               Core features
             </SectionCaption>
             <motion.h2
               {...reveal(0.1)}
-              className="mt-6 max-w-3xl font-display text-4xl leading-[1.02] font-extrabold tracking-[-0.03em] sm:text-5xl lg:text-6xl"
+              className="mt-6 max-w-3xl font-display text-4xl leading-[1.08] font-bold tracking-[-0.03em] sm:text-5xl lg:text-[3.5rem]"
             >
-              Everything a course needs, in{" "}
-              <span className="marker">one place</span>
+              Built for the whole exam,{" "}
+              <span className="marker">not just the paper</span>
             </motion.h2>
           </div>
-          <motion.p
-            {...reveal(0.2)}
-            className="max-w-sm text-lg leading-8 text-soft"
-          >
-            From the first lesson to the last piece of feedback, in one
-            structured learning experience.
+          <motion.p {...reveal(0.2)} className="max-w-sm text-lg leading-8 text-soft">
+            From the first question written to the last result released, in
+            one dependable workflow.
           </motion.p>
         </div>
 
         <div className="mt-14 grid gap-4 md:grid-cols-2 lg:grid-cols-4">
-          {/* Rich lessons — the big tile */}
+          {/* The exam room — the big tile */}
           <motion.article
             {...reveal(0.25)}
-            className={`${tile} dog-ear flex flex-col justify-between bg-brand-teal-dark text-white md:col-span-2 lg:row-span-2 [--ear:3.5rem]`}
+            className={`${tile} flex flex-col justify-between bg-brand-teal-dark text-white md:col-span-2 lg:row-span-2`}
           >
-            <div className="relative">
+            <div>
               <span className="grid h-14 w-14 place-items-center rounded-2xl bg-white/15">
-                <HugeiconsIcon icon={PlayIcon} size={28} strokeWidth={1.8} />
+                <HugeiconsIcon icon={ComputerIcon} size={28} strokeWidth={1.8} />
               </span>
-              <h3 className="mt-8 font-display text-3xl font-extrabold tracking-tight sm:text-4xl">
-                Rich lessons
+              <h3 className="mt-8 font-display text-3xl font-bold tracking-tight sm:text-4xl">
+                A distraction-free exam room
               </h3>
               <p className="mt-4 max-w-md text-lg leading-8 text-white/90">
-                Mix any of these in a distraction-free lesson, with clear
-                previous and next navigation.
+                One question at a time, with everything a candidate needs to
+                answer accurately and submit with confidence — and nothing
+                else.
               </p>
             </div>
-            <ul className="relative mt-10 flex flex-wrap gap-2">
-              {MEDIA.map((m, i) => (
-                <li
-                  key={m}
-                  className={`rounded-full px-4 py-2 text-sm font-semibold ${
-                    i % 3 === 1 ? "bg-brand-yellow text-ink" : "bg-white/15"
+            {/* Answer-sheet bubbles, one shaded in. */}
+            <div aria-hidden className="mt-10 flex gap-3">
+              {["A", "B", "C", "D"].map((b) => (
+                <span
+                  key={b}
+                  className={`grid h-14 w-14 place-items-center rounded-full font-mono text-lg font-bold sm:h-16 sm:w-16 ${
+                    b === "C" ? "bg-brand-yellow text-ink" : "bg-white/12 text-white/80"
                   }`}
                 >
+                  {b}
+                </span>
+              ))}
+            </div>
+            <ul className="mt-10 grid gap-2 sm:grid-cols-2">
+              {EXAM_ROOM.map((m, i) => (
+                <li
+                  key={m}
+                  className={`flex items-center gap-3 rounded-xl px-4 py-3 text-sm font-semibold ${
+                    i === 0 ? "bg-brand-yellow text-ink" : "bg-white/12"
+                  }`}
+                >
+                  <span className="font-mono text-xs opacity-70">
+                    {String(i + 1).padStart(2, "0")}
+                  </span>
                   {m}
                 </li>
               ))}
             </ul>
           </motion.article>
 
-          {/* Courses & modules — with the structure drawn as an outline */}
-          <motion.article {...reveal(0.32)} className={`${tile} bg-brand/8`}>
+          {/* Server-side timer */}
+          <motion.article {...reveal(0.32)} className={`${tile} bg-ink text-white`}>
             <HugeiconsIcon
-              icon={CourseIcon}
+              icon={Timer01Icon}
               size={30}
               strokeWidth={1.8}
-              className="text-brand"
+              className="text-brand-yellow"
             />
-            <h3 className="mt-6 font-display text-xl font-extrabold tracking-tight">
-              Courses &amp; modules
-            </h3>
-            <ul
-              aria-label="A course is organised into modules, topics and lessons"
-              className="mt-5 space-y-1.5 text-sm font-semibold"
+            <p
+              aria-hidden
+              className="mt-6 font-mono text-5xl font-bold tracking-tight tabular-nums"
             >
-              <li className="text-ink">Course</li>
-              <li className="pl-4 text-ink/75">↳ Module</li>
-              <li className="pl-8 text-ink/75">↳ Topic</li>
-              <li className="pl-12 text-brand">↳ Lesson</li>
+              45<span className="animate-blink">:</span>00
+            </p>
+            <h3 className="mt-4 font-display text-xl font-bold tracking-tight">
+              A timer kept by the server
+            </h3>
+            <p className="mt-2 text-[0.95rem] leading-7 text-white/80">
+              The deadline is authoritative — a student&apos;s clock can&apos;t
+              stretch it.
+            </p>
+          </motion.article>
+
+          {/* Autosave */}
+          <motion.article {...reveal(0.38)} className={`${tile} bg-brand-yellow`}>
+            <span
+              aria-hidden
+              className={`inline-flex items-center gap-2 rounded-lg px-3 py-1.5 font-mono text-xs font-bold transition-colors duration-300 ${status.tone}`}
+            >
+              <HugeiconsIcon icon={status.icon} size={14} strokeWidth={2.2} />
+              {status.label}
+            </span>
+            <h3 className="mt-6 font-display text-xl font-bold tracking-tight">
+              Saved as they answer
+            </h3>
+            <p className="mt-2 text-[0.95rem] leading-7 text-ink/80">
+              Students always see whether their answers are saved. Failed
+              saves retry, and a refresh or reconnect restores their work.
+            </p>
+          </motion.article>
+
+          {/* Question bank */}
+          <motion.article {...reveal(0.44)} className={`${tile} bg-brand/8`}>
+            <HugeiconsIcon
+              icon={DatabaseIcon}
+              size={30}
+              strokeWidth={1.8}
+              className="text-brand"
+            />
+            <h3 className="mt-6 font-display text-xl font-bold tracking-tight">
+              A question bank that lasts
+            </h3>
+            <ul className="mt-4 flex flex-wrap gap-1.5">
+              {QUESTION_FIELDS.map((f) => (
+                <li
+                  key={f}
+                  className="rounded-md bg-white px-2.5 py-1 text-xs font-semibold text-ink/75"
+                >
+                  {f}
+                </li>
+              ))}
             </ul>
-            <p className="mt-5 text-sm leading-6 text-soft">
-              Draft, published or archived.
+            <p className="mt-4 text-[0.95rem] leading-7 text-soft">
+              Search, reuse and preview questions. Each attempt keeps the
+              version it was sat with.
             </p>
           </motion.article>
 
-          <motion.article {...reveal(0.38)} className={`${tile} bg-accent`}>
+          {/* Results release */}
+          <motion.article {...reveal(0.5)} className={`${tile} bg-surface-2`}>
             <HugeiconsIcon
-              icon={LibraryIcon}
-              size={30}
-              strokeWidth={1.8}
-              className="text-accent-foreground"
-            />
-            <h3 className="mt-6 font-display text-xl font-extrabold tracking-tight">
-              Resource library
-            </h3>
-            <p className="mt-3 text-[0.95rem] leading-7 text-ink/75">
-              Upload once, then search, preview and reuse materials across
-              lessons.
-            </p>
-          </motion.article>
-
-          <motion.article {...reveal(0.44)} className={`${tile} bg-surface-2`}>
-            <HugeiconsIcon
-              icon={Task01Icon}
+              icon={CheckListIcon}
               size={30}
               strokeWidth={1.8}
               className="text-brand"
             />
-            <h3 className="mt-6 font-display text-xl font-extrabold tracking-tight">
-              Assignments
+            <h3 className="mt-6 font-display text-xl font-bold tracking-tight">
+              Results on your terms
             </h3>
-            <p className="mt-3 text-[0.95rem] leading-7 text-soft">
-              Instructions, deadlines and late rules. Collect files or text,
-              and see what is missing.
+            <ol className="mt-4 space-y-1.5">
+              {RESULT_STATES.map((r, i) => (
+                <li key={r} className="flex items-center gap-2.5 text-sm font-semibold">
+                  <span
+                    className={`h-2.5 w-2.5 rounded-full ${
+                      i === RESULT_STATES.length - 1 ? "bg-brand-yellow" : "bg-brand"
+                    }`}
+                  />
+                  {r}
+                </li>
+              ))}
+            </ol>
+            <p className="mt-4 text-[0.95rem] leading-7 text-soft">
+              Practice scores can show at once; formal ones wait for review.
             </p>
           </motion.article>
 
-          <motion.article {...reveal(0.5)} className={`${tile} bg-brand/8`}>
-            <HugeiconsIcon
-              icon={Comment01Icon}
-              size={30}
-              strokeWidth={1.8}
-              className="text-brand"
-            />
-            <h3 className="mt-6 font-display text-xl font-extrabold tracking-tight">
-              Grades &amp; feedback
-            </h3>
-            <p className="mt-3 text-[0.95rem] leading-7 text-soft">
-              Grade, write feedback and release results when you are ready.
-            </p>
-          </motion.article>
-
-          {/* Quizzes — wide yellow tile */}
+          {/* Automatic marking — wide tile */}
           <motion.article
             {...reveal(0.56)}
-            className={`${tile} dog-ear bg-brand-yellow md:col-span-2 [--ear:3rem]`}
+            className={`${tile} bg-brand/8 md:col-span-2`}
           >
-            <div className="flex items-start justify-between gap-6">
-              <div>
-                <HugeiconsIcon icon={QuizIcon} size={30} strokeWidth={1.8} />
-                <h3 className="mt-6 font-display text-2xl font-extrabold tracking-tight sm:text-3xl">
-                  Quizzes &amp; practice
-                </h3>
-                <p className="mt-3 max-w-md text-[0.95rem] leading-7 text-ink/80">
-                  Low-stakes practice with explanations. Objective questions
-                  are graded automatically; the rest go to the teacher.
-                </p>
-              </div>
-            </div>
-            <ul className="mt-7 flex flex-wrap gap-2">
+            <h3 className="font-display text-2xl font-bold tracking-tight sm:text-3xl">
+              Marked against the key
+            </h3>
+            <p className="mt-3 max-w-lg text-[0.95rem] leading-7 text-soft">
+              Objective questions are marked automatically, with marks per
+              question and pass marks you configure. Answers that need a
+              teacher&apos;s judgement go to a marking queue.
+            </p>
+            <ul className="mt-6 flex flex-wrap gap-2">
               {QUESTION_TYPES.map((q) => (
                 <li
-                  key={q}
-                  className="rounded-full bg-ink/10 px-4 py-2 text-sm font-semibold"
+                  key={q.label}
+                  className={`inline-flex items-center gap-2 rounded-lg px-3.5 py-2 text-sm font-semibold ${
+                    q.ready ? "bg-brand text-brand-fg" : "bg-white text-ink/70"
+                  }`}
                 >
-                  {q}
+                  {q.label}
+                  {!q.ready && (
+                    <span className="font-mono text-[0.65rem] tracking-wider text-soft uppercase">
+                      planned
+                    </span>
+                  )}
                 </li>
               ))}
             </ul>
           </motion.article>
 
-          {/* Progress — the opened ≠ completed idea, drawn */}
+          {/* Reports */}
           <motion.article
             {...reveal(0.62)}
             className={`${tile} bg-ink text-white md:col-span-2`}
           >
-            <HugeiconsIcon
-              icon={Analytics01Icon}
-              size={30}
-              strokeWidth={1.8}
-              className="text-brand-yellow"
-            />
-            <h3 className="mt-6 font-display text-2xl font-extrabold tracking-tight sm:text-3xl">
-              Progress that means something
-            </h3>
-            <div
-              aria-label="Opening a lesson is not the same as completing it"
-              className="mt-6 flex flex-wrap items-center gap-3 font-display text-lg font-bold"
-            >
-              <span className="rounded-full bg-white/15 px-4 py-2">
-                Opened a lesson
-              </span>
-              <span className="text-3xl text-brand-yellow">≠</span>
-              <span className="rounded-full bg-brand-yellow px-4 py-2 text-ink">
-                Completed it
-              </span>
+            <div className="flex flex-col gap-8 sm:flex-row sm:items-end sm:justify-between">
+              <div>
+                <HugeiconsIcon
+                  icon={Analytics01Icon}
+                  size={30}
+                  strokeWidth={1.8}
+                  className="text-brand-yellow"
+                />
+                <h3 className="mt-6 font-display text-2xl font-bold tracking-tight sm:text-3xl">
+                  Reports that point somewhere
+                </h3>
+                <p className="mt-3 max-w-sm text-[0.95rem] leading-7 text-white/80">
+                  Average, highest and lowest scores, pass rates, and the
+                  questions most students got wrong — by exam and class.
+                </p>
+              </div>
+              <div
+                aria-hidden
+                className="flex h-28 shrink-0 items-end gap-1.5 sm:h-32"
+              >
+                {BARS.map((h, i) => (
+                  <motion.span
+                    key={i}
+                    initial={{ height: 0 }}
+                    animate={inView ? { height: `${h}%` } : { height: 0 }}
+                    transition={{ duration: 0.8, delay: 0.7 + i * 0.06, ease }}
+                    className={`w-5 rounded-t-md ${
+                      i === 4 ? "bg-brand-yellow" : "bg-brand-teal"
+                    }`}
+                  />
+                ))}
+              </div>
             </div>
-            <p className="mt-6 max-w-lg text-[0.95rem] leading-7 text-white/80">
-              Completion rules are set per lesson, so teachers can see who is
-              on track and who has not started.
-            </p>
           </motion.article>
 
           {/* Security — full-width strip */}
@@ -250,20 +326,17 @@ export default function FeaturesSection() {
             className={`${tile} flex flex-col gap-6 bg-brand/8 md:col-span-2 md:flex-row md:items-center lg:col-span-4`}
           >
             <span className="grid h-16 w-16 shrink-0 place-items-center rounded-2xl bg-brand text-brand-fg">
-              <HugeiconsIcon
-                icon={SquareLock01Icon}
-                size={30}
-                strokeWidth={1.8}
-              />
+              <HugeiconsIcon icon={SquareLock01Icon} size={30} strokeWidth={1.8} />
             </span>
             <div>
-              <h3 className="font-display text-2xl font-extrabold tracking-tight">
-                Secure, school by school
+              <h3 className="font-display text-2xl font-bold tracking-tight">
+                Secure, school by school — and on the record
               </h3>
               <p className="mt-2 max-w-3xl text-[0.95rem] leading-7 text-soft">
-                Role-based access for every user, server-side checks, and each
-                school&apos;s courses, submissions and grades kept apart from
-                every other school&apos;s.
+                Role-based access checked on the server, each school&apos;s
+                questions, candidates and results kept apart from every other
+                school&apos;s, and an audit log of every publication,
+                submission, score change and release.
               </p>
             </div>
           </motion.article>

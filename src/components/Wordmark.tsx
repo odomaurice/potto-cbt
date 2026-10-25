@@ -1,7 +1,7 @@
 import Image from "next/image";
 
 /**
- * The Potto hand plus "PottoFlip" set in type. There is no Flip wordmark
+ * The Potto hand plus "Potto CBT" set in type. There is no CBT wordmark
  * artwork, so the name is live text and recolours with the ground for free.
  */
 export default function Wordmark({
@@ -26,17 +26,17 @@ export default function Wordmark({
         className={`h-7 w-auto transition duration-300 ${onDark ? "brightness-0 invert" : ""}`}
       />
       <span
-        className={`font-display text-xl font-extrabold tracking-tight transition-colors duration-300 ${
+        className={`flex items-center gap-1.5 font-display text-xl font-bold tracking-tight transition-colors duration-300 ${
           onDark ? "text-white" : "text-ink"
         }`}
       >
         Potto
         <span
-          className={`ml-0.5 inline-block -rotate-3 rounded-md px-1.5 transition-colors duration-300 ${
+          className={`rounded-md px-1.5 py-0.5 font-mono text-[0.8rem] font-bold tracking-wider transition-colors duration-300 ${
             onDark ? "bg-brand-yellow text-ink" : "bg-brand text-brand-fg"
           }`}
         >
-          Flip
+          CBT
         </span>
       </span>
     </span>

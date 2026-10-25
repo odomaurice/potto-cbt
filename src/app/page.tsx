@@ -1,12 +1,13 @@
 import AboutSection from "@/components/AboutSection";
 import CtaSection from "@/components/CtaSection";
 import EcosystemSection from "@/components/EcosystemSection";
+import ExamDaySection from "@/components/ExamDaySection";
 import FaqSection from "@/components/FaqSection";
 import FeaturesSection from "@/components/FeaturesSection";
 import Hero from "@/components/Hero";
 import HomeHeader from "@/components/HomeHeader";
 import HomeScrollNav from "@/components/HomeScrollNav";
-import HowItWorksSection from "@/components/HowItWorksSection";
+import LifecycleSection from "@/components/LifecycleSection";
 import PageBackdrop from "@/components/PageBackdrop";
 import RoadmapSection from "@/components/RoadmapSection";
 import RolesSection from "@/components/RolesSection";
@@ -21,8 +22,9 @@ export default function Home() {
       <Hero />
       <AboutSection />
       <FeaturesSection />
+      <ExamDaySection />
       <RolesSection />
-      <HowItWorksSection />
+      <LifecycleSection />
       <EcosystemSection />
       <RoadmapSection />
       <FaqSection />

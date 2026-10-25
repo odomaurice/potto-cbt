@@ -1,75 +1,80 @@
 "use client";
 
 import { useRef, useState } from "react";
-import { motion, useInView, useReducedMotion } from "framer-motion";
+import {
+  AnimatePresence,
+  motion,
+  useInView,
+  useReducedMotion,
+} from "framer-motion";
 import { HugeiconsIcon } from "@hugeicons/react";
-import { RepeatIcon } from "@hugeicons/core-free-icons";
+import { Tick02Icon } from "@hugeicons/core-free-icons";
 import SectionCaption from "@/components/SectionCaption";
 
-// The eight problems of PRD 1.4, each with the part of Flip that answers it.
+// The ten problems of PRD 1.4, each with the part of CBT that answers it.
+// Where the answer leans on a Phase 2 item, the copy says so.
 const CARDS = [
   {
-    problem:
-      "Learning materials are spread across books, handouts, messaging apps and separate platforms.",
-    answer: "One structured home for every course, lesson and resource.",
+    problem: "Preparing and printing large volumes of exam papers.",
+    answer:
+      "Questions are written once into a question bank and delivered on screen. Nothing to print, nothing to collect.",
   },
   {
-    problem:
-      "Students struggle to reach learning materials outside school hours.",
+    problem: "Hours spent marking objective questions by hand.",
     answer:
-      "Lessons and permitted downloads are there whenever a student signs in.",
+      "Objective questions are marked automatically, against the answer key and scoring rules you set.",
   },
   {
-    problem:
-      "Teachers have no single place for lessons, assignments and digital resources.",
+    problem: "Keeping exam timetables and student eligibility straight.",
     answer:
-      "Courses, modules, a resource library and assignments on one platform.",
+      "Each exam has a set window, and only eligible classes and candidates can see it or start it.",
   },
   {
-    problem:
-      "Lesson completion and assignment participation are hard to track.",
+    problem: "Stopping questions leaking before the exam.",
     answer:
-      "Completion and submissions are recorded — and opening a lesson is not counted as finishing it.",
+      "Unpublished exams stay locked, permissions are checked on the server, and answer keys never reach a student's browser.",
   },
   {
-    problem: "Feedback on learning activities arrives late, or not at all.",
+    problem: "Keeping an eye on students during a computer-based exam.",
     answer:
-      "Objective questions are graded automatically, and teacher feedback is released in one place.",
+      "Every attempt is a tracked session, so staff can see who has started, who has submitted and whose session was interrupted.",
   },
   {
-    problem: "Schools have little visibility into digital learning.",
+    problem: "Power cuts, network drops and interrupted sessions.",
     answer:
-      "School-level reports on participation and completion, by class, subject and course.",
+      "Answers save as students work. After a drop they are restored — and the original deadline still stands.",
   },
   {
-    problem: "Students who miss a class find it hard to catch up.",
+    problem: "Calculating scores accurately and consistently.",
     answer:
-      "Every published lesson can be revisited, and resumed from where they stopped.",
+      "Marking rules are fixed once an exam begins, and every final score keeps the detail to explain how it was reached.",
   },
   {
-    problem:
-      "Teachers struggle to see which topics students find difficult.",
+    problem: "Compiling results across subjects and classes.",
     answer:
-      "Quiz results and completion rates point to the topics students struggle with.",
+      "Results sit in one place, tied to the right session, class and subject — and each one shows whether it is marked, finalised or released.",
+  },
+  {
+    problem: "Spotting performance trends.",
+    answer:
+      "Reports show averages, highest and lowest scores, pass rates and the questions students found hardest.",
+  },
+  {
+    problem: "Keeping reliable exam records and audit trails.",
+    answer:
+      "Publication, rule changes, submissions, score changes and releases are all logged: who, what, when and why.",
   },
 ];
 
+const BUBBLES = ["A", "B", "C", "D"];
 const ease = [0.22, 1, 0.36, 1] as const;
+const pad = (n: number) => String(n).padStart(2, "0");
 
 export default function AboutSection() {
   const ref = useRef<HTMLDivElement>(null);
   const inView = useInView(ref, { once: true, amount: 0.1 });
   const reduced = useReducedMotion();
-  const [flipped, setFlipped] = useState<Set<number>>(() => new Set());
-
-  const allFlipped = flipped.size === CARDS.length;
-  const toggle = (i: number) =>
-    setFlipped((current) => {
-      const next = new Set(current);
-      if (next.has(i)) next.delete(i);
-      else next.add(i);
-      return next;
-    });
+  const [picked, setPicked] = useState(0);
 
   const reveal = (delay: number) => ({
     initial: { opacity: 0, y: 22 },
@@ -84,120 +89,127 @@ export default function AboutSection() {
       data-nav-bg="var(--color-brand-teal-dark)"
       className="relative isolate overflow-hidden rounded-t-[2.5rem] bg-brand-teal-dark py-24 text-white md:rounded-t-[4rem] md:py-32"
     >
-
       <div ref={ref} className="mx-auto w-full max-w-7xl px-5 md:px-6 lg:px-8">
         <div className="grid gap-10 lg:grid-cols-[7fr_5fr] lg:items-end">
           <div>
-            <SectionCaption tone="dark" lesson={1} {...reveal(0)}>
-              Why PottoFlip
+            <SectionCaption tone="dark" question={1} {...reveal(0)}>
+              Why Potto CBT
             </SectionCaption>
             <motion.h2
               {...reveal(0.1)}
-              className="mt-6 max-w-3xl font-display text-4xl leading-[1.02] font-extrabold tracking-[-0.03em] sm:text-5xl lg:text-6xl"
+              className="mt-6 max-w-3xl font-display text-4xl leading-[1.08] font-bold tracking-[-0.03em] sm:text-5xl lg:text-[3.5rem]"
             >
-              Every classroom problem has a{" "}
-              <span className="text-brand-yellow-light">flip side</span>
+              Ten exam-day headaches.{" "}
+              <span className="text-brand-yellow-light">Ten answers.</span>
             </motion.h2>
           </div>
 
-          <motion.div {...reveal(0.2)}>
-            <p className="text-lg leading-8 text-white/90">
-              PottoFlip is an e-learning platform that helps schools deliver,
-              organise and monitor digital learning. It complements the
-              classroom — it does not replace it.
-            </p>
-            <button
-              type="button"
-              onClick={() =>
-                setFlipped(
-                  allFlipped ? new Set() : new Set(CARDS.map((_, i) => i)),
-                )
-              }
-              className="mt-6 inline-flex cursor-pointer items-center gap-2 rounded-full bg-white/10 px-5 py-3 text-sm font-semibold transition hover:bg-white/20"
-            >
-              <HugeiconsIcon icon={RepeatIcon} size={16} strokeWidth={2} />
-              {allFlipped ? "Show the problems" : "Flip them all"}
-            </button>
+          <motion.p {...reveal(0.2)} className="text-lg leading-8 text-white/90">
+            Potto CBT replaces or sits alongside paper exams — class tests,
+            continuous assessment, mocks, entrance and end-of-term exams. Pick
+            a problem to see how it is handled.
+          </motion.p>
+        </div>
+
+        <div className="mt-14 grid gap-8 lg:grid-cols-[6fr_5fr] lg:gap-12">
+          <motion.ol {...reveal(0.25)} className="space-y-2">
+            {CARDS.map((card, i) => {
+              const selected = picked === i;
+              return (
+                <li key={card.problem}>
+                  <button
+                    type="button"
+                    onClick={() => setPicked(i)}
+                    aria-pressed={selected}
+                    className={`flex w-full cursor-pointer items-start gap-4 rounded-2xl px-5 py-4 text-left transition-colors duration-300 ${
+                      selected
+                        ? "bg-brand-yellow text-ink"
+                        : "bg-white/8 text-white hover:bg-white/15"
+                    }`}
+                  >
+                    <span
+                      className={`mt-0.5 font-mono text-sm font-bold ${
+                        selected ? "text-ink/70" : "text-brand-yellow-light"
+                      }`}
+                    >
+                      {pad(i + 1)}
+                    </span>
+                    <span className="flex-1 text-base leading-7 font-medium">
+                      {card.problem}
+                    </span>
+                    <span
+                      aria-hidden
+                      className={`mt-1 grid h-5 w-5 shrink-0 place-items-center rounded-full transition-colors ${
+                        selected ? "bg-ink text-brand-yellow" : "bg-white/15"
+                      }`}
+                    >
+                      {selected && (
+                        <HugeiconsIcon icon={Tick02Icon} size={12} strokeWidth={3} />
+                      )}
+                    </span>
+                  </button>
+
+                  {/* On phones the answer opens under its problem. */}
+                  {selected && (
+                    <p className="px-5 pt-3 pb-2 text-base leading-7 text-white/90 lg:hidden">
+                      {card.answer}
+                    </p>
+                  )}
+                </li>
+              );
+            })}
+          </motion.ol>
+
+          <motion.div
+            {...reveal(0.35)}
+            className="hidden lg:sticky lg:top-32 lg:block lg:self-start"
+          >
+            <div className="rounded-[2rem] bg-ink p-10">
+              <AnimatePresence mode="wait" initial={false}>
+                <motion.div
+                  key={picked}
+                  initial={reduced ? { opacity: 0 } : { opacity: 0, y: 14 }}
+                  animate={{ opacity: 1, y: 0 }}
+                  exit={reduced ? { opacity: 0 } : { opacity: 0, y: -10 }}
+                  transition={{ duration: 0.3, ease }}
+                  aria-live="polite"
+                >
+                  <p className="font-mono text-sm font-semibold text-brand-yellow-light">
+                    ANSWER {pad(picked + 1)}
+                  </p>
+                  <p className="mt-6 text-2xl leading-snug font-semibold">
+                    {CARDS[picked].answer}
+                  </p>
+                </motion.div>
+              </AnimatePresence>
+
+              {/* Answer-sheet bubbles: one shaded in, as on an OMR sheet. */}
+              <div aria-hidden className="mt-10 flex gap-3">
+                {BUBBLES.map((b, i) => (
+                  <span
+                    key={b}
+                    className={`grid h-11 w-11 place-items-center rounded-full font-mono text-sm font-bold transition-colors duration-300 ${
+                      i === picked % BUBBLES.length
+                        ? "bg-brand-yellow text-ink"
+                        : "bg-white/10 text-white/70"
+                    }`}
+                  >
+                    {b}
+                  </span>
+                ))}
+              </div>
+            </div>
           </motion.div>
         </div>
 
-        <ul className="mt-14 grid gap-4 sm:grid-cols-2 lg:grid-cols-4">
-          {CARDS.map((card, i) => {
-            const isFlipped = flipped.has(i);
-            return (
-              <motion.li
-                key={card.problem}
-                {...reveal(0.25 + i * 0.06)}
-                className="perspective-[1200px]"
-              >
-                <button
-                  type="button"
-                  onClick={() => toggle(i)}
-                  aria-pressed={isFlipped}
-                  className="group block h-full w-full cursor-pointer text-left"
-                >
-                  {/* Both faces share one grid cell, so the card is as tall
-                      as its longer side and nothing needs a fixed height. */}
-                  <span
-                    className={`grid h-full transform-3d ${
-                      reduced
-                        ? ""
-                        : "transition-transform duration-700 ease-[cubic-bezier(0.22,1,0.36,1)]"
-                    } ${isFlipped ? "rotate-y-180" : "group-hover:rotate-y-6"}`}
-                  >
-                    <span
-                      aria-hidden={isFlipped}
-                      className="dog-ear relative flex min-h-60 flex-col justify-between rounded-[1.75rem] bg-white/10 p-6 backface-hidden [grid-area:1/1] [--ear:2rem]"
-                    >
-                      <span>
-                        <span className="text-xs font-semibold tracking-[0.2em] text-white/90 uppercase">
-                          Problem {String(i + 1).padStart(2, "0")}
-                        </span>
-                        <span className="mt-4 block text-lg leading-7 font-medium">
-                          {card.problem}
-                        </span>
-                      </span>
-                      <span className="mt-6 inline-flex items-center gap-2 font-note text-xl text-brand-yellow-light">
-                        <HugeiconsIcon
-                          icon={RepeatIcon}
-                          size={18}
-                          strokeWidth={2}
-                        />
-                        flip it
-                      </span>
-                    </span>
-
-                    <span
-                      aria-hidden={!isFlipped}
-                      className="dog-ear relative flex min-h-60 rotate-y-180 flex-col justify-between rounded-[1.75rem] bg-brand-yellow p-6 text-ink backface-hidden [grid-area:1/1] [--ear:2rem]"
-                    >
-                      <span>
-                        <span className="text-xs font-semibold tracking-[0.2em] text-ink/70 uppercase">
-                          With PottoFlip
-                        </span>
-                        <span className="mt-4 block font-display text-xl leading-snug font-bold">
-                          {card.answer}
-                        </span>
-                      </span>
-                      <span className="mt-6 font-note text-xl text-ink/70">
-                        flip back
-                      </span>
-                    </span>
-                  </span>
-                </button>
-              </motion.li>
-            );
-          })}
-        </ul>
-
         <motion.p
-          {...reveal(0.8)}
-          className="mt-16 max-w-3xl font-display text-2xl leading-snug font-bold sm:text-3xl"
+          {...reveal(0.6)}
+          className="mt-16 max-w-3xl font-display text-2xl leading-snug font-semibold sm:text-3xl"
         >
           Our vision:{" "}
           <span className="text-white/90">
-            make learning more accessible, engaging, organised and
-            measurable.
+            digital exams that are accessible, reliable, efficient and
+            transparent — for schools, teachers and students.
           </span>
         </motion.p>
       </div>

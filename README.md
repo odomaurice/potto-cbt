@@ -1,19 +1,20 @@
-# PottoFlip — marketing site
+# Potto CBT — marketing site
 
-The public site for **PottoFlip**, the e-learning platform of the Potto Learning Suite: courses, lessons, assignments, practice quizzes, feedback and
-learning progress for schools, teachers and students. It is one long homepage,
-no other routes.
+The public site for **Potto CBT**, the computer-based testing platform of the
+Potto Learning Suite: question banks, exam scheduling, a reliable exam room,
+automatic marking of objective questions, results released on the school's
+terms, and exam records with a full audit trail. It is one long homepage, no
+other routes.
 
-The content comes from the **PottoFlip PRD**, kept in
-[`docs/PRD.md`](docs/PRD.md) — the roles, the core modules, the four learning
-workflows, the ecosystem integrations and the phased roadmap. The PRD is a
+The content comes from the **Potto CBT PRD**, kept in
+[`docs/PRD.md`](docs/PRD.md) — the roles, the core modules, the exam
+lifecycle, the ecosystem integrations and the phased roadmap. The PRD is a
 *proposed* specification, so anything it does not say is a gap for the team,
 not a drafting choice (see Known gaps).
 
-The site started as a copy of the Pottolite site. It keeps the Potto **colour
-palette** and the header's tone-probe mechanism, but its look is deliberately
-its own — see "Design language" below — so the Potto sites do not read as
-copies of each other.
+The site started as a copy of the PottoFlip site. It keeps the Potto **colour
+palette**, the contour backdrop and the header's tone-probe mechanism, but its
+look is its own — see "Design language" below.
 
 > **Read [`AGENTS.md`](AGENTS.md) before writing code.** This is Next.js **16**,
 > whose APIs and conventions differ from older versions. The guides in
@@ -31,14 +32,13 @@ copies of each other.
 | Framework | Next.js 16.3.1, App Router | Turbopack; the homepage prerenders static |
 | UI | React 19.2 | the routes are Server Components; the homepage's sections are client components (`"use client"`) |
 | Styling | Tailwind CSS v4 | CSS-first config in [`globals.css`](src/app/globals.css) — there is **no** `tailwind.config.js` |
-| Animation | framer-motion 13 | scroll reveals, tabs, the FAQ accordion; card flips are CSS 3D transforms |
+| Animation | framer-motion 13 | scroll reveals, tabs, the scroll-linked exam-day track |
 | Icons | `@hugeicons/react` + `@hugeicons/core-free-icons` | the house icon set |
-| Fonts | Bricolage Grotesque (display), Instrument Sans (body), Caveat 600 (notes), Geist Mono | via `next/font/google` |
+| Fonts | Poppins (display and body), JetBrains Mono (numbers) | via `next/font/google` |
 
 Every remaining dependency is used. `shadcn` and `tw-animate-css` are pulled in
 by `globals.css` for their **token vocabulary and utilities only** — no shadcn
 component is rendered anywhere, and `src/components/ui/` does not exist.
-Everything animates with framer-motion or plain CSS transitions.
 
 ## Quick start
 
@@ -60,7 +60,7 @@ npx tsc --noEmit # typecheck (not wired into a script)
 | --- | --- |
 | `/` | The homepage, prerendered static |
 
-There are no legal pages yet (see Known gaps). Header and footer links are still
+There are no legal pages yet (see Known gaps). Header and footer links are
 root-relative (`/#features`) so they keep working if routes are added later.
 
 ---
@@ -68,27 +68,30 @@ root-relative (`/#features`) so they keep working if routes are added later.
 ## Page composition
 
 Sections are composed in [`src/app/page.tsx`](src/app/page.tsx) in this order.
-Every section declares a **tone** that drives the header colour (see below).
+The page is laid out like an exam paper: each section is a numbered
+**question** (`Q01`–`Q08`). Every section declares a **tone** that drives the
+header colour (see below).
 
 ```mermaid
 flowchart TB
     BD["PageBackdrop — fixed, -z-10"]:::util
     HD["HomeHeader + HomeScrollNav"]:::util
 
-    H["Hero — headline, auto-flipping learning-loop card"]:::light
-    A["AboutSection · #about · Lesson 01 — eight problem cards that flip to Flip's answer"]:::dark
-    F["FeaturesSection · #features · Lesson 02 — bento grid of the core features"]:::light
-    R["RolesSection · #roles · Lesson 03 — sticky index, four role panels"]:::light
-    W["HowItWorksSection · #how-it-works · Lesson 04 — vertical tabs, step timeline"]:::dark
-    E["EcosystemSection · #ecosystem · Lesson 05 — hub diagram: Admin, Assess, CBT"]:::light
-    RM["RoadmapSection · #roadmap · Lesson 06 — three phases on one track"]:::ink
-    FQ["FaqSection · #faq · Lesson 07 — topic chips, single-open accordion"]:::light
+    H["Hero — headline, animated exam-screen illustration"]:::light
+    A["AboutSection · #about · Q01 — ten problems, pick one to see its answer"]:::dark
+    F["FeaturesSection · #features · Q02 — bento grid of the core features"]:::light
+    X["ExamDaySection · #exam-day · Q03 — one sitting as a timeline, track fills on scroll"]:::ink
+    R["RolesSection · #roles · Q04 — three role tabs, can / can't"]:::light
+    L["LifecycleSection · #lifecycle · Q05 — the ten PRD stages on one track"]:::dark
+    E["EcosystemSection · #ecosystem · Q06 — Admin, Assess, PottoFlip"]:::light
+    RM["RoadmapSection · #roadmap · Q07 — three phases"]:::ink
+    FQ["FaqSection · #faq · Q08 — topic chips, single-open accordion"]:::light
     CT["CtaSection — yellow call to action"]:::yellow
     FT["SiteFooter · #contact"]:::dark
 
     BD -.->|"renders behind everything"| H
     HD -.->|"reads tone from each"| H
-    H --> A --> F --> R --> W --> E --> RM --> FQ --> CT --> FT
+    H --> A --> F --> X --> R --> L --> E --> RM --> FQ --> CT --> FT
 
     classDef light fill:#ffffff,stroke:#94a3b8,color:#0f172a
     classDef dark fill:#0f766e,stroke:#0f766e,color:#ffffff
@@ -105,21 +108,22 @@ and the hero's second button go to `#contact`, the footer.
 | Section | PRD source |
 | --- | --- |
 | Hero, About | 1.1 – 1.4, 14 |
-| Features | 4.3 – 4.11, 8 (the Phase 1 scope in 10) |
-| Who it's for | 3.2 – 3.5. The platform super administrator (3.1) is Potto's own role and is left off |
-| How it works | 6.1 – 6.4, step for step |
-| Ecosystem | 7, 11 — worded "designed to", because every integration there is still "potential" |
-| Roadmap | 10, labelled as proposed priorities |
-| FAQ | the above, plus 8 (privacy) and 9 (devices) |
+| Features | 4.3 – 4.15, 5 — held to the Phase 1 scope in 9; later items labelled "planned" |
+| Exam day | 4.7 – 4.11, step for step. The times are an example, and the page says so |
+| Who it's for | 3.2, 3.4, 3.5 — students, teachers, school administrators. The platform super administrator (3.1) is Potto's own role; exam officers (3.3) and invigilators (3.6) are left off at the owner's request |
+| Lifecycle | 13, with the rules from 4.4 – 4.14 and 5.4 at each stage |
+| Ecosystem | 6, 10 — worded "designed to", because every integration there is still "potential" |
+| Roadmap | 9, labelled as proposed priorities |
+| FAQ | the above, plus 8.5 (devices) and 8.6 (privacy) |
 
 ### The "one picture" rule
 
 [`PageBackdrop`](src/components/PageBackdrop.tsx) paints a single fixed canvas
 plus near-white contour lines for the **whole page**. Sections render
 transparent on top of it, or paint their own plain ground when they need one
-(the teal, ink and yellow bands). No glows or decorative gradients — the owner
-has asked for them to stay out. The site is meant to read as one continuous image from header to footer —
-**avoid boxes, frames and cards floating on visible panels.**
+(the teal, ink and yellow bands). **No gradients or glows** — every fill is
+flat, including the `marker` highlight, which is an inset box-shadow rather
+than a gradient. Avoid boxes, frames and outlined cards.
 
 ---
 
@@ -156,83 +160,55 @@ light default and its links vanish over a dark ground.
 >
 ```
 
-A section only needs an `id` if it is a scroll-nav target or a link target.
-If a section ever changes tone without the user scrolling, dispatch a synthetic
-`scroll` event so the header re-probes.
-
 ---
 
 ## Design system
 
 Tokens live in [`globals.css`](src/app/globals.css) under `@theme` (fixed brand
-palette) and `@theme inline` (semantic aliases). **Light theme only** —
-`color-scheme: light` is declared and there is no dark mode.
+palette) and `@theme inline` (semantic aliases). **Light theme only.**
 
 | Token | Value | Use |
 | --- | --- | --- |
 | `--brand` | `#0F766E` | primary teal for text and fills on light; AA with white text |
-| `--color-brand-teal` | `#008C8C` | the Potto teal |
-| `--color-brand-teal-dark` | `#0F766E` | dark section grounds — the deeper palette teal, so white/90 body text passes AA (4.76:1) |
-| `--color-brand-gold` | `#CA8A04` | CTA fills — **fills only, see below** |
-| `--color-brand-yellow-light` | `#FACC15` | accent text on teal |
-| `--ink` / `--soft` | `#000000` / `#6B7280` | body text on light |
-| `--highlight` | `#FACC15` | marker-pen underline behind accent words |
-| `--canvas` / `--surface-2` | white / near-white | page and inset fills |
+| `--color-brand-teal` | `#008C8C` | the Potto teal — "answered" squares, filled tracks |
+| `--color-brand-teal-dark` | `#0F766E` | dark section grounds, so white/90 body text passes AA (4.76:1) |
+| `--color-brand-gold` | `#CA8A04` | **fills only, see below** |
+| `--color-brand-yellow` / `-light` | `#EAB308` / `#FACC15` | CTAs, "current" and "for review" states; accent text on teal |
+| `--ink` / `--soft` | `#000000` / `#6B7280` | body text on light, ink bands |
+| `--highlight` | `#FACC15` | the `marker` stroke behind accent words |
 
 ### Contrast, measured
 
-Gold is a **fill colour, not a text colour on teal**. Real ratios against the
-`#0F766E` ground:
-
-| Foreground on teal | Ratio | Verdict |
+| Foreground on teal `#0F766E` | Ratio | Verdict |
 | --- | --- | --- |
 | `brand-gold` `#CA8A04` | **1.86** | unusable |
 | `brand-yellow` `#EAB308` | 2.85 | fills only |
-| `brand-yellow-light` `#FACC15` | 3.57 | short accents only |
+| `brand-yellow-light` `#FACC15` | 3.57 | short accents and large text only |
 | `text-white/75` | 3.82 | too low for body |
 | `text-white/90` | **4.76** | body copy on teal |
 
-For reference, light-theme body text (`#6B7280` on white) is **4.83**, so
-`text-white/90` is the teal equivalent. Filled gold tiles are fine — a shape
-carries a colour that 14px type cannot.
-
 ### Animation
 
-Three custom keyframes are defined inside `@theme`, each reading its colour from
-a per-element `--glow` custom property so one animation serves every accent:
-
-- `animate-glow` — breathing box-shadow on CTAs
-- `animate-halo` — slow halo behind play buttons
-- `animate-pulse-ring` — expanding ring; two, offset in time, read as continuous
-
-Usage: `className="animate-glow [--glow:var(--color-brand-teal)]"`.
-A `prefers-reduced-motion` block disables all three.
+One custom keyframe, `animate-blink`, steps the timer colons. Everything else is
+framer-motion. A `prefers-reduced-motion` block stops the blink, and every
+component checks reduced motion before running intervals or slides.
 
 ---
 
 ## Design language
 
-Same palette as every Potto site; everything else is Flip's own.
+Same palette as every Potto site; the motifs are the exam's own.
 
-| | Pottolite | PottoFlip |
+| | PottoFlip | Potto CBT |
 | --- | --- | --- |
-| Type | Poppins throughout | Bricolage Grotesque display, Instrument Sans body, Caveat for handwritten notes |
-| Signature | Centred icon circles | Cards that flip in 3D, and the folded page corner (`dog-ear`) |
-| Layout | Centred, symmetric | Left-aligned and asymmetric: bento grid, sticky scroll, hub diagram |
-| Navigation | Dot rail, full-width bar | Floating pill header; sections are numbered lessons with a course-progress pill |
+| Type | Bricolage Grotesque, Instrument Sans, Caveat | Poppins throughout; JetBrains Mono for every number |
+| Signature | Cards that flip, folded page corners | The question palette, answer-sheet bubbles, mono timers |
+| Numbering | Sections are "lessons" | Sections are "questions" — `Q01`, and a question-palette progress widget |
+| Corners | Pills | Squarer: `rounded-lg`/`rounded-xl` controls, palette squares |
 
-Both sites share the same plain ground: near-white contour lines on the light
-areas, flat colour on the bands. Two utilities in
-[`globals.css`](src/app/globals.css) carry the rest:
-
-- `dog-ear` — clips the top-right corner and draws the fold back in as a darker
-  triangle, so it works on any fill. Size it with `[--ear:3rem]`. The element
-  must be positioned.
-- `marker` — a yellow marker-pen stroke behind a word.
-
-Caveat is for short asides only (a line, never a paragraph). On teal it is set
-in `brand-yellow-light` at 24px or more, where the large-text 3:1 threshold
-applies.
+State colours are used the same way everywhere, so they teach themselves:
+**teal = answered / done**, **yellow = current / needs attention**, **white/10
+= not yet**.
 
 ---
 
@@ -240,13 +216,14 @@ applies.
 
 | Component | Role |
 | --- | --- |
-| [`SectionCaption`](src/components/SectionCaption.tsx) | The eyebrow **every** section opens with: an optional "Lesson 0N" chip plus an uppercase label. Tone-aware, left-aligned by default. Use it — do not hand-roll another. The lesson number must match the section's index in `HomeScrollNav`. |
-| [`Wordmark`](src/components/Wordmark.tsx) | The Potto hand plus "Potto" and a tilted "Flip" tag, set in type. There is no Flip logo artwork, so the name is live text; `tone="dark"` inverts the mark to white and the tag to yellow. |
+| [`SectionCaption`](src/components/SectionCaption.tsx) | The eyebrow **every** section opens with: an optional mono `Q0N` chip plus an uppercase label. The number must match the section's index in `HomeScrollNav`. |
+| [`Wordmark`](src/components/Wordmark.tsx) | The Potto hand plus "Potto" and a mono "CBT" tag, set in type — there is no CBT logo artwork. `tone="dark"` inverts the mark and turns the tag yellow. |
 | [`PageBackdrop`](src/components/PageBackdrop.tsx) / [`ContourPattern`](src/components/ContourPattern.tsx) | The single page-wide ground; contour lines are generated in JS, not an asset. |
-| [`HomeHeader`](src/components/HomeHeader.tsx) | Floating pill header, filled with the ground beneath it — see the probe mechanism above. |
-| [`HomeScrollNav`](src/components/HomeScrollNav.tsx) | The "course progress" pill, bottom-left, `md` and up: percentage ring, current lesson, previous/next. Hidden on the hero. Driven by a hand-maintained `SECTIONS` list. |
-| [`HowItWorksSection`](src/components/HowItWorksSection.tsx) | WAI-ARIA tabs, vertical on desktop and a sideways-scrolling row on phones (all four arrow keys move between them). Each tab is one PRD workflow. Add one by adding an entry to `FLOWS`. |
-| [`CtaSection`](src/components/CtaSection.tsx) | The yellow "bring Flip to your school" band before the footer. |
+| [`HomeHeader`](src/components/HomeHeader.tsx) | Floating header, filled with the ground beneath it — see the probe mechanism above. |
+| [`HomeScrollNav`](src/components/HomeScrollNav.tsx) | The question palette, bottom-left, `md` and up: current question, a clickable square per section (`lg` and up), previous/next. Hidden on the hero. Driven by a hand-maintained `SECTIONS` list. |
+| [`Hero`](src/components/Hero.tsx) | An exam screen — paper title, timer, a question with its options, flag, save status, palette — that answers a five-question loop, one beat a second. It is labelled as an illustration on the page — keep it that way. |
+| [`ExamDaySection`](src/components/ExamDaySection.tsx) | Timeline whose track fills with `useScroll`; one moment (the dropped connection) is set in yellow. |
+| [`RolesSection`](src/components/RolesSection.tsx) / [`LifecycleSection`](src/components/LifecycleSection.tsx) | WAI-ARIA tabs; arrow keys move between them. Add a role or stage by adding an entry to `ROLES` / `STAGES`. |
 | [`WhatsAppButton`](src/components/WhatsAppButton.tsx) | Fixed customer-care link, bottom-right, mounted in `layout.tsx`. A Server Component — it ships no JavaScript. |
 
 ### Patterns worth copying
@@ -254,35 +231,31 @@ applies.
 - **Scroll reveal.** Every section defines a local `reveal(delay)` returning
   `initial` / `animate` / `transition`, gated on
   `useInView(ref, { once: true })`, with a shared `ease = [0.22, 1, 0.36, 1]`.
-- **Tabs over carousels.** The workflow walkthrough is a tab list, which scrolls
-  sideways on phones rather than wrapping.
-- **Flip cards.** `perspective-*` on the parent, `transform-3d` on the turning
-  element, `backface-hidden` on both faces and `rotate-y-180` on the back. Put
-  both faces in one grid cell (`[grid-area:1/1]`) so the card is as tall as its
-  longer side — no fixed heights. Mark the face turned away `aria-hidden`.
-- **Reveal once, track always.** Where an element both animates in and reports
-  that it is in view (the role panels), use two elements: an outer one with
-  `onViewportEnter` and an inner one with `viewport={{ once: true }}`. Without
-  `once`, framer-motion fades content back out as you scroll past it.
-- **No invented interface.** With no Flip screenshots, the hero shows the
-  learning loop as type and icons, not a mocked-up dashboard.
+- **Tabs over carousels.** Roles and lifecycle stages are tab lists that
+  scroll sideways on phones rather than wrapping.
+- **Label every illustration.** With no CBT screenshots, the hero's exam
+  screen carries a caption saying it is an illustration, and the report bars
+  are a made-up distribution marked `aria-hidden`.
 - **No `setState` inside an effect body.** The `react-hooks/set-state-in-effect`
-  rule is enforced as an **error**. For a hydration-time value use
-  `useSyncExternalStore` with a never-notifying subscribe (see
-  `SiteFooter`); for measurement, let `ResizeObserver` fire on `observe`.
+  rule is enforced as an **error**. Interval callbacks are fine; for a
+  hydration-time value use `useSyncExternalStore` with a never-notifying
+  subscribe (see `SiteFooter`).
 
 ---
 
 ## Checking it in a browser
 
-Most sections reveal on scroll (`useInView`), and the FAQ cards fade back out
-once scrolled past, so a plain `chrome --headless --screenshot` captures empty
-sections. Drive Chrome over the DevTools protocol instead: `npm run build`,
-`npx next start`, launch Chrome with `--remote-debugging-port`, set the viewport
-with `Emulation.setDeviceMetricsOverride`, scroll the page in steps so every
-reveal fires, then `Page.captureScreenshot` with `captureBeyondViewport`. Check
-at 1440 px and 390 px, and compare `scrollWidth` with `innerWidth` for horizontal
+Most sections reveal on scroll (`useInView`), so a plain
+`chrome --headless --screenshot` captures empty sections. Drive Chrome over the
+DevTools protocol instead: `npm run build`, `npx next start`, launch Chrome with
+`--remote-debugging-port`, set the viewport with
+`Emulation.setDeviceMetricsOverride`, scroll the page in steps so every reveal
+fires, then `Page.captureScreenshot` with `captureBeyondViewport`. Check at
+1440 px and 390 px, and compare `scrollWidth` with `innerWidth` for horizontal
 overflow. Node 20 needs `--experimental-websocket` for the CDP socket.
+
+Fixed elements (header, question palette, WhatsApp button) are painted at their
+viewport position inside each tall capture — that is the capture, not the page.
 
 Stop `next start` before rebuilding; it holds `.next` open.
 
@@ -290,48 +263,15 @@ Stop `next start` before rebuilding; it holds `.next` open.
 
 ## Assets
 
-`public/` holds **1 file — `potto-mark.webp`**, the Potto hand mark cropped to
-its alpha bounding box; it is also the favicon. Keep `public/` to files that are
-referenced by exact path: nothing prunes it automatically and everything in it
-ships.
+`public/` holds **1 file — `potto-mark.webp`**, the Potto hand mark; it is also
+the favicon. Keep `public/` to files that are referenced by exact path: nothing
+prunes it automatically and everything in it ships.
 
-When screenshots or photos are added, they follow the pipeline below. Source
-art arrives large (5–12 MB PNG/JPG, occasionally with the wrong extension).
-Everything on the page is a cropped, resized WebP:
-
-```mermaid
-flowchart LR
-    A["delivered art<br/>5-12 MB"] --> B{"real format?"}
-    B -->|"mislabelled"| C["identify by<br/>file signature"]
-    B -->|"ok"| D
-    C --> D["measure alpha bbox"]
-    D --> E["extract - crop dead space"]
-    E --> F["resize to 2x<br/>rendered width"]
-    F --> G["webp q82"]
-    G --> H["public/group/name.webp<br/>40-400 KB"]
-    H --> I["set sizes to the<br/>real rendered width"]
-
-    classDef s fill:#f8fafc,stroke:#94a3b8,color:#0f172a
-    class A,C,D,E,F,G,H,I s
-```
-
-Rules that came out of doing this the hard way:
-
-- **Keep originals out of `public/`.** A `.png` master beside its `.webp` ships
-  to every visitor. Masters belong outside the repo, not next to the derivative.
-- **Check the file signature, not the extension.** One delivered file was a
-  5.7 MB PNG named `.webp`; browsers sniff the bytes, so it renders fine and the
-  mistake survives.
-- **Crop to the alpha bounding box.** Delivered art is often parked off-centre in
-  a larger canvas; `object-contain` centres the *canvas*, so the subject renders
-  small and visibly shifted. `trim()` will not help when the margin is
-  transparent rather than a solid colour — measure the bbox and `extract`.
-- **Match the box to the art's aspect ratio.** A square image in a wide, short
-  box fits by height and wastes the width.
-- **`sizes` must match the real rendered width.** Overstating it makes Next fetch
-  twice the pixels. Compute the grid track width; do not guess with `30vw`.
-- **Flatten anything that must be opaque** — a stray alpha channel lets the
-  section ground punch through a photo.
+When screenshots or photos are added, everything on the page is a cropped,
+resized WebP (q82, 2× the rendered width, 40–400 KB). Keep masters **out of the
+repo** — large media in history makes the repository slow to clone and push.
+Check the file signature, not the extension, and set `sizes` to the real
+rendered width.
 
 ---
 
@@ -342,12 +282,12 @@ decision for the team.
 
 | Gap | Detail |
 | --- | --- |
-| Product status | The PRD is a *proposed* specification, and says its phases are "not a statement of existing development status". The site describes the Phase 1 core in the present tense and labels Phases 2 and 3 as planned. Confirm Phase 1 is real before launch — or add an "in development" label and change the CTAs to "register interest" |
-| Integrations | The PRD lists the Admin, Assess and CBT integrations as *potential*, to be validated against the real services. The Ecosystem section and FAQ say "designed to"; confirm before promising them |
-| No privacy policy or terms | Flip processes educational records and may serve children (PRD 8), including consent and parental access. It needs its own notice, written against Nigeria's data protection framework, before launch |
+| Product status | The PRD is a *proposed* specification and says its phases are "not the existing implementation status". The site describes the Phase 1 core in the present tense and labels Phases 2 and 3 as planned. Confirm Phase 1 is real before launch — or add an "in development" label and change the CTAs to "register interest" |
+| Integrations | The PRD lists the Admin, PottoFlip and Assess integrations as *potential*, to be confirmed against the real services. The Ecosystem section and FAQ say "designed to"; confirm before promising them |
+| No privacy policy or terms | CBT processes student responses and results and may serve children (PRD 8.6). It needs its own notice, written against Nigeria's data protection framework, before launch |
 | Pricing | The PRD has no pricing or plans, so the site has none and the FAQ does not answer "how much does it cost?" |
-| Screenshots | There are none. The hero shows the course structure as icons instead |
-| Team | The Pottolite team section was removed — those people and photos were for Pottolite. Add a Flip team only with names, photos and consent from the people in it |
-| Contacts | The footer keeps Potto's address, phone lines, emails and office hours, and support points to `support@potto.ng`. The WhatsApp button still opens Potto's customer-care line, `wa.me/2349064566528` — confirm it handles Flip |
-| Sign-up | There is no Flip sign-up or app URL, so every CTA goes to the contact details |
+| Screenshots | There are none. The hero shows a labelled illustration of the exam screen instead; swap in a real (blurred) screenshot when one exists |
+| Roles | Exam officers and invigilators (PRD 3.3, 3.6) are not on the page. Invigilator dashboards still appear on the roadmap as a Phase 2 item, because the PRD lists them there |
+| Contacts | The footer keeps Potto's address, phone lines, emails and office hours, and support points to `support@potto.ng`. The WhatsApp button opens Potto's customer-care line, `wa.me/2349064566528` — confirm it handles CBT |
+| Sign-up | There is no CBT sign-up or app URL, so every CTA goes to the contact details |
 | Scroll-nav order | `HomeScrollNav`'s `SECTIONS` list is hand-maintained and **must stay in `page.tsx` order** |

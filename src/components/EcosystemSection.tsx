@@ -5,43 +5,53 @@ import { useRef } from "react";
 import { motion, useInView } from "framer-motion";
 import { HugeiconsIcon } from "@hugeicons/react";
 import {
+  ArrowRight01Icon,
+  BookOpen01Icon,
   Building03Icon,
   Certificate01Icon,
-  LaptopIcon,
 } from "@hugeicons/core-free-icons";
 import SectionCaption from "@/components/SectionCaption";
 
-// PRD section 7. Every integration there is "potential" and still to be
-// validated against the real services, so the copy says "designed to".
+// PRD section 6. Every integration there is "potential", to be confirmed
+// against the real services, so the copy says "designed to".
 const PRODUCTS = {
   admin: {
     icon: Building03Icon,
     name: "Potto Admin",
     role: "School records",
-    body: "PottoFlip is designed to use the school, session, class, subject, student and teacher records Admin already holds — so nobody types them in twice.",
+    flow: "Records in",
+    body: "CBT is designed to use the school, session, class, subject, student and teacher records Admin already holds to decide who is eligible for each exam.",
   },
   assess: {
     icon: Certificate01Icon,
     name: "Potto Assess",
     role: "Formal results",
-    body: "Selected, authorised scores can be shared with Assess. Practice scores never become official results without a workflow your school approves.",
+    flow: "Approved scores out",
+    body: "Finalised scores are designed to pass to Assess under agreed rules. Practice scores never become official results by default.",
   },
-  cbt: {
-    icon: LaptopIcon,
-    name: "Potto CBT",
-    role: "Examinations",
-    body: "Formal computer-based exams stay in CBT. PottoFlip prepares students for them and can link lessons to authorised CBT activities.",
+  flip: {
+    icon: BookOpen01Icon,
+    name: "PottoFlip",
+    role: "Teaching & learning",
+    flow: "Practice links",
+    body: "Designed to link course topics to practice tests, so students can move from a finished lesson to revision and exam preparation.",
   },
 };
 
-// PRD section 11.
-const NOT_FLIP = ["Fees", "Payroll", "Accounting", "Admissions", "Timetables"];
+// PRD section 10.
+const NOT_CBT = [
+  "Courses & lessons",
+  "Fees",
+  "Payroll",
+  "Admissions",
+  "School records",
+];
 
 const ease = [0.22, 1, 0.36, 1] as const;
 
 function Node({ product }: { product: (typeof PRODUCTS)["admin"] }) {
   return (
-    <article className="rounded-[1.75rem] bg-brand/8 p-7">
+    <article className="h-full rounded-[1.75rem] bg-brand/8 p-7">
       <div className="flex items-center gap-4">
         <span className="grid h-12 w-12 shrink-0 place-items-center rounded-2xl bg-brand text-brand-fg">
           <HugeiconsIcon icon={product.icon} size={24} strokeWidth={1.8} />
@@ -50,27 +60,17 @@ function Node({ product }: { product: (typeof PRODUCTS)["admin"] }) {
           <p className="text-xs font-semibold tracking-[0.18em] text-brand uppercase">
             {product.role}
           </p>
-          <h3 className="font-display text-xl font-extrabold tracking-tight">
+          <h3 className="font-display text-xl font-bold tracking-tight">
             {product.name}
           </h3>
         </div>
       </div>
+      <p className="mt-5 inline-flex items-center gap-1.5 rounded-md bg-brand-yellow px-2.5 py-1 font-mono text-xs font-bold text-ink">
+        <HugeiconsIcon icon={ArrowRight01Icon} size={12} strokeWidth={2.5} />
+        {product.flow}
+      </p>
       <p className="mt-4 text-[0.95rem] leading-7 text-soft">{product.body}</p>
     </article>
-  );
-}
-
-/** A dashed connector — a line between shapes, not a frame around one. */
-function Connector({ vertical = false }: { vertical?: boolean }) {
-  return (
-    <span
-      aria-hidden
-      className={
-        vertical
-          ? "mx-auto block h-10 w-0 border-l-2 border-dashed border-brand/40"
-          : "block h-0 w-full border-t-2 border-dashed border-brand/40"
-      }
-    />
   );
 }
 
@@ -92,117 +92,85 @@ export default function EcosystemSection() {
       className="relative py-24 text-ink md:py-32"
     >
       <div ref={ref} className="mx-auto w-full max-w-7xl px-5 md:px-6 lg:px-8">
-        <div className="mx-auto max-w-3xl text-center">
-          <SectionCaption lesson={5} align="center" {...reveal(0)}>
-            The Potto Learning Suite
-          </SectionCaption>
-          <motion.h2
-            {...reveal(0.1)}
-            className="mt-6 font-display text-4xl leading-[1.02] font-extrabold tracking-[-0.03em] sm:text-5xl lg:text-6xl"
-          >
-            Plugged into the rest of <span className="marker">Potto</span>
-          </motion.h2>
-          <motion.p
-            {...reveal(0.2)}
-            className="mt-6 text-lg leading-8 text-soft"
-          >
-            PottoFlip handles teaching and learning. The school&apos;s records, exams
-            and official results stay where they already live.
-          </motion.p>
-        </div>
+        <div className="grid gap-12 lg:grid-cols-[5fr_7fr] lg:gap-16">
+          <div>
+            <SectionCaption question={6} {...reveal(0)}>
+              The Potto Learning Suite
+            </SectionCaption>
+            <motion.h2
+              {...reveal(0.1)}
+              className="mt-6 font-display text-4xl leading-[1.08] font-bold tracking-[-0.03em] sm:text-5xl lg:text-[3.5rem]"
+            >
+              The exam desk of the <span className="marker">Potto</span> family
+            </motion.h2>
+            <motion.p {...reveal(0.2)} className="mt-6 max-w-md text-lg leading-8 text-soft">
+              Potto CBT runs exams and nothing else. The school&apos;s records,
+              its lessons and its official results stay where they already
+              live.
+            </motion.p>
 
-        {/* Hub and spokes: Admin and Assess either side of Flip, CBT below. */}
-        <div className="mt-16 grid items-center gap-0 lg:grid-cols-[1fr_auto_1fr]">
-          <motion.div {...reveal(0.3)} className="lg:flex lg:items-center">
-            <Node product={PRODUCTS.admin} />
-            <span className="hidden w-12 shrink-0 lg:block">
-              <Connector />
-            </span>
-          </motion.div>
-
-          <div className="py-0 lg:hidden">
-            <Connector vertical />
-          </div>
-
-          {/* The hub column stretches to the row's height: an empty half above
-              the circle and a dashed line below it, so the circle sits level
-              with the side connectors and the line runs on down to CBT. */}
-          <div className="lg:flex lg:flex-col lg:items-center lg:self-stretch">
-          <span aria-hidden className="hidden flex-1 lg:block" />
-          <motion.div
-            {...reveal(0.4)}
-            className="relative mx-auto grid h-48 w-48 shrink-0 place-items-center rounded-full bg-brand-teal-dark text-white sm:h-56 sm:w-56"
-          >
-            <span
-              aria-hidden
-              className="absolute inset-0 animate-pulse-ring rounded-full bg-brand/30"
-            />
-            <span className="relative text-center">
-              <Image
-                src="/potto-mark.webp"
-                alt=""
-                width={93}
-                height={160}
-                className="mx-auto h-10 w-auto brightness-0 invert"
-              />
-              <span className="mt-3 block font-display text-2xl font-extrabold tracking-tight sm:text-3xl">
-                PottoFlip
+            {/* The hub: CBT itself, a flat ink tile with the Potto mark. */}
+            <motion.div
+              {...reveal(0.3)}
+              className="mt-10 inline-flex items-center gap-5 rounded-[1.75rem] bg-ink py-5 pr-8 pl-5 text-white"
+            >
+              <span className="grid h-16 w-16 place-items-center rounded-2xl bg-white/10">
+                <Image
+                  src="/potto-mark.webp"
+                  alt=""
+                  width={93}
+                  height={160}
+                  className="h-9 w-auto brightness-0 invert"
+                />
               </span>
-              <span className="mt-1 block text-xs font-semibold tracking-[0.18em] text-white/90 uppercase">
-                Teaching &amp; learning
+              <span>
+                <span className="block font-display text-2xl font-bold tracking-tight">
+                  Potto CBT
+                </span>
+                <span className="block font-mono text-xs text-brand-yellow-light">
+                  EXAMINATIONS
+                </span>
               </span>
-            </span>
-          </motion.div>
-          <span
-            aria-hidden
-            className="hidden w-0 flex-1 border-l-2 border-dashed border-brand/40 lg:block"
-          />
+            </motion.div>
           </div>
 
-          <div className="py-0 lg:hidden">
-            <Connector vertical />
+          <div className="grid gap-4 sm:grid-cols-2">
+            <motion.div {...reveal(0.35)}>
+              <Node product={PRODUCTS.admin} />
+            </motion.div>
+            <motion.div {...reveal(0.45)}>
+              <Node product={PRODUCTS.assess} />
+            </motion.div>
+            <motion.div {...reveal(0.55)} className="sm:col-span-2">
+              <Node product={PRODUCTS.flip} />
+            </motion.div>
           </div>
-
-          <motion.div
-            {...reveal(0.5)}
-            className="lg:flex lg:flex-row-reverse lg:items-center"
-          >
-            <Node product={PRODUCTS.assess} />
-            <span className="hidden w-12 shrink-0 lg:block">
-              <Connector />
-            </span>
-          </motion.div>
-        </div>
-
-        <div className="lg:grid lg:grid-cols-[1fr_minmax(0,28rem)_1fr]">
-          <motion.div {...reveal(0.6)} className="lg:col-start-2">
-            <Connector vertical />
-            <Node product={PRODUCTS.cbt} />
-          </motion.div>
         </div>
 
         <motion.div
-          {...reveal(0.7)}
-          className="mt-16 flex flex-col items-center gap-4 text-center"
+          {...reveal(0.65)}
+          className="mt-16 flex flex-col gap-4 rounded-[1.75rem] bg-surface-2 p-7 sm:p-8 lg:flex-row lg:items-center lg:justify-between"
         >
-          <p className="font-note text-2xl text-brand">
-            and what PottoFlip leaves to others
-          </p>
-          <ul className="flex flex-wrap justify-center gap-2">
-            {NOT_FLIP.map((item) => (
+          <div>
+            <p className="font-mono text-xs font-bold tracking-wider text-soft uppercase">
+              Not CBT&apos;s job
+            </p>
+            <p className="mt-2 max-w-xl text-sm leading-6 text-soft">
+              Potto CBT is not a learning management, fees, payroll or
+              admissions system, and it doesn&apos;t replace the school&apos;s
+              records. It connects to the Potto products that do those jobs.
+            </p>
+          </div>
+          <ul className="flex flex-wrap gap-2">
+            {NOT_CBT.map((item) => (
               <li
                 key={item}
-                className="rounded-full bg-surface-2 px-4 py-2 text-sm font-semibold text-soft line-through decoration-brand-gold decoration-2"
+                className="rounded-lg bg-white px-3.5 py-2 text-sm font-semibold text-soft line-through decoration-brand-gold decoration-2"
               >
                 {item}
               </li>
             ))}
           </ul>
-          <p className="max-w-xl text-sm leading-6 text-soft">
-            PottoFlip is not a fees, payroll, accounting, admissions or timetabling
-            system. It shares data with the Potto products that do those jobs,
-            through approved integrations.
-          </p>
         </motion.div>
       </div>
     </section>

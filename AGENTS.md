@@ -10,7 +10,7 @@ This block is written and re-added by `next dev` — verify at `node_modules/nex
 
 ---
 
-# PottoFlip project rules
+# Potto CBT project rules
 
 The block above is managed by `next dev`; everything below it is ours and
 survives regeneration. [`README.md`](README.md) explains the reasoning — this is
@@ -25,24 +25,30 @@ the short list of things that go wrong when they are not followed.
 
 ## Content
 
-- **PottoFlip is one word**, always — never "Potto Flip", and never "Flip" on
-  its own as the product name in page copy ("flip" as a verb is fine). The
-  family of products is the **Potto Learning Suite**, not "the Potto
-  ecosystem". The `ecosystem` id and `EcosystemSection` name are internal and
-  can stay.
-- PottoFlip's copy comes from the PRD in [`docs/PRD.md`](docs/PRD.md). Do
+- The product is **Potto CBT** — two words, "CBT" in capitals. The sister
+  product is **PottoFlip** (one word) even where the CBT PRD writes "Potto
+  Flip". The family of products is the **Potto Learning Suite**, not "the
+  Potto ecosystem". The `ecosystem` id and `EcosystemSection` name are
+  internal and can stay.
+- Potto CBT's copy comes from the PRD in [`docs/PRD.md`](docs/PRD.md). Do
   not add capabilities, numbers or claims it does not support.
-- The PRD is a *proposed* spec. Phase 2 and 3 items are "planned" on the page,
-  never described as available.
-- There are no Flip screenshots yet. Do not mock up an interface and present
-  it as the product. When real screenshots arrive, blur every name, face, phone
-  number and school name that is not already public.
+- The PRD is a *proposed* spec. Phase 2 and 3 items (PRD 9) are "planned" on
+  the page, never described as available — that includes every question type
+  beyond multiple choice and true or false, manual marking, invigilator
+  dashboards, randomisation, exports and offline exams.
+- Never claim cheating is impossible, and never advertise offline exams or
+  proctoring (PRD 4.11, 4.12).
+- There are no CBT screenshots yet. Do not mock up an interface and present
+  it as the product; the hero's exam screen is captioned as an illustration
+  and must stay captioned. When real screenshots arrive, blur every
+  name, face, phone number and school name that is not already public.
 
 ## Sections
 
 - Every `<section>` needs `data-nav-tone` and `data-nav-bg`, or the header
   loses its colour over it.
-- Open with `SectionCaption`. Do not hand-roll another eyebrow.
+- Open with `SectionCaption`, passing the section's `question` number. Do not
+  hand-roll another eyebrow.
 - Keep `HomeScrollNav`'s `SECTIONS` list in the same order as `page.tsx`.
 - Anchor links must be root-relative (`/#features`, not `#features`), or they
   go nowhere from `/privacy` and `/terms`.
@@ -59,6 +65,8 @@ the short list of things that go wrong when they are not followed.
 - Gold (`#CA8A04`) is a fill, never text on teal: 1.86:1. Body copy on teal is
   `text-white/90` (4.76:1).
 - Light theme only.
+- **Poppins** for display and body. JetBrains Mono is for numbers and short
+  labels only — timers, question numbers, timestamps.
 
 ## Images
 

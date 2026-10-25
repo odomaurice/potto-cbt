@@ -5,15 +5,15 @@ import { motion, type HTMLMotionProps } from "framer-motion";
 
 type Props = Omit<HTMLMotionProps<"p">, "children"> & {
   tone?: "light" | "dark";
-  /** The page is laid out like a course; each section is a numbered lesson. */
-  lesson?: number;
+  /** The page is laid out like an exam paper; each section is a numbered question. */
+  question?: number;
   align?: "left" | "center";
   children: ReactNode;
 };
 
 export default function SectionCaption({
   tone = "light",
-  lesson,
+  question,
   align = "left",
   className = "",
   children,
@@ -28,13 +28,13 @@ export default function SectionCaption({
         align === "center" ? "justify-center" : ""
       } ${onDark ? "text-white/90" : "text-soft"} ${className}`}
     >
-      {lesson !== undefined && (
+      {question !== undefined && (
         <span
-          className={`inline-flex h-8 items-center rounded-full px-3 font-display text-[0.8rem] font-bold tracking-normal normal-case ${
-            onDark ? "bg-brand-yellow text-ink" : "bg-brand text-brand-fg"
+          className={`inline-flex h-8 items-center rounded-lg px-2.5 font-mono text-[0.8rem] font-bold tracking-normal ${
+            onDark ? "bg-brand-yellow text-ink" : "bg-ink text-white"
           }`}
         >
-          Lesson {String(lesson).padStart(2, "0")}
+          Q{String(question).padStart(2, "0")}
         </span>
       )}
       {children}

@@ -25,14 +25,14 @@ export default function CtaSection() {
       data-nav-bg="var(--color-brand-yellow)"
       className="relative isolate overflow-hidden bg-brand-yellow py-24 text-ink md:py-28"
     >
-      {/* Two oversized folded pages, purely decorative. */}
+      {/* Answer-sheet bubbles, set large in the corners — flat fills only. */}
       <span
         aria-hidden
-        className="dog-ear absolute -top-24 -right-24 -z-10 h-96 w-96 rotate-12 rounded-[3rem] bg-brand-yellow-light [--ear:6rem]"
+        className="absolute -top-16 -right-16 -z-10 hidden h-64 w-64 rounded-full bg-brand-yellow-light md:block"
       />
       <span
         aria-hidden
-        className="dog-ear absolute -bottom-32 -left-20 -z-10 h-80 w-80 -rotate-12 rounded-[3rem] bg-brand-yellow-dark/25 [--ear:5rem]"
+        className="absolute -bottom-20 -left-12 -z-10 hidden h-48 w-48 rounded-full bg-brand-yellow-dark/25 md:block"
       />
 
       <div
@@ -40,20 +40,20 @@ export default function CtaSection() {
         className="mx-auto w-full max-w-5xl px-5 text-center md:px-6 lg:px-8"
       >
         <SectionCaption align="center" className="text-ink/70!" {...reveal(0)}>
-          End of the course
+          End of paper
         </SectionCaption>
         <motion.h2
           {...reveal(0.1)}
-          className="mt-6 font-display text-5xl leading-[0.98] font-extrabold tracking-[-0.03em] sm:text-6xl lg:text-7xl"
+          className="mt-6 font-display text-4xl leading-[1.05] font-bold tracking-[-0.03em] sm:text-6xl lg:text-[4.2rem]"
         >
-          Bring PottoFlip to your school
+          Bring Potto CBT to your school
         </motion.h2>
         <motion.p
           {...reveal(0.2)}
           className="mx-auto mt-6 max-w-xl text-lg leading-8 text-ink/80"
         >
-          Tell us about your school and how you teach today, and our team will
-          take it from there.
+          Tell us about your school and how you run exams today, and our team
+          will take it from there.
         </motion.p>
 
         <motion.div
@@ -61,15 +61,15 @@ export default function CtaSection() {
           className="mt-10 flex flex-col items-center justify-center gap-3 sm:flex-row"
         >
           <a
-            href="mailto:Info@potto.ng?subject=Potto%20Flip"
-            className="inline-flex items-center gap-2 rounded-full bg-ink px-8 py-4 text-base font-semibold text-white transition duration-300 hover:-translate-y-0.5 hover:bg-brand-teal-dark"
+            href="mailto:Info@potto.ng?subject=Potto%20CBT"
+            className="inline-flex items-center gap-2 rounded-xl bg-ink px-8 py-4 text-base font-semibold text-white transition duration-300 hover:-translate-y-0.5 hover:bg-brand-teal-dark"
           >
             <HugeiconsIcon icon={Mail01Icon} size={18} strokeWidth={2} />
             Email Info@potto.ng
           </a>
           <Link
             href="/#contact"
-            className="group inline-flex items-center gap-2 rounded-full bg-ink/10 px-8 py-4 text-base font-semibold transition hover:bg-ink/15"
+            className="group inline-flex items-center gap-2 rounded-xl bg-ink/10 px-8 py-4 text-base font-semibold transition hover:bg-ink/15"
           >
             All contact details
             <HugeiconsIcon

@@ -1,89 +1,99 @@
 "use client";
 
-import { useRef, useState } from "react";
-import { motion, useInView } from "framer-motion";
+import { useRef, useState, type KeyboardEvent } from "react";
+import {
+  AnimatePresence,
+  motion,
+  useInView,
+  useReducedMotion,
+} from "framer-motion";
 import { HugeiconsIcon } from "@hugeicons/react";
 import {
+  Cancel01Icon,
   SchoolIcon,
   StudentIcon,
   TeacherIcon,
-  UserMultipleIcon,
+  Tick02Icon,
 } from "@hugeicons/core-free-icons";
 import SectionCaption from "@/components/SectionCaption";
 
-// PRD section 3. The platform super administrator is Potto's own role, not a
-// school's, so it is left off a page written for schools.
+// PRD section 3: the three roles every school has. The platform super
+// administrator is Potto's own role, so it is left off a page written for
+// schools. Each "limit" is a
+// restriction the PRD states for that role.
 const ROLES = [
   {
     id: "students",
     icon: StudentIcon,
     title: "Students",
-    lead: "A dashboard that puts the next thing to do first.",
-    note: null,
-    fill: "bg-brand-teal-dark text-white",
+    lead: "A calm exam room, and only their own exams in it.",
     points: [
-      "See enrolled courses and continue where they stopped",
-      "Watch, read and download permitted lesson materials",
-      "Complete assignments and quizzes before deadlines",
-      "Review feedback, released scores and their own progress",
+      "See upcoming, available and completed exams",
+      "Read the instructions and confirm they are ready",
+      "Answer, flag for review and track the time left",
+      "Get confirmation that their paper was submitted",
+      "See released results and permitted explanations",
     ],
+    limit:
+      "No restricted questions, answer keys, other students' work or unreleased results.",
   },
   {
     id: "teachers",
     icon: TeacherIcon,
     title: "Teachers",
-    lead: "Build once, reuse, and see who needs help.",
-    note: null,
-    fill: "bg-brand-yellow text-ink",
+    lead: "Write once, reuse often, see where students struggle.",
     points: [
-      "Build courses from modules, lessons and resources",
-      "Assign courses to classes and schedule lessons",
-      "Set assignments and quizzes, then grade and give feedback",
-      "Spot students who have not started or need support",
+      "Build and maintain question banks",
+      "Create exams and practice tests, and preview them",
+      "Set duration, availability and scoring rules",
+      "Review automatic marks and release scores where permitted",
+      "Analyse student and class performance",
     ],
+    limit: "Only the exams, students and results their permissions cover.",
   },
   {
     id: "admins",
     icon: SchoolIcon,
     title: "School administrators",
-    lead: "School-wide visibility without a second records system.",
-    note: null,
-    fill: "bg-brand/10 text-ink",
+    lead: "School-wide policy, oversight and approvals.",
     points: [
-      "Approve teachers and review published courses",
-      "Configure learning settings and permissions",
-      "Follow participation and completion across the school",
-      "Filter reports by session, class, subject and course",
+      "Configure exam settings and school-wide policies",
+      "Schedule exams and set eligibility rules",
+      "Approve exams where the school requires it",
+      "Follow live sessions, incidents and reports",
+      "Decide when results become visible",
     ],
-  },
-  {
-    id: "parents",
-    icon: UserMultipleIcon,
-    title: "Parents & guardians",
-    lead: "A window on their own child's learning — nothing more.",
-    note: "Optional — your school decides",
-    fill: "bg-surface-2 text-ink",
-    points: [
-      "Follow a linked child's learning progress",
-      "See completed and outstanding assignments",
-      "Read released grades and teacher feedback",
-      "Never change submissions or see another family's records",
-    ],
+    limit:
+      "Can't quietly change a completed score — only through an authorised, traceable process.",
   },
 ];
 
 const ease = [0.22, 1, 0.36, 1] as const;
 
 export default function RolesSection() {
-  const [active, setActive] = useState(0);
+  const [index, setIndex] = useState(0);
+  const reduced = useReducedMotion();
+  const tabs = useRef<(HTMLButtonElement | null)[]>([]);
   const ref = useRef<HTMLDivElement>(null);
-  const inView = useInView(ref, { once: true, amount: 0.1 });
+  const inView = useInView(ref, { once: true, amount: 0.15 });
 
   const reveal = (delay: number) => ({
     initial: { opacity: 0, y: 22 },
     animate: inView ? { opacity: 1, y: 0 } : { opacity: 0, y: 22 },
     transition: { duration: 0.65, delay, ease },
   });
+
+  const onKeyDown = (event: KeyboardEvent) => {
+    const forward = event.key === "ArrowRight" || event.key === "ArrowDown";
+    const back = event.key === "ArrowLeft" || event.key === "ArrowUp";
+    if (!forward && !back) return;
+    event.preventDefault();
+    const next = (index + (forward ? 1 : -1) + ROLES.length) % ROLES.length;
+    setIndex(next);
+    tabs.current[next]?.focus();
+  };
+
+  const role = ROLES[index];
 
   return (
     <section
@@ -92,132 +102,121 @@ export default function RolesSection() {
       data-nav-bg="var(--canvas)"
       className="relative py-24 text-ink md:py-32"
     >
-      <div
-        ref={ref}
-        className="mx-auto grid w-full max-w-7xl gap-12 px-5 md:px-6 lg:grid-cols-[5fr_7fr] lg:gap-16 lg:px-8"
-      >
-        {/* Sticky on large screens: the heading and role index stay put while
-            the role panels scroll past them. */}
-        <div className="lg:sticky lg:top-32 lg:self-start">
-          <SectionCaption lesson={3} {...reveal(0)}>
-            Who it&apos;s for
-          </SectionCaption>
-          <motion.h2
-            {...reveal(0.1)}
-            className="mt-6 font-display text-4xl leading-[1.02] font-extrabold tracking-[-0.03em] sm:text-5xl lg:text-6xl"
-          >
-            Four roles. <span className="text-brand">One platform.</span>
-          </motion.h2>
-          <motion.p
-            {...reveal(0.2)}
-            className="mt-6 max-w-md text-lg leading-8 text-soft"
-          >
-            Everyone signs in to the same PottoFlip and sees only the classes,
-            courses and records their role allows.
+      <div ref={ref} className="mx-auto w-full max-w-7xl px-5 md:px-6 lg:px-8">
+        <div className="flex flex-col gap-6 lg:flex-row lg:items-end lg:justify-between">
+          <div>
+            <SectionCaption question={4} {...reveal(0)}>
+              Who it&apos;s for
+            </SectionCaption>
+            <motion.h2
+              {...reveal(0.1)}
+              className="mt-6 max-w-3xl font-display text-4xl leading-[1.08] font-bold tracking-[-0.03em] sm:text-5xl lg:text-[3.5rem]"
+            >
+              Three roles. <span className="text-brand">Clear lines between them.</span>
+            </motion.h2>
+          </div>
+          <motion.p {...reveal(0.2)} className="max-w-sm text-lg leading-8 text-soft">
+            Everyone signs in to the same Potto CBT and sees only what their
+            role allows — checked on the server, not just hidden on screen.
           </motion.p>
-
-          <motion.ol {...reveal(0.3)} className="mt-10 hidden space-y-1 lg:block">
-            {ROLES.map((role, i) => (
-              <li key={role.id}>
-                <a
-                  href={`/#role-${role.id}`}
-                  aria-current={active === i ? "true" : undefined}
-                  className={`flex items-center gap-4 rounded-2xl px-4 py-3 font-display text-lg font-bold transition-colors duration-300 ${
-                    active === i
-                      ? "bg-brand text-brand-fg"
-                      : "text-ink/60 hover:bg-ink/5 hover:text-ink"
-                  }`}
-                >
-                  <span className="w-6 text-sm">
-                    {String(i + 1).padStart(2, "0")}
-                  </span>
-                  {role.title}
-                </a>
-              </li>
-            ))}
-          </motion.ol>
         </div>
 
-        <div className="space-y-5">
-          {ROLES.map((role, i) => (
-            // Two jobs, two elements: the outer one tracks which role is in
-            // view (every time), the inner one reveals itself (once).
-            <motion.div
-              key={role.id}
-              id={`role-${role.id}`}
-              onViewportEnter={() => setActive(i)}
-              viewport={{ amount: 0.6 }}
-            >
-            <motion.article
-              initial={{ opacity: 0, y: 40 }}
-              whileInView={{ opacity: 1, y: 0 }}
-              viewport={{ once: true, amount: 0.25 }}
-              transition={{ duration: 0.7, ease }}
-              className={`dog-ear relative overflow-hidden rounded-[2rem] p-8 sm:p-10 lg:min-h-[26rem] [--ear:3rem] ${role.fill}`}
-            >
-              <span
-                aria-hidden
-                className="pointer-events-none absolute -right-4 -bottom-10 font-display text-[11rem] leading-none font-extrabold opacity-10 select-none"
-              >
-                {String(i + 1).padStart(2, "0")}
-              </span>
-
-              <div className="relative flex flex-wrap items-center gap-4">
-                <span
-                  className={`grid h-14 w-14 place-items-center rounded-2xl ${
-                    i === 0
-                      ? "bg-white/15"
-                      : i === 1
-                        ? "bg-ink text-brand-yellow"
-                        : "bg-brand text-brand-fg"
-                  }`}
-                >
-                  <HugeiconsIcon icon={role.icon} size={28} strokeWidth={1.8} />
-                </span>
-                {role.note && (
-                  <span className="rounded-full bg-accent px-3 py-1 text-xs font-semibold text-accent-foreground">
-                    {role.note}
-                  </span>
-                )}
-              </div>
-
-              <h3 className="relative mt-8 font-display text-3xl font-extrabold tracking-tight sm:text-4xl">
-                {role.title}
-              </h3>
-              <p
-                className={`relative mt-3 max-w-lg font-note text-2xl ${
-                  i === 0
-                    ? "text-brand-yellow-light"
-                    : i === 1
-                      ? "text-ink/80"
-                      : "text-brand"
+        <motion.div
+          {...reveal(0.3)}
+          role="tablist"
+          aria-label="Roles"
+          onKeyDown={onKeyDown}
+          className="-mx-5 mt-12 flex gap-2 overflow-x-auto px-5 pb-2 [scrollbar-width:none] lg:mx-0 lg:px-0 [&::-webkit-scrollbar]:hidden"
+        >
+          {ROLES.map((r, i) => {
+            const selected = i === index;
+            return (
+              <button
+                key={r.id}
+                ref={(el) => {
+                  tabs.current[i] = el;
+                }}
+                type="button"
+                role="tab"
+                id={`role-tab-${r.id}`}
+                aria-selected={selected}
+                aria-controls={`role-panel-${r.id}`}
+                tabIndex={selected ? 0 : -1}
+                onClick={() => setIndex(i)}
+                className={`flex shrink-0 cursor-pointer items-center gap-3 rounded-xl px-4 py-3 text-sm font-semibold whitespace-nowrap transition-colors duration-300 ${
+                  selected
+                    ? "bg-ink text-white"
+                    : "bg-surface-2 text-ink/70 hover:bg-brand/10 hover:text-ink"
                 }`}
               >
+                <HugeiconsIcon icon={r.icon} size={18} strokeWidth={2} />
+                {r.title}
+              </button>
+            );
+          })}
+        </motion.div>
+
+        <AnimatePresence mode="wait" initial={false}>
+          <motion.div
+            key={role.id}
+            id={`role-panel-${role.id}`}
+            role="tabpanel"
+            aria-labelledby={`role-tab-${role.id}`}
+            initial={reduced ? { opacity: 0 } : { opacity: 0, y: 16 }}
+            animate={{ opacity: 1, y: 0 }}
+            exit={reduced ? { opacity: 0 } : { opacity: 0, y: -10 }}
+            transition={{ duration: 0.35, ease }}
+            className="mt-6 grid gap-4 lg:grid-cols-[5fr_7fr]"
+          >
+            <div className="relative overflow-hidden rounded-[2rem] bg-brand-teal-dark p-8 text-white sm:p-10">
+              <span
+                aria-hidden
+                className="pointer-events-none absolute -right-2 -bottom-8 font-mono text-[9rem] leading-none font-bold text-white/8 select-none"
+              >
+                {String(index + 1).padStart(2, "0")}
+              </span>
+              <span className="relative grid h-14 w-14 place-items-center rounded-2xl bg-brand-yellow text-ink">
+                <HugeiconsIcon icon={role.icon} size={28} strokeWidth={1.8} />
+              </span>
+              <h3 className="relative mt-8 font-display text-3xl font-bold tracking-tight sm:text-4xl">
+                {role.title}
+              </h3>
+              <p className="relative mt-3 max-w-sm text-lg leading-8 text-white/90">
                 {role.lead}
               </p>
+            </div>
 
-              <ul className="relative mt-8 grid gap-x-8 gap-y-4 sm:grid-cols-2">
+            <div className="rounded-[2rem] bg-brand/8 p-8 sm:p-10">
+              <p className="font-mono text-xs font-bold tracking-wider text-brand uppercase">
+                Can
+              </p>
+              <ul className="mt-4 space-y-3">
                 {role.points.map((point) => (
-                  <li
-                    key={point}
-                    className={`flex gap-3 text-[0.95rem] leading-7 ${
-                      i === 0 ? "text-white/90" : "text-ink/80"
-                    }`}
-                  >
-                    <span
-                      aria-hidden
-                      className={`mt-2.5 h-1.5 w-1.5 shrink-0 rounded-full ${
-                        i === 0 ? "bg-brand-yellow" : i === 1 ? "bg-ink" : "bg-brand-gold"
-                      }`}
-                    />
+                  <li key={point} className="flex gap-3 text-base leading-7 text-ink/85">
+                    <span className="mt-1 grid h-5 w-5 shrink-0 place-items-center rounded-full bg-brand text-brand-fg">
+                      <HugeiconsIcon icon={Tick02Icon} size={12} strokeWidth={3} />
+                    </span>
                     {point}
                   </li>
                 ))}
               </ul>
-            </motion.article>
-            </motion.div>
-          ))}
-        </div>
+
+              {role.limit && (
+                <>
+                  <p className="mt-8 font-mono text-xs font-bold tracking-wider text-soft uppercase">
+                    Can&apos;t
+                  </p>
+                  <p className="mt-3 flex gap-3 text-base leading-7 text-ink/85">
+                    <span className="mt-1 grid h-5 w-5 shrink-0 place-items-center rounded-full bg-ink text-white">
+                      <HugeiconsIcon icon={Cancel01Icon} size={11} strokeWidth={3} />
+                    </span>
+                    {role.limit}
+                  </p>
+                </>
+              )}
+            </div>
+          </motion.div>
+        </AnimatePresence>
       </div>
     </section>
   );
