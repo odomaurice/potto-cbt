@@ -1,18 +1,19 @@
-# Potto Flip — marketing site
+# PottoFlip — marketing site
 
-The public site for **Potto Flip**, the e-learning platform of the Potto
-ecosystem: courses, lessons, assignments, practice quizzes, feedback and
+The public site for **PottoFlip**, the e-learning platform of the Potto Learning Suite: courses, lessons, assignments, practice quizzes, feedback and
 learning progress for schools, teachers and students. It is one long homepage,
 no other routes.
 
-The content comes from the **Potto Flip PRD**, kept in
+The content comes from the **PottoFlip PRD**, kept in
 [`docs/PRD.md`](docs/PRD.md) — the roles, the core modules, the four learning
 workflows, the ecosystem integrations and the phased roadmap. The PRD is a
 *proposed* specification, so anything it does not say is a gap for the team,
 not a drafting choice (see Known gaps).
 
-The site started as a copy of the Pottolite site and keeps its design system,
-header mechanism and section patterns unchanged.
+The site started as a copy of the Pottolite site. It keeps the Potto **colour
+palette** and the header's tone-probe mechanism, but its look is deliberately
+its own — see "Design language" below — so the Potto sites do not read as
+copies of each other.
 
 > **Read [`AGENTS.md`](AGENTS.md) before writing code.** This is Next.js **16**,
 > whose APIs and conventions differ from older versions. The guides in
@@ -30,15 +31,14 @@ header mechanism and section patterns unchanged.
 | Framework | Next.js 16.3.1, App Router | Turbopack; the homepage prerenders static |
 | UI | React 19.2 | the routes are Server Components; the homepage's sections are client components (`"use client"`) |
 | Styling | Tailwind CSS v4 | CSS-first config in [`globals.css`](src/app/globals.css) — there is **no** `tailwind.config.js` |
-| Animation | framer-motion 13 | scroll reveals, tabs, the FAQ accordion |
+| Animation | framer-motion 13 | scroll reveals, tabs, the FAQ accordion; card flips are CSS 3D transforms |
 | Icons | `@hugeicons/react` + `@hugeicons/core-free-icons` | the house icon set |
-| Fonts | Poppins (400/600/700), Geist Mono | via `next/font/google` |
+| Fonts | Bricolage Grotesque (display), Instrument Sans (body), Caveat 600 (notes), Geist Mono | via `next/font/google` |
 
 Every remaining dependency is used. `shadcn` and `tw-animate-css` are pulled in
 by `globals.css` for their **token vocabulary and utilities only** — no shadcn
-component is rendered anywhere, and `src/components/ui/` does not exist. `gsap`
-drives the hero marquee and entrance; everything else animates with
-framer-motion.
+component is rendered anywhere, and `src/components/ui/` does not exist.
+Everything animates with framer-motion or plain CSS transitions.
 
 ## Quick start
 
@@ -75,27 +75,30 @@ flowchart TB
     BD["PageBackdrop — fixed, -z-10"]:::util
     HD["HomeHeader + HomeScrollNav"]:::util
 
-    H["Hero — headline, course-structure strip, feature marquee"]:::dark
-    A["AboutSection · #about — what Flip is, the vision, where it fits"]:::light
-    F["FeaturesSection · #features — eight core features"]:::dark
-    R["RolesSection · #roles — students, teachers, admins, parents"]:::light
-    W["HowItWorksSection · #how-it-works — tabbed learning workflows"]:::light
-    E["EcosystemSection · #ecosystem — Potto Admin, Assess, CBT"]:::dark
-    RM["RoadmapSection · #roadmap — the three proposed phases"]:::light
-    FQ["FaqSection · #faq — search + collapsible sections"]:::light
+    H["Hero — headline, auto-flipping learning-loop card"]:::light
+    A["AboutSection · #about · Lesson 01 — eight problem cards that flip to Flip's answer"]:::dark
+    F["FeaturesSection · #features · Lesson 02 — bento grid of the core features"]:::light
+    R["RolesSection · #roles · Lesson 03 — sticky index, four role panels"]:::light
+    W["HowItWorksSection · #how-it-works · Lesson 04 — vertical tabs, step timeline"]:::dark
+    E["EcosystemSection · #ecosystem · Lesson 05 — hub diagram: Admin, Assess, CBT"]:::light
+    RM["RoadmapSection · #roadmap · Lesson 06 — three phases on one track"]:::ink
+    FQ["FaqSection · #faq · Lesson 07 — topic chips, single-open accordion"]:::light
+    CT["CtaSection — yellow call to action"]:::yellow
     FT["SiteFooter · #contact"]:::dark
 
     BD -.->|"renders behind everything"| H
     HD -.->|"reads tone from each"| H
-    H --> A --> F --> R --> W --> E --> RM --> FQ --> FT
+    H --> A --> F --> R --> W --> E --> RM --> FQ --> CT --> FT
 
     classDef light fill:#ffffff,stroke:#94a3b8,color:#0f172a
-    classDef dark fill:#008c8c,stroke:#008c8c,color:#ffffff
+    classDef dark fill:#0f766e,stroke:#0f766e,color:#ffffff
+    classDef ink fill:#000000,stroke:#000000,color:#ffffff
+    classDef yellow fill:#eab308,stroke:#eab308,color:#000000
     classDef util fill:#f1f5f9,stroke:#cbd5e1,color:#334155,stroke-dasharray:4 3
 ```
 
-Teal = dark ground. The header's "Talk to us" and the hero's second button go
-to `#contact`, the footer.
+Teal and ink = dark grounds; yellow is a light tone. The header's "Talk to us"
+and the hero's second button go to `#contact`, the footer.
 
 ### Where the copy comes from
 
@@ -112,9 +115,10 @@ to `#contact`, the footer.
 ### The "one picture" rule
 
 [`PageBackdrop`](src/components/PageBackdrop.tsx) paints a single fixed canvas
-plus a generated contour pattern for the **whole page**. Sections render
-transparent on top of it, or paint their own ground when they need one (the teal
-bands). The site is meant to read as one continuous image from header to footer —
+plus near-white contour lines for the **whole page**. Sections render
+transparent on top of it, or paint their own plain ground when they need one
+(the teal, ink and yellow bands). No glows or decorative gradients — the owner
+has asked for them to stay out. The site is meant to read as one continuous image from header to footer —
 **avoid boxes, frames and cards floating on visible panels.**
 
 ---
@@ -168,7 +172,7 @@ palette) and `@theme inline` (semantic aliases). **Light theme only** —
 | --- | --- | --- |
 | `--brand` | `#0F766E` | primary teal for text and fills on light; AA with white text |
 | `--color-brand-teal` | `#008C8C` | the Potto teal |
-| `--color-brand-teal-dark` | `#008C8C` | dark section grounds — see Known gaps on contrast |
+| `--color-brand-teal-dark` | `#0F766E` | dark section grounds — the deeper palette teal, so white/90 body text passes AA (4.76:1) |
 | `--color-brand-gold` | `#CA8A04` | CTA fills — **fills only, see below** |
 | `--color-brand-yellow-light` | `#FACC15` | accent text on teal |
 | `--ink` / `--soft` | `#000000` / `#6B7280` | body text on light |
@@ -206,16 +210,43 @@ A `prefers-reduced-motion` block disables all three.
 
 ---
 
+## Design language
+
+Same palette as every Potto site; everything else is Flip's own.
+
+| | Pottolite | PottoFlip |
+| --- | --- | --- |
+| Type | Poppins throughout | Bricolage Grotesque display, Instrument Sans body, Caveat for handwritten notes |
+| Signature | Centred icon circles | Cards that flip in 3D, and the folded page corner (`dog-ear`) |
+| Layout | Centred, symmetric | Left-aligned and asymmetric: bento grid, sticky scroll, hub diagram |
+| Navigation | Dot rail, full-width bar | Floating pill header; sections are numbered lessons with a course-progress pill |
+
+Both sites share the same plain ground: near-white contour lines on the light
+areas, flat colour on the bands. Two utilities in
+[`globals.css`](src/app/globals.css) carry the rest:
+
+- `dog-ear` — clips the top-right corner and draws the fold back in as a darker
+  triangle, so it works on any fill. Size it with `[--ear:3rem]`. The element
+  must be positioned.
+- `marker` — a yellow marker-pen stroke behind a word.
+
+Caveat is for short asides only (a line, never a paragraph). On teal it is set
+in `brand-yellow-light` at 24px or more, where the large-text 3:1 threshold
+applies.
+
+---
+
 ## Shared components
 
 | Component | Role |
 | --- | --- |
-| [`SectionCaption`](src/components/SectionCaption.tsx) | The centred uppercase eyebrow **every** section opens with. Tone-aware. Use it — do not hand-roll another. |
-| [`Wordmark`](src/components/Wordmark.tsx) | The Potto hand plus "Potto Flip" set in type, "Flip" in the accent colour. There is no Flip logo artwork, so the name is live text; `tone="dark"` inverts the mark to white. |
+| [`SectionCaption`](src/components/SectionCaption.tsx) | The eyebrow **every** section opens with: an optional "Lesson 0N" chip plus an uppercase label. Tone-aware, left-aligned by default. Use it — do not hand-roll another. The lesson number must match the section's index in `HomeScrollNav`. |
+| [`Wordmark`](src/components/Wordmark.tsx) | The Potto hand plus "Potto" and a tilted "Flip" tag, set in type. There is no Flip logo artwork, so the name is live text; `tone="dark"` inverts the mark to white and the tag to yellow. |
 | [`PageBackdrop`](src/components/PageBackdrop.tsx) / [`ContourPattern`](src/components/ContourPattern.tsx) | The single page-wide ground; contour lines are generated in JS, not an asset. |
-| [`HomeHeader`](src/components/HomeHeader.tsx) | Tone-adaptive header — see the probe mechanism above. |
-| [`HomeScrollNav`](src/components/HomeScrollNav.tsx) | Vertical dot rail, desktop only (`lg:block`), driven by a hand-maintained `SECTIONS` list. |
-| [`HowItWorksSection`](src/components/HowItWorksSection.tsx) | WAI-ARIA tabs (arrow keys move between them). Each tab is one PRD workflow: who does it, a one-line note, and its steps. Add one by adding an entry to `FLOWS`. |
+| [`HomeHeader`](src/components/HomeHeader.tsx) | Floating pill header, filled with the ground beneath it — see the probe mechanism above. |
+| [`HomeScrollNav`](src/components/HomeScrollNav.tsx) | The "course progress" pill, bottom-left, `md` and up: percentage ring, current lesson, previous/next. Hidden on the hero. Driven by a hand-maintained `SECTIONS` list. |
+| [`HowItWorksSection`](src/components/HowItWorksSection.tsx) | WAI-ARIA tabs, vertical on desktop and a sideways-scrolling row on phones (all four arrow keys move between them). Each tab is one PRD workflow. Add one by adding an entry to `FLOWS`. |
+| [`CtaSection`](src/components/CtaSection.tsx) | The yellow "bring Flip to your school" band before the footer. |
 | [`WhatsAppButton`](src/components/WhatsAppButton.tsx) | Fixed customer-care link, bottom-right, mounted in `layout.tsx`. A Server Component — it ships no JavaScript. |
 
 ### Patterns worth copying
@@ -223,11 +254,18 @@ A `prefers-reduced-motion` block disables all three.
 - **Scroll reveal.** Every section defines a local `reveal(delay)` returning
   `initial` / `animate` / `transition`, gated on
   `useInView(ref, { once: true })`, with a shared `ease = [0.22, 1, 0.36, 1]`.
-- **Tabs over carousels.** The workflow walkthrough is a tab row, which scrolls
-  sideways on phones rather than wrapping, with the panel directly beneath it.
-- **No invented interface.** With no Flip screenshots, the hero shows the shape
-  of a course (course → modules → lessons → activities → progress) as icons,
-  not a mocked-up dashboard.
+- **Tabs over carousels.** The workflow walkthrough is a tab list, which scrolls
+  sideways on phones rather than wrapping.
+- **Flip cards.** `perspective-*` on the parent, `transform-3d` on the turning
+  element, `backface-hidden` on both faces and `rotate-y-180` on the back. Put
+  both faces in one grid cell (`[grid-area:1/1]`) so the card is as tall as its
+  longer side — no fixed heights. Mark the face turned away `aria-hidden`.
+- **Reveal once, track always.** Where an element both animates in and reports
+  that it is in view (the role panels), use two elements: an outer one with
+  `onViewportEnter` and an inner one with `viewport={{ once: true }}`. Without
+  `once`, framer-motion fades content back out as you scroll past it.
+- **No invented interface.** With no Flip screenshots, the hero shows the
+  learning loop as type and icons, not a mocked-up dashboard.
 - **No `setState` inside an effect body.** The `react-hooks/set-state-in-effect`
   rule is enforced as an **error**. For a hydration-time value use
   `useSyncExternalStore` with a never-notifying subscribe (see
@@ -312,6 +350,4 @@ decision for the team.
 | Team | The Pottolite team section was removed — those people and photos were for Pottolite. Add a Flip team only with names, photos and consent from the people in it |
 | Contacts | The footer keeps Potto's address, phone lines, emails and office hours, and support points to `support@potto.ng`. The WhatsApp button still opens Potto's customer-care line, `wa.me/2349064566528` — confirm it handles Flip |
 | Sign-up | There is no Flip sign-up or app URL, so every CTA goes to the contact details |
-| Teal contrast | `--color-brand-teal-dark` is `#008C8C`, not the `#0F766E` the contrast table above was measured on. White on `#008C8C` is about 4.1:1 — below AA for body text. Darkening it would fix this at the cost of matching the Potto teal |
 | Scroll-nav order | `HomeScrollNav`'s `SECTIONS` list is hand-maintained and **must stay in `page.tsx` order** |
-| FAQ search | Plain substring matching, no stemming |

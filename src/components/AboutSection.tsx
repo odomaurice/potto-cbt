@@ -1,45 +1,75 @@
 "use client";
 
-import { useRef } from "react";
-import { motion, useInView } from "framer-motion";
+import { useRef, useState } from "react";
+import { motion, useInView, useReducedMotion } from "framer-motion";
 import { HugeiconsIcon } from "@hugeicons/react";
-import {
-  Analytics01Icon,
-  Clock01Icon,
-  LibraryIcon,
-} from "@hugeicons/core-free-icons";
+import { RepeatIcon } from "@hugeicons/core-free-icons";
 import SectionCaption from "@/components/SectionCaption";
 
-// The problems in PRD 1.4, grouped into the three things Flip changes.
-const POINTS = [
+// The eight problems of PRD 1.4, each with the part of Flip that answers it.
+const CARDS = [
   {
-    icon: LibraryIcon,
-    title: "One home for learning materials",
-    body: "Lessons, resources and assignments live in one place instead of across books, handouts, messaging apps and separate platforms",
+    problem:
+      "Learning materials are spread across books, handouts, messaging apps and separate platforms.",
+    answer: "One structured home for every course, lesson and resource.",
   },
   {
-    icon: Clock01Icon,
-    title: "Learning beyond school hours",
-    body: "Students revisit lessons at their own pace and resume where they stopped, and those who miss a class can catch up",
+    problem:
+      "Students struggle to reach learning materials outside school hours.",
+    answer:
+      "Lessons and permitted downloads are there whenever a student signs in.",
   },
   {
-    icon: Analytics01Icon,
-    title: "Progress you can act on",
-    body: "Lesson completion, submissions and quiz results show who is on track, who needs support and which topics students find hard",
+    problem:
+      "Teachers have no single place for lessons, assignments and digital resources.",
+    answer:
+      "Courses, modules, a resource library and assignments on one platform.",
   },
-];
-
-const FITS = [
-  "Complements classroom teaching rather than replacing it",
-  "The teaching and learning layer of the Potto ecosystem",
-  "Focused on learning — school records, exams and results stay in their own Potto products",
+  {
+    problem:
+      "Lesson completion and assignment participation are hard to track.",
+    answer:
+      "Completion and submissions are recorded — and opening a lesson is not counted as finishing it.",
+  },
+  {
+    problem: "Feedback on learning activities arrives late, or not at all.",
+    answer:
+      "Objective questions are graded automatically, and teacher feedback is released in one place.",
+  },
+  {
+    problem: "Schools have little visibility into digital learning.",
+    answer:
+      "School-level reports on participation and completion, by class, subject and course.",
+  },
+  {
+    problem: "Students who miss a class find it hard to catch up.",
+    answer:
+      "Every published lesson can be revisited, and resumed from where they stopped.",
+  },
+  {
+    problem:
+      "Teachers struggle to see which topics students find difficult.",
+    answer:
+      "Quiz results and completion rates point to the topics students struggle with.",
+  },
 ];
 
 const ease = [0.22, 1, 0.36, 1] as const;
 
 export default function AboutSection() {
   const ref = useRef<HTMLDivElement>(null);
-  const inView = useInView(ref, { once: true, amount: 0.15 });
+  const inView = useInView(ref, { once: true, amount: 0.1 });
+  const reduced = useReducedMotion();
+  const [flipped, setFlipped] = useState<Set<number>>(() => new Set());
+
+  const allFlipped = flipped.size === CARDS.length;
+  const toggle = (i: number) =>
+    setFlipped((current) => {
+      const next = new Set(current);
+      if (next.has(i)) next.delete(i);
+      else next.add(i);
+      return next;
+    });
 
   const reveal = (delay: number) => ({
     initial: { opacity: 0, y: 22 },
@@ -50,92 +80,126 @@ export default function AboutSection() {
   return (
     <section
       id="about"
-      data-nav-tone="light"
-      data-nav-bg="var(--canvas)"
-      className="relative py-24 text-ink md:py-32"
+      data-nav-tone="dark"
+      data-nav-bg="var(--color-brand-teal-dark)"
+      className="relative isolate overflow-hidden rounded-t-[2.5rem] bg-brand-teal-dark py-24 text-white md:rounded-t-[4rem] md:py-32"
     >
+
       <div ref={ref} className="mx-auto w-full max-w-7xl px-5 md:px-6 lg:px-8">
-        <SectionCaption {...reveal(0)}>What is Potto Flip?</SectionCaption>
-
-        <div className="mt-12 grid gap-14 lg:grid-cols-[7fr_5fr] lg:gap-16">
+        <div className="grid gap-10 lg:grid-cols-[7fr_5fr] lg:items-end">
           <div>
+            <SectionCaption tone="dark" lesson={1} {...reveal(0)}>
+              Why PottoFlip
+            </SectionCaption>
             <motion.h2
-              {...reveal(0.12)}
-              className="max-w-2xl font-header text-4xl leading-[1.06] font-extrabold tracking-tight sm:text-5xl lg:text-6xl"
+              {...reveal(0.1)}
+              className="mt-6 max-w-3xl font-display text-4xl leading-[1.02] font-extrabold tracking-[-0.03em] sm:text-5xl lg:text-6xl"
             >
-              Teaching and learning, in{" "}
-              <span className="text-brand">one place</span>
+              Every classroom problem has a{" "}
+              <span className="text-brand-yellow-light">flip side</span>
             </motion.h2>
-
-            <motion.p
-              {...reveal(0.2)}
-              className="mt-6 max-w-xl text-base leading-8 text-soft sm:text-lg"
-            >
-              Potto Flip is an e-learning platform that helps schools deliver,
-              organise, manage and monitor digital learning. Teachers publish
-              courses, students work through them, and the school sees how
-              learning is going.
-            </motion.p>
-
-            <ul className="mt-12 space-y-9">
-              {POINTS.map((point, i) => (
-                <motion.li
-                  key={point.title}
-                  {...reveal(0.3 + i * 0.12)}
-                  className="flex items-start gap-4"
-                >
-                  <span className="grid h-12 w-12 shrink-0 place-items-center rounded-2xl bg-brand text-brand-fg lg:h-14 lg:w-14">
-                    <HugeiconsIcon
-                      icon={point.icon}
-                      size={26}
-                      strokeWidth={1.9}
-                    />
-                  </span>
-                  <div>
-                    <h3 className="font-header text-lg font-extrabold tracking-tight lg:text-xl">
-                      {point.title}
-                    </h3>
-                    <p className="mt-1.5 max-w-xl text-[0.95rem] leading-7 text-soft">
-                      {point.body}
-                    </p>
-                  </div>
-                </motion.li>
-              ))}
-            </ul>
           </div>
 
-          {/* A tinted fill, not a bordered card: the page avoids frames. */}
-          <motion.aside
-            {...reveal(0.5)}
-            className="self-start rounded-3xl bg-brand/8 p-8 sm:p-10"
-          >
-            <p className="text-xs font-semibold tracking-[0.22em] text-brand uppercase">
-              Our vision
+          <motion.div {...reveal(0.2)}>
+            <p className="text-lg leading-8 text-white/90">
+              PottoFlip is an e-learning platform that helps schools deliver,
+              organise and monitor digital learning. It complements the
+              classroom — it does not replace it.
             </p>
-            <p className="mt-3 font-header text-2xl leading-snug font-extrabold tracking-tight sm:text-3xl">
-              Make learning more accessible, engaging, organised and
-              measurable.
-            </p>
-
-            <p className="mt-8 text-xs font-semibold tracking-[0.22em] text-soft uppercase">
-              Where Flip fits
-            </p>
-            <ul className="mt-5 space-y-3">
-              {FITS.map((line) => (
-                <li
-                  key={line}
-                  className="flex gap-3.5 text-[0.95rem] leading-7 text-ink"
-                >
-                  <span
-                    aria-hidden
-                    className="mt-2.5 h-1.5 w-1.5 shrink-0 rounded-full bg-brand-gold"
-                  />
-                  {line}
-                </li>
-              ))}
-            </ul>
-          </motion.aside>
+            <button
+              type="button"
+              onClick={() =>
+                setFlipped(
+                  allFlipped ? new Set() : new Set(CARDS.map((_, i) => i)),
+                )
+              }
+              className="mt-6 inline-flex cursor-pointer items-center gap-2 rounded-full bg-white/10 px-5 py-3 text-sm font-semibold transition hover:bg-white/20"
+            >
+              <HugeiconsIcon icon={RepeatIcon} size={16} strokeWidth={2} />
+              {allFlipped ? "Show the problems" : "Flip them all"}
+            </button>
+          </motion.div>
         </div>
+
+        <ul className="mt-14 grid gap-4 sm:grid-cols-2 lg:grid-cols-4">
+          {CARDS.map((card, i) => {
+            const isFlipped = flipped.has(i);
+            return (
+              <motion.li
+                key={card.problem}
+                {...reveal(0.25 + i * 0.06)}
+                className="perspective-[1200px]"
+              >
+                <button
+                  type="button"
+                  onClick={() => toggle(i)}
+                  aria-pressed={isFlipped}
+                  className="group block h-full w-full cursor-pointer text-left"
+                >
+                  {/* Both faces share one grid cell, so the card is as tall
+                      as its longer side and nothing needs a fixed height. */}
+                  <span
+                    className={`grid h-full transform-3d ${
+                      reduced
+                        ? ""
+                        : "transition-transform duration-700 ease-[cubic-bezier(0.22,1,0.36,1)]"
+                    } ${isFlipped ? "rotate-y-180" : "group-hover:rotate-y-6"}`}
+                  >
+                    <span
+                      aria-hidden={isFlipped}
+                      className="dog-ear relative flex min-h-60 flex-col justify-between rounded-[1.75rem] bg-white/10 p-6 backface-hidden [grid-area:1/1] [--ear:2rem]"
+                    >
+                      <span>
+                        <span className="text-xs font-semibold tracking-[0.2em] text-white/90 uppercase">
+                          Problem {String(i + 1).padStart(2, "0")}
+                        </span>
+                        <span className="mt-4 block text-lg leading-7 font-medium">
+                          {card.problem}
+                        </span>
+                      </span>
+                      <span className="mt-6 inline-flex items-center gap-2 font-note text-xl text-brand-yellow-light">
+                        <HugeiconsIcon
+                          icon={RepeatIcon}
+                          size={18}
+                          strokeWidth={2}
+                        />
+                        flip it
+                      </span>
+                    </span>
+
+                    <span
+                      aria-hidden={!isFlipped}
+                      className="dog-ear relative flex min-h-60 rotate-y-180 flex-col justify-between rounded-[1.75rem] bg-brand-yellow p-6 text-ink backface-hidden [grid-area:1/1] [--ear:2rem]"
+                    >
+                      <span>
+                        <span className="text-xs font-semibold tracking-[0.2em] text-ink/70 uppercase">
+                          With PottoFlip
+                        </span>
+                        <span className="mt-4 block font-display text-xl leading-snug font-bold">
+                          {card.answer}
+                        </span>
+                      </span>
+                      <span className="mt-6 font-note text-xl text-ink/70">
+                        flip back
+                      </span>
+                    </span>
+                  </span>
+                </button>
+              </motion.li>
+            );
+          })}
+        </ul>
+
+        <motion.p
+          {...reveal(0.8)}
+          className="mt-16 max-w-3xl font-display text-2xl leading-snug font-bold sm:text-3xl"
+        >
+          Our vision:{" "}
+          <span className="text-white/90">
+            make learning more accessible, engaging, organised and
+            measurable.
+          </span>
+        </motion.p>
       </div>
     </section>
   );

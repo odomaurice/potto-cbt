@@ -2,9 +2,9 @@
 
 ## Product Requirements Document (PRD)
 
-**Product:** Potto Flip
+**Product:** PottoFlip
 **Product Category:** E-Learning / Learning Management System (LMS)
-**Parent Ecosystem:** Potto
+**Product Suite:** Potto Learning Suite
 **Document Type:** Product Requirements Document
 **Status:** Proposed Product Specification
 **Version:** (not set)
@@ -16,17 +16,17 @@
 
 # 1. Product Overview
 
-## 1.1 What Is Potto Flip?
+## 1.1 What Is PottoFlip?
 
-Potto Flip is an e-learning platform designed to help schools deliver, organise, manage, and monitor digital learning.
+PottoFlip is an e-learning platform designed to help schools deliver, organise, manage, and monitor digital learning.
 
 It should provide a central environment where teachers can create and distribute learning materials, students can access courses and complete learning activities, and schools can monitor participation and learning progress.
 
 The platform should complement traditional classroom teaching by making educational content accessible digitally and supporting learning beyond the physical classroom.
 
-Potto Flip should serve as the digital teaching and learning layer of the Potto ecosystem.
+PottoFlip should serve as the digital teaching and learning layer of the Potto Learning Suite.
 
-While other Potto products may manage school administration, examinations, and formal academic results, Potto Flip should concentrate on the actual teaching and learning process.
+While other Potto products may manage school administration, examinations, and formal academic results, PottoFlip should concentrate on the actual teaching and learning process.
 
 ## 1.2 Product Vision
 
@@ -34,16 +34,16 @@ To make learning more accessible, engaging, organised, and measurable by giving 
 
 ## 1.3 Product Mission
 
-Potto Flip aims to:
+PottoFlip aims to:
 
 - Make digital learning accessible to students and teachers.
 - Enable teachers to organise and deliver learning materials efficiently.
 - Help students learn at their own pace and monitor their progress.
 - Support assignments, practice activities, feedback, and continuous learning.
 - Give schools useful insight into learning participation and course completion.
-- Connect digital learning with the wider Potto school ecosystem.
+- Connect digital learning with the wider Potto Learning Suite.
 
-## 1.4 The Problem Potto Flip Should Solve
+## 1.4 The Problem PottoFlip Should Solve
 
 Traditional learning environments can face several challenges:
 
@@ -56,7 +56,7 @@ Traditional learning environments can face several challenges:
 7. Students who miss classes may find it difficult to catch up.
 8. Teachers may struggle to identify topics that students consistently find difficult.
 
-Potto Flip should address these problems through a structured, user-friendly digital learning environment.
+PottoFlip should address these problems through a structured, user-friendly digital learning environment.
 
 ---
 
@@ -84,7 +84,7 @@ Enable students to revisit materials, study at their own pace, and access additi
 
 ### Objective 6: Integrate With Potto
 
-Reduce duplicate data entry by connecting to relevant school, class, student, and teacher records already available in the Potto ecosystem.
+Reduce duplicate data entry by connecting to relevant school, class, student, and teacher records already available in the Potto Learning Suite.
 
 ---
 
@@ -92,7 +92,7 @@ Reduce duplicate data entry by connecting to relevant school, class, student, an
 
 ## 3.1 Platform Super Administrator
 
-The platform super administrator manages the overall Potto Flip service.
+The platform super administrator manages the overall PottoFlip service.
 
 Responsibilities should include:
 
@@ -112,7 +112,7 @@ The school administrator manages the school's learning environment.
 
 Responsibilities should include:
 
-- Managing school access to Potto Flip.
+- Managing school access to PottoFlip.
 - Configuring learning settings.
 - Assigning or approving teachers and course creators.
 - Reviewing courses published within the school.
@@ -170,7 +170,7 @@ Students should only access courses and information for which they are authorise
 
 ## 3.5 Parent or Guardian
 
-Parent access should be designed as an optional capability, depending on the school's configuration and the wider Potto ecosystem.
+Parent access should be designed as an optional capability, depending on the school's configuration and the wider Potto Learning Suite.
 
 Parents or guardians may be able to:
 
@@ -188,7 +188,7 @@ Parents should not be able to change student submissions, edit teacher grades, o
 
 ## 4.1 Authentication and User Access
 
-Potto Flip should provide secure, role-aware access to the learning environment.
+PottoFlip should provide secure, role-aware access to the learning environment.
 
 Required capabilities:
 
@@ -201,7 +201,7 @@ Required capabilities:
 - Appropriate handling of unauthorised access.
 - Account linking where supported by Potto authentication services.
 
-Where the Potto ecosystem already provides authentication, Flip should use an approved shared authentication mechanism where technically appropriate.
+Where the Potto Learning Suite already provides authentication, Flip should use an approved shared authentication mechanism where technically appropriate.
 
 The system should avoid requiring users to maintain unnecessary duplicate accounts across Potto products.
 
@@ -227,7 +227,7 @@ School data must remain isolated. Users from one school must not be able to acce
 
 ## 4.3 Course Management
 
-Course management is one of the most important modules in Potto Flip.
+Course management is one of the most important modules in PottoFlip.
 
 Teachers should be able to create a course with:
 
@@ -343,7 +343,7 @@ The system should maintain submission timestamps and an appropriate history of c
 
 ## 4.7 Quizzes and Practice Activities
 
-Potto Flip should support low-stakes quizzes and practice activities that reinforce learning.
+PottoFlip should support low-stakes quizzes and practice activities that reinforce learning.
 
 Supported question types should include:
 
@@ -434,7 +434,7 @@ Access to identifiable student information should be restricted according to sch
 
 ## 4.11 Learning Progress and Analytics
 
-Potto Flip should record meaningful learning events, including:
+PottoFlip should record meaningful learning events, including:
 
 - Course enrolment.
 - Lesson access.
@@ -463,7 +463,7 @@ Analytics should be descriptive and actionable rather than presenting meaningles
 
 # 5. Additional Features for Future Development
 
-The following capabilities could differentiate Potto Flip, but they should not delay the delivery of the core learning experience.
+The following capabilities could differentiate PottoFlip, but they should not delay the delivery of the core learning experience.
 
 ## 5.1 Notifications
 
@@ -595,9 +595,9 @@ Where required, publication should follow the school's approval process.
 
 ---
 
-# 7. Integration With the Potto Ecosystem
+# 7. Integration With the Potto Learning Suite
 
-Potto Flip should be designed as a connected product rather than an isolated application.
+PottoFlip should be designed as a connected product rather than an isolated application.
 
 ## 7.1 Potto Admin
 
@@ -651,7 +651,7 @@ Integration details must be validated against the actual capabilities of the exi
 
 # 8. Data and Security Requirements
 
-Potto Flip will process educational records and may serve children. Security and privacy must therefore be fundamental design requirements.
+PottoFlip will process educational records and may serve children. Security and privacy must therefore be fundamental design requirements.
 
 The platform should implement:
 
@@ -775,7 +775,7 @@ These phases are proposed priorities, not a statement of existing development st
 
 # 11. Features Outside the Core Scope
 
-To keep Potto Flip focused, the following should not be its primary responsibility:
+To keep PottoFlip focused, the following should not be its primary responsibility:
 
 - Full school fee management.
 - Payroll and staff salary administration.
@@ -792,7 +792,7 @@ Flip may consume or share relevant data with these services through approved int
 
 # 12. Success Metrics
 
-Potto Flip should be evaluated using measurable product outcomes.
+PottoFlip should be evaluated using measurable product outcomes.
 
 ### Adoption
 
@@ -855,10 +855,10 @@ The initial release should be considered functionally ready when:
 
 # 14. Final Product Definition
 
-Potto Flip should be the learning environment where teaching content is delivered, students engage with lessons, learning activities are completed, teachers provide feedback, and learning progress becomes visible.
+PottoFlip should be the learning environment where teaching content is delivered, students engage with lessons, learning activities are completed, teachers provide feedback, and learning progress becomes visible.
 
 Its core value is bringing learning delivery and participation into one structured digital experience.
 
 The product should prioritise a dependable learning experience first, connect with existing Potto services where appropriate, and introduce advanced capabilities such as AI assistance, personalised learning, and gamification as the platform matures.
 
-**Potto Flip: A connected digital learning experience for schools, teachers, and students.**
+**PottoFlip: A connected digital learning experience for schools, teachers, and students.**

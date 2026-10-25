@@ -5,29 +5,39 @@ import { motion, type HTMLMotionProps } from "framer-motion";
 
 type Props = Omit<HTMLMotionProps<"p">, "children"> & {
   tone?: "light" | "dark";
+  /** The page is laid out like a course; each section is a numbered lesson. */
+  lesson?: number;
+  align?: "left" | "center";
   children: ReactNode;
 };
 
 export default function SectionCaption({
   tone = "light",
+  lesson,
+  align = "left",
   className = "",
   children,
   ...rest
 }: Props) {
+  const onDark = tone === "dark";
+
   return (
     <motion.p
       {...rest}
-      className={`text-center text-xs font-semibold tracking-[0.22em] uppercase ${
-        tone === "dark" ? "text-white/70" : "text-soft"
-      } ${className}`}
+      className={`flex items-center gap-3 text-xs font-semibold tracking-[0.2em] uppercase ${
+        align === "center" ? "justify-center" : ""
+      } ${onDark ? "text-white/90" : "text-soft"} ${className}`}
     >
+      {lesson !== undefined && (
+        <span
+          className={`inline-flex h-8 items-center rounded-full px-3 font-display text-[0.8rem] font-bold tracking-normal normal-case ${
+            onDark ? "bg-brand-yellow text-ink" : "bg-brand text-brand-fg"
+          }`}
+        >
+          Lesson {String(lesson).padStart(2, "0")}
+        </span>
+      )}
       {children}
-      <span
-        aria-hidden
-        className={`mx-auto mt-3 block h-0.5 w-10 ${
-          tone === "dark" ? "bg-white/50" : "bg-brand"
-        }`}
-      />
     </motion.p>
   );
 }

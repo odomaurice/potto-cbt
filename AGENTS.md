@@ -10,7 +10,7 @@ This block is written and re-added by `next dev` — verify at `node_modules/nex
 
 ---
 
-# Potto Flip project rules
+# PottoFlip project rules
 
 The block above is managed by `next dev`; everything below it is ours and
 survives regeneration. [`README.md`](README.md) explains the reasoning — this is
@@ -25,7 +25,12 @@ the short list of things that go wrong when they are not followed.
 
 ## Content
 
-- Potto Flip's copy comes from the PRD in [`docs/PRD.md`](docs/PRD.md). Do
+- **PottoFlip is one word**, always — never "Potto Flip", and never "Flip" on
+  its own as the product name in page copy ("flip" as a verb is fine). The
+  family of products is the **Potto Learning Suite**, not "the Potto
+  ecosystem". The `ecosystem` id and `EcosystemSection` name are internal and
+  can stay.
+- PottoFlip's copy comes from the PRD in [`docs/PRD.md`](docs/PRD.md). Do
   not add capabilities, numbers or claims it does not support.
 - The PRD is a *proposed* spec. Phase 2 and 3 items are "planned" on the page,
   never described as available.
@@ -44,6 +49,11 @@ the short list of things that go wrong when they are not followed.
 
 ## Design
 
+- **The background is the contour pattern** (`PageBackdrop` + `ContourPattern`,
+  near-white lines). Do not swap it for a grid, dots or any other texture, and
+  do not add textures to the coloured bands.
+- **No decorative gradients or glows** — no blurred colour blobs, gradient
+  washes or gradient-filled lines. Flat fills only.
 - **No frames.** No boxes, outlines or cards floating on visible panels — the
   page reads as one continuous picture. Use tinted fills instead.
 - Gold (`#CA8A04`) is a fill, never text on teal: 1.86:1. Body copy on teal is

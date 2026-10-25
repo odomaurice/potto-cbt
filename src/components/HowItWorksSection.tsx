@@ -23,7 +23,6 @@ const FLOWS = [
     icon: CourseIcon,
     label: "Create a course",
     role: "Teacher",
-    title: "A teacher creates a course",
     summary:
       "Where the school requires it, publishing follows its approval process.",
     steps: [
@@ -40,7 +39,6 @@ const FLOWS = [
     icon: PlayIcon,
     label: "Complete a lesson",
     role: "Student",
-    title: "A student completes a lesson",
     summary:
       "Course progress updates according to the completion rules the teacher set.",
     steps: [
@@ -48,7 +46,7 @@ const FLOWS = [
       "Select an enrolled course.",
       "Open a lesson and study its content.",
       "Complete the lesson's required activities.",
-      "Flip records the progress.",
+      "PottoFlip records the progress.",
       "Move straight on to the next lesson.",
     ],
   },
@@ -57,7 +55,6 @@ const FLOWS = [
     icon: Task01Icon,
     label: "Set an assignment",
     role: "Teacher and students",
-    title: "A teacher sets an assignment",
     summary:
       "Submission times are recorded, so late and missing work is easy to see.",
     steps: [
@@ -74,7 +71,6 @@ const FLOWS = [
     icon: QuizIcon,
     label: "Run a practice quiz",
     role: "Teacher and students",
-    title: "A teacher runs a practice quiz",
     summary:
       "Quiz feedback explains the answers, so students learn from it rather than just see a score.",
     steps: [
@@ -103,13 +99,14 @@ export default function HowItWorksSection() {
     transition: { duration: 0.65, delay, ease },
   });
 
-  // Arrow keys move between tabs, as the WAI-ARIA tabs pattern expects.
+  // The tab list is vertical on large screens and a row on phones, so both
+  // arrow pairs move between tabs.
   const onKeyDown = (event: KeyboardEvent) => {
-    const step =
-      event.key === "ArrowRight" ? 1 : event.key === "ArrowLeft" ? -1 : 0;
-    if (!step) return;
+    const forward = event.key === "ArrowDown" || event.key === "ArrowRight";
+    const back = event.key === "ArrowUp" || event.key === "ArrowLeft";
+    if (!forward && !back) return;
     event.preventDefault();
-    const next = (index + step + FLOWS.length) % FLOWS.length;
+    const next = (index + (forward ? 1 : -1) + FLOWS.length) % FLOWS.length;
     setIndex(next);
     tabs.current[next]?.focus();
   };
@@ -119,101 +116,119 @@ export default function HowItWorksSection() {
   return (
     <section
       id="how-it-works"
-      data-nav-tone="light"
-      data-nav-bg="var(--canvas)"
-      className="relative py-24 text-ink md:py-32"
+      data-nav-tone="dark"
+      data-nav-bg="var(--color-brand-teal-dark)"
+      className="relative isolate overflow-hidden bg-brand-teal-dark py-24 text-white md:py-32"
     >
-      <div ref={ref} className="mx-auto w-full max-w-7xl px-5 md:px-6 lg:px-8">
-        <SectionCaption {...reveal(0)}>Using Potto Flip</SectionCaption>
 
+      <div ref={ref} className="mx-auto w-full max-w-7xl px-5 md:px-6 lg:px-8">
+        <SectionCaption tone="dark" lesson={4} {...reveal(0)}>
+          How it works
+        </SectionCaption>
         <motion.h2
-          {...reveal(0.12)}
-          className="mx-auto mt-7 max-w-4xl text-center font-header text-4xl leading-[1.06] font-extrabold tracking-tight sm:text-5xl lg:text-6xl"
+          {...reveal(0.1)}
+          className="mt-6 max-w-3xl font-display text-4xl leading-[1.02] font-extrabold tracking-[-0.03em] sm:text-5xl lg:text-6xl"
         >
-          How it works, <span className="text-brand">step by step</span>
+          Four everyday workflows,{" "}
+          <span className="text-brand-yellow-light">step by step</span>
         </motion.h2>
 
-        <motion.p
-          {...reveal(0.2)}
-          className="mx-auto mt-5 max-w-2xl text-center text-base leading-7 text-soft sm:text-lg sm:leading-8"
-        >
-          Four everyday workflows, from building a course to learning from a
-          quiz.
-        </motion.p>
+        <div className="mt-14 grid gap-10 lg:grid-cols-[4fr_8fr] lg:gap-16">
+          <motion.div
+            {...reveal(0.2)}
+            role="tablist"
+            aria-label="PottoFlip workflows"
+            aria-orientation="vertical"
+            onKeyDown={onKeyDown}
+            className="-mx-5 flex gap-2 overflow-x-auto px-5 pb-2 [scrollbar-width:none] lg:mx-0 lg:flex-col lg:overflow-visible lg:px-0 [&::-webkit-scrollbar]:hidden"
+          >
+            {FLOWS.map((f, i) => {
+              const selected = i === index;
+              return (
+                <button
+                  key={f.id}
+                  ref={(el) => {
+                    tabs.current[i] = el;
+                  }}
+                  type="button"
+                  role="tab"
+                  id={`flow-tab-${f.id}`}
+                  aria-selected={selected}
+                  aria-controls={`flow-panel-${f.id}`}
+                  tabIndex={selected ? 0 : -1}
+                  onClick={() => setIndex(i)}
+                  className={`flex shrink-0 cursor-pointer items-center gap-4 rounded-2xl px-5 py-4 text-left transition-all duration-300 lg:px-6 lg:py-5 ${
+                    selected
+                      ? "bg-brand-yellow text-ink lg:translate-x-2"
+                      : "bg-white/10 text-white hover:bg-white/15"
+                  }`}
+                >
+                  <span
+                    className={`grid h-11 w-11 shrink-0 place-items-center rounded-xl ${
+                      selected ? "bg-ink text-brand-yellow" : "bg-white/10"
+                    }`}
+                  >
+                    <HugeiconsIcon icon={f.icon} size={22} strokeWidth={1.9} />
+                  </span>
+                  <span>
+                    <span className="block font-display text-lg font-bold whitespace-nowrap">
+                      {f.label}
+                    </span>
+                    <span
+                      className={`block text-xs font-semibold tracking-[0.14em] uppercase ${
+                        selected ? "text-ink/70" : "text-white/80"
+                      }`}
+                    >
+                      {f.role}
+                    </span>
+                  </span>
+                </button>
+              );
+            })}
+          </motion.div>
 
-        <motion.div
-          {...reveal(0.3)}
-          role="tablist"
-          aria-label="Potto Flip workflows"
-          onKeyDown={onKeyDown}
-          className="mx-auto mt-12 flex max-w-full gap-2 overflow-x-auto pb-2 [scrollbar-width:none] sm:justify-center [&::-webkit-scrollbar]:hidden"
-        >
-          {FLOWS.map((f, i) => {
-            const selected = i === index;
-            return (
-              <button
-                key={f.id}
-                ref={(el) => {
-                  tabs.current[i] = el;
-                }}
-                type="button"
-                role="tab"
-                id={`flow-tab-${f.id}`}
-                aria-selected={selected}
-                aria-controls={`flow-panel-${f.id}`}
-                tabIndex={selected ? 0 : -1}
-                onClick={() => setIndex(i)}
-                className={`flex shrink-0 cursor-pointer items-center gap-2 rounded-full px-5 py-3 text-sm font-semibold transition-colors duration-300 ${
-                  selected
-                    ? "bg-brand text-brand-fg"
-                    : "bg-surface-2 text-soft hover:bg-brand/10 hover:text-ink"
-                }`}
-              >
-                <HugeiconsIcon icon={f.icon} size={18} strokeWidth={2} />
-                {f.label}
-              </button>
-            );
-          })}
-        </motion.div>
-
-        {/* No min-height: every workflow has six steps, so the panels are
-            already the same height and switching tabs does not jump. */}
-        <div className="mt-14 md:mt-16">
           <AnimatePresence mode="wait" initial={false}>
             <motion.div
               key={flow.id}
               id={`flow-panel-${flow.id}`}
               role="tabpanel"
               aria-labelledby={`flow-tab-${flow.id}`}
-              initial={reduced ? { opacity: 0 } : { opacity: 0, y: 18 }}
-              animate={{ opacity: 1, y: 0 }}
-              exit={reduced ? { opacity: 0 } : { opacity: 0, y: -12 }}
-              transition={{ duration: 0.4, ease }}
-              className="grid items-start gap-10 md:grid-cols-[5fr_7fr] md:gap-10 lg:gap-16"
+              initial={reduced ? { opacity: 0 } : { opacity: 0, x: 24 }}
+              animate={{ opacity: 1, x: 0 }}
+              exit={reduced ? { opacity: 0 } : { opacity: 0, x: -16 }}
+              transition={{ duration: 0.35, ease }}
             >
-              {/* A tinted fill, not a bordered card. */}
-              <div className="rounded-3xl bg-brand/8 p-8 sm:p-10">
-                <p className="text-xs font-semibold tracking-[0.22em] text-brand uppercase">
-                  {flow.role}
-                </p>
-                <h3 className="mt-3 font-header text-3xl leading-tight font-extrabold tracking-tight sm:text-4xl">
-                  {flow.title}
-                </h3>
-                <p className="mt-5 text-base leading-7 text-soft">
-                  {flow.summary}
-                </p>
-              </div>
+              <p className="max-w-xl font-note text-2xl text-brand-yellow-light">
+                {flow.summary}
+              </p>
 
-              <ol className="grid gap-x-8 gap-y-6 sm:grid-cols-2">
+              <ol className="relative mt-8">
+                {/* The track the steps run down. */}
+                <span
+                  aria-hidden
+                  className="absolute top-5 bottom-5 left-5 w-0.5 bg-white/20"
+                />
                 {flow.steps.map((step, i) => (
-                  <li key={step} className="flex items-start gap-4">
-                    <span className="grid h-9 w-9 shrink-0 place-items-center rounded-full bg-brand text-sm font-bold text-brand-fg">
+                  <motion.li
+                    key={step}
+                    initial={reduced ? false : { opacity: 0, x: 16 }}
+                    animate={{ opacity: 1, x: 0 }}
+                    transition={{ duration: 0.4, delay: 0.08 * i, ease }}
+                    className="relative flex items-start gap-5 py-3"
+                  >
+                    <span
+                      className={`relative grid h-10 w-10 shrink-0 place-items-center rounded-full font-display text-sm font-bold ${
+                        i === flow.steps.length - 1
+                          ? "bg-brand-yellow text-ink"
+                          : "bg-brand-teal text-white"
+                      }`}
+                    >
                       {i + 1}
                     </span>
-                    <span className="pt-1.5 text-base leading-7 text-ink">
+                    <span className="pt-1.5 text-lg leading-7 text-white/90">
                       {step}
                     </span>
-                  </li>
+                  </motion.li>
                 ))}
               </ol>
             </motion.div>

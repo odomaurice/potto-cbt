@@ -1,4 +1,5 @@
 import AboutSection from "@/components/AboutSection";
+import CtaSection from "@/components/CtaSection";
 import EcosystemSection from "@/components/EcosystemSection";
 import FaqSection from "@/components/FaqSection";
 import FeaturesSection from "@/components/FeaturesSection";
@@ -13,7 +14,7 @@ import SiteFooter from "@/components/SiteFooter";
 
 export default function Home() {
   return (
-    <main className="relative min-h-screen overflow-x-hidden font-poppins text-ink">
+    <main className="relative min-h-screen overflow-x-clip font-sans text-ink">
       <PageBackdrop />
       <HomeHeader />
       <HomeScrollNav />
@@ -25,6 +26,7 @@ export default function Home() {
       <EcosystemSection />
       <RoadmapSection />
       <FaqSection />
+      <CtaSection />
       <SiteFooter />
     </main>
   );
