@@ -18,7 +18,7 @@ const STAGES = [
   },
   {
     name: "Review",
-    body: "The paper is checked — and approved, where your school requires approval.",
+    body: "The paper is checked, and approved where your school requires approval.",
   },
   {
     name: "Scheduled",
@@ -34,7 +34,7 @@ const STAGES = [
   },
   {
     name: "Submitted",
-    body: "Each paper is in — once. Repeated requests and network retries never create a second attempt.",
+    body: "Each paper is in, once. Repeated requests and network retries never create a second attempt.",
   },
   {
     name: "Marked",
@@ -46,7 +46,7 @@ const STAGES = [
   },
   {
     name: "Released",
-    body: "Students see their scores — at once for practice, after review for formal exams, as the school decides.",
+    body: "Students see their scores: at once for practice, after review for formal exams, as the school decides.",
   },
   {
     name: "Archived",

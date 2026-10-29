@@ -26,7 +26,7 @@ const GROUPS: Group[] = [
       },
       {
         q: "Which devices does it work on?",
-        a: "Supported desktop and laptop browsers, with tablet and mobile phone support where appropriate. A school may choose a desktop-only setup for formal exams — if so, that is an explicit setting, not an accident.",
+        a: "Supported desktop and laptop browsers, with tablet and mobile phone support where appropriate. A school may choose a desktop-only setup for formal exams. If so, that is an explicit setting, not an accident.",
       },
     ],
   },
@@ -51,7 +51,7 @@ const GROUPS: Group[] = [
       },
       {
         q: "Does Potto CBT stop cheating?",
-        a: "No software can guarantee that. Potto CBT offers proportionate safeguards — server-side timing, restricted access, controlled session resumption, configurable navigation and audit logs, with randomised questions and question pools planned — and supports your school's own exam rules and supervision.",
+        a: "No software can guarantee that. Potto CBT offers proportionate safeguards: server-side timing, restricted access, controlled session resumption, configurable navigation and audit logs, with randomised questions and question pools planned. It also supports your school's own exam rules and supervision.",
       },
     ],
   },
@@ -89,7 +89,7 @@ const GROUPS: Group[] = [
       },
       {
         q: "Do you use webcams or face recognition?",
-        a: "No. Any future webcam, screen monitoring or biometric checks would need a separate privacy, security and legal assessment first. Candidate verification is kept proportionate — an exam access code, for example.",
+        a: "No. Any future webcam, screen monitoring or biometric checks would need a separate privacy, security and legal assessment first. Candidate verification is kept proportionate, such as an exam access code.",
       },
       {
         q: "Do we have to re-enter our classes and students?",

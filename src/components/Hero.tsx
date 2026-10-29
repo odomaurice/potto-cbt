@@ -21,36 +21,47 @@ const ROLES = [
   { icon: SchoolIcon, label: "School admins" },
 ];
 
-// An imaginary candidate working through part of a paper, drawn from the
-// exam-interface components of PRD 4.9 and the Phase 1 question types
-// (multiple choice, true or false). It is labelled as an illustration on the
-// page — there is no CBT screenshot yet.
+// An imaginary candidate working through part of a JSS mock paper in three
+// subjects, drawn from the exam-interface components of PRD 4.9 and the
+// Phase 1 question types (multiple choice, true or false). It is labelled as
+// an illustration on the page — there is no CBT screenshot yet.
 const PAPER = [
   {
-    text: "Which of these numbers is prime?",
-    options: ["21", "27", "29", "33"],
-    pick: 2,
-  },
-  {
-    text: "What is the capital of Nigeria?",
-    options: ["Lagos", "Abuja", "Kano", "Enugu"],
+    subject: "English Language",
+    text: "Choose the correct option: She ___ to school every day.",
+    options: ["go", "goes", "going", "gone"],
     pick: 1,
   },
   {
-    text: "At sea level, pure water boils at 100 °C.",
-    options: ["True", "False"],
+    subject: "Mathematics",
+    text: "What is 15% of 200?",
+    options: ["15", "45", "30", "300"],
+    pick: 2,
+  },
+  {
+    subject: "Basic Technology",
+    text: "Which of these is a ferrous metal?",
+    options: ["Cast iron", "Copper", "Brass", "Aluminium"],
     pick: 0,
   },
   {
+    subject: "English Language",
+    text: "Choose the word closest in meaning to “enormous”.",
+    options: ["Tiny", "Quiet", "Early", "Huge"],
+    pick: 3,
+  },
+  {
+    subject: "Mathematics",
     text: "Solve for x:  3x + 4 = 19",
     options: ["x = 3", "x = 5", "x = 6", "x = 7"],
     pick: 1,
     flag: true,
   },
   {
-    text: "Which gas do green plants take in for photosynthesis?",
-    options: ["Oxygen", "Nitrogen", "Carbon dioxide", "Hydrogen"],
-    pick: 2,
+    subject: "Basic Technology",
+    text: "Iron rusts when it is exposed to air and moisture.",
+    options: ["True", "False"],
+    pick: 0,
   },
 ];
 
@@ -111,13 +122,13 @@ export default function Hero() {
     >
       <div className="mx-auto grid w-full max-w-7xl items-center gap-16 px-5 md:px-6 lg:grid-cols-[1.05fr_0.95fr] lg:gap-12 lg:px-8">
         <div>
-          <motion.p
+          {/* <motion.p
             {...reveal(0.05)}
             className="inline-flex items-center gap-2 rounded-lg bg-brand/10 px-3 py-1.5 font-mono text-xs font-semibold tracking-wider text-brand uppercase"
           >
             <span className="h-2 w-2 rounded-full bg-brand" />
             Computer-based testing for schools
-          </motion.p>
+          </motion.p> */}
 
           <motion.h1
             {...reveal(0.15)}
@@ -136,7 +147,7 @@ export default function Hero() {
             className="mt-8 max-w-xl text-lg leading-8 text-soft sm:text-xl sm:leading-9"
           >
             Potto CBT helps schools set, schedule, deliver and mark
-            computer-based exams — with answers saved as students work, a
+            computer-based exams, with answers saved as students work, a
             timer kept by the server, and results released only when the
             school says so.
           </motion.p>
@@ -205,14 +216,12 @@ export default function Hero() {
               aria-hidden
               className="relative overflow-hidden rounded-[2rem] bg-ink text-white"
             >
-              {/* Title bar: paper, subject, timer. */}
+              {/* Title bar: subject, paper, timer. */}
               <div className="flex items-center justify-between gap-4 bg-white/6 px-6 py-4 sm:px-7">
                 <div className="min-w-0">
-                  <p className="truncate text-sm font-semibold">
-                    General Paper · Mock exam
-                  </p>
+                  <p className="truncate text-sm font-semibold">{q.subject}</p>
                   <p className="font-mono text-[0.7rem] text-white/60">
-                    JSS 3 · 60 minutes · 40 marks
+                    JSS 3 Mock · 60 minutes
                   </p>
                 </div>
                 <span className="shrink-0 rounded-lg bg-white/10 px-3 py-1.5 font-mono text-xl font-bold tabular-nums">
@@ -326,9 +335,9 @@ export default function Hero() {
             </div>
           </div>
 
-          <figcaption className="relative mt-8 text-sm leading-6 text-soft">
-            An illustration of the exam screen — not a product screenshot.
-          </figcaption>
+          {/* <figcaption className="relative mt-8 text-sm leading-6 text-soft">
+            An illustration of the exam screen, not a product screenshot.
+          </figcaption> */}
         </motion.figure>
       </div>
     </section>

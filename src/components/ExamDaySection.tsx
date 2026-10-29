@@ -28,18 +28,18 @@ const MOMENTS = [
     time: "08:55",
     icon: Login01Icon,
     title: "Sign in",
-    body: "The dashboard lists only the exams assigned to this student — upcoming, available, in progress or done.",
+    body: "The dashboard lists only the exams assigned to this student: upcoming, available, in progress or done.",
   },
   {
     time: "08:58",
     icon: Note01Icon,
     title: "Read the instructions",
-    body: "Duration, marks, rules and permitted resources come first. The student confirms they are ready — with an access code too, if the school uses one.",
+    body: "Duration, marks, rules and permitted resources come first. The student confirms they are ready, with an access code too if the school uses one.",
   },
   {
     time: "09:00",
     icon: Timer01Icon,
-    title: "Start — the deadline is set",
+    title: "Start: the deadline is set",
     body: "The server fixes the finish at 10:00. The countdown follows it, not the computer's clock.",
   },
   {
@@ -59,7 +59,7 @@ const MOMENTS = [
     time: "09:34",
     icon: CloudSavingDone01Icon,
     title: "Back online",
-    body: "The latest saved answers are restored. The deadline is still 10:00 — no time gained, none lost.",
+    body: "The latest saved answers are restored. The deadline is still 10:00. No time gained, none lost.",
   },
   {
     time: "09:52",
@@ -71,7 +71,7 @@ const MOMENTS = [
     time: "10:00",
     icon: CheckmarkCircle02Icon,
     title: "Time's up",
-    body: "For anyone still writing, the latest saved answers are submitted under the exam's policy — once, never twice.",
+    body: "For anyone still writing, the latest saved answers are submitted under the exam's policy. Once, never twice.",
     last: true,
   },
 ];
@@ -120,7 +120,7 @@ export default function ExamDaySection() {
             <span className="text-brand-yellow">minute by minute</span>
           </motion.h2>
           <motion.p {...reveal(0.2)} className="mt-6 max-w-md text-lg leading-8 text-white/90">
-            What a student sees from sign-in to submission — including the
+            What a student sees from sign-in to submission, including the
             moment the network gives out, which is when an exam platform
             earns its keep.
           </motion.p>

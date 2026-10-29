@@ -43,7 +43,7 @@ const RESULT_STATES = ["Auto-marked", "Under review", "Finalised", "Released"];
 const SAVE_STATES = [
   { label: "Saving…", icon: CloudSavingDone01Icon, tone: "bg-ink/10 text-ink" },
   { label: "Saved", icon: CloudSavingDone01Icon, tone: "bg-ink text-white" },
-  { label: "Offline — retrying", icon: WifiDisconnected01Icon, tone: "bg-white text-ink" },
+  { label: "Offline, retrying", icon: WifiDisconnected01Icon, tone: "bg-white text-ink" },
   { label: "Restored", icon: CloudSavingDone01Icon, tone: "bg-ink text-white" },
 ];
 
@@ -118,7 +118,7 @@ export default function FeaturesSection() {
               </h3>
               <p className="mt-4 max-w-md text-lg leading-8 text-white/90">
                 One question at a time, with everything a candidate needs to
-                answer accurately and submit with confidence — and nothing
+                answer accurately and submit with confidence, and nothing
                 else.
               </p>
             </div>
@@ -170,7 +170,7 @@ export default function FeaturesSection() {
               A timer kept by the server
             </h3>
             <p className="mt-2 text-[0.95rem] leading-7 text-white/80">
-              The deadline is authoritative — a student&apos;s clock can&apos;t
+              The deadline is authoritative. A student&apos;s clock can&apos;t
               stretch it.
             </p>
           </motion.article>
@@ -298,7 +298,7 @@ export default function FeaturesSection() {
                 </h3>
                 <p className="mt-3 max-w-sm text-[0.95rem] leading-7 text-white/80">
                   Average, highest and lowest scores, pass rates, and the
-                  questions most students got wrong — by exam and class.
+                  questions most students got wrong, by exam and class.
                 </p>
               </div>
               <div
@@ -330,7 +330,7 @@ export default function FeaturesSection() {
             </span>
             <div>
               <h3 className="font-display text-2xl font-bold tracking-tight">
-                Secure, school by school — and on the record
+                Secure, school by school, and on the record
               </h3>
               <p className="mt-2 max-w-3xl text-[0.95rem] leading-7 text-soft">
                 Role-based access checked on the server, each school&apos;s

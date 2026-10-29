@@ -64,7 +64,7 @@ const ROLES = [
       "Decide when results become visible",
     ],
     limit:
-      "Can't quietly change a completed score — only through an authorised, traceable process.",
+      "Can't quietly change a completed score. Changes go through an authorised, traceable process.",
   },
 ];
 
@@ -117,7 +117,7 @@ export default function RolesSection() {
           </div>
           <motion.p {...reveal(0.2)} className="max-w-sm text-lg leading-8 text-soft">
             Everyone signs in to the same Potto CBT and sees only what their
-            role allows — checked on the server, not just hidden on screen.
+            role allows, checked on the server and not just hidden on screen.
           </motion.p>
         </div>
 

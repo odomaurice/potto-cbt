@@ -13,7 +13,7 @@ const PHASES = [
     items: [
       "Role-based sign-in, school by school",
       "School, class, subject and student mapping",
-      "Question bank — multiple choice and true or false",
+      "Question bank: multiple choice and true or false",
       "Exam creation, configuration, scheduling and publication",
       "Eligibility checks and the student exam dashboard",
       "Server-side timer, navigation and automatic saving",
@@ -88,7 +88,7 @@ export default function RoadmapSection() {
             {...reveal(0.2)}
             className="inline-flex self-start rounded-lg bg-white/10 px-3 py-1.5 font-mono text-xs text-white/85 lg:self-auto"
           >
-            Proposed priorities — not a promise of dates
+            Proposed priorities, not a promise of dates
           </motion.p>
         </div>
 

@@ -42,7 +42,7 @@ const CARDS = [
   {
     problem: "Power cuts, network drops and interrupted sessions.",
     answer:
-      "Answers save as students work. After a drop they are restored — and the original deadline still stands.",
+      "Answers save as students work. After a drop they are restored, and the original deadline still stands.",
   },
   {
     problem: "Calculating scores accurately and consistently.",
@@ -52,7 +52,7 @@ const CARDS = [
   {
     problem: "Compiling results across subjects and classes.",
     answer:
-      "Results sit in one place, tied to the right session, class and subject — and each one shows whether it is marked, finalised or released.",
+      "Results sit in one place, tied to the right session, class and subject. Each one shows whether it is marked, finalised or released.",
   },
   {
     problem: "Spotting performance trends.",
@@ -105,7 +105,7 @@ export default function AboutSection() {
           </div>
 
           <motion.p {...reveal(0.2)} className="text-lg leading-8 text-white/90">
-            Potto CBT replaces or sits alongside paper exams — class tests,
+            Potto CBT replaces or sits alongside paper exams: class tests,
             continuous assessment, mocks, entrance and end-of-term exams. Pick
             a problem to see how it is handled.
           </motion.p>
@@ -209,7 +209,7 @@ export default function AboutSection() {
           Our vision:{" "}
           <span className="text-white/90">
             digital exams that are accessible, reliable, efficient and
-            transparent — for schools, teachers and students.
+            transparent, for schools, teachers and students.
           </span>
         </motion.p>
       </div>

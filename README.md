@@ -221,7 +221,7 @@ State colours are used the same way everywhere, so they teach themselves:
 | [`PageBackdrop`](src/components/PageBackdrop.tsx) / [`ContourPattern`](src/components/ContourPattern.tsx) | The single page-wide ground; contour lines are generated in JS, not an asset. |
 | [`HomeHeader`](src/components/HomeHeader.tsx) | Floating header, filled with the ground beneath it — see the probe mechanism above. |
 | [`HomeScrollNav`](src/components/HomeScrollNav.tsx) | The question palette, bottom-left, `md` and up: current question, a clickable square per section (`lg` and up), previous/next. Hidden on the hero. Driven by a hand-maintained `SECTIONS` list. |
-| [`Hero`](src/components/Hero.tsx) | An exam screen — paper title, timer, a question with its options, flag, save status, palette — that answers a five-question loop, one beat a second. It is labelled as an illustration on the page — keep it that way. |
+| [`Hero`](src/components/Hero.tsx) | An exam screen — paper title, timer, a question with its options, flag, save status, palette — that answers a six-question loop across English, Mathematics and Basic Technology, one beat a second. It is labelled as an illustration on the page — keep it that way. |
 | [`ExamDaySection`](src/components/ExamDaySection.tsx) | Timeline whose track fills with `useScroll`; one moment (the dropped connection) is set in yellow. |
 | [`RolesSection`](src/components/RolesSection.tsx) / [`LifecycleSection`](src/components/LifecycleSection.tsx) | WAI-ARIA tabs; arrow keys move between them. Add a role or stage by adding an entry to `ROLES` / `STAGES`. |
 | [`WhatsAppButton`](src/components/WhatsAppButton.tsx) | Fixed customer-care link, bottom-right, mounted in `layout.tsx`. A Server Component — it ships no JavaScript. |
